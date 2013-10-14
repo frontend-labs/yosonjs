@@ -1,0 +1,5 @@
+yOSON.AppSandbox = function(){
+    return {
+
+    }
+}
