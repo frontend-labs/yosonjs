@@ -1,0 +1,18 @@
+{
+  "undef": true,
+  "browser": true,
+  "globals": {
+    "spyOnEvent": false,
+    "spyOn": false,
+    "define": false,
+    "require": true,
+    "setTimeout": false,
+    "describe": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "setFixtures": false,
+    "expect": false,
+    "it": false,
+    "xit": false
+  }
+}

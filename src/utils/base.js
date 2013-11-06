@@ -1,7 +1,8 @@
 /**
  *  Basehelpers JS we needs for yOSON
  */
-var yOSON.utils = {
+var yOSON = {};
+yOSON.utils = {
     copy: function(element, collection){
         for(var x = 0; x < collection.length; x++){
             element.push(collection[x]);
@@ -11,7 +12,7 @@ var yOSON.utils = {
     remove: function(element, from, to){
         var index =(to || from),
             elementLength = element.length,
-            rest = el.slice(index + 1 || elementLength);
+            rest = element.slice(index + 1 || elementLength);
 
         if(from < 0){
             elementLength = elementLength + from;
@@ -32,4 +33,4 @@ var yOSON.utils = {
 
         return false;
     }
-}
+};
