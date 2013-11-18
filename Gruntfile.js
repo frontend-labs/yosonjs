@@ -1,25 +1,9 @@
 module.exports = function(grunt){
-    var utilsJs = 'src/core/*.js';
-    //Project configuration
-    //grunt.initConfig({
-        //pkg: grunt.file.readJSON('package.json'),
-        //concat:{
-            //files:{
-                //"yoson.js":[utilsJs]
-            //}
-        //},
-        //uglify: {
-            //options:{
-                //banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-            //},
-            //build:{
-                //src:'src/<%= pkg.name %>.js',
-                //dest: 'build/<%= pkg.name %>.min.js'
-            //}
-        //}
-    //});
     grunt.initConfig({
-        //watch a files
+        connect: {
+            uses_defaults: {}
+        },
+       //watch a files
          watch: {
              scripts: {
                  files: ['src/**/*.js', 'spec/**/*.js', 'lib/**/*.js'],
@@ -33,16 +17,16 @@ module.exports = function(grunt){
             }
         },
         //compile the scripts
-        /* requirejs:{*/
-            //compile:{
-                //options: {
-                    //mainConfigFile: 'src/RequireConfig.js',
-                    //baseUrl: "src",
-                    //name:'yOSON',
-                    //out:'build/src/yoson.js'
-                //}
-            //}
-        /*},*/
+         requirejs:{
+            compile:{
+                options: {
+                    mainConfigFile: 'src/RequireConfig.js',
+                    baseUrl: "src",
+                    name:'yOSON',
+                    out:'build/src/yoson.js'
+                }
+            }
+        },
         copy: {
             build: {
                 files: [
@@ -64,29 +48,34 @@ module.exports = function(grunt){
         exec: {
             clean: {
                 command: 'rm -rf build'
+            },
+            jasmine: {
+                command: 'phantomjs run-jasmine.js http://0.0.0.0:8000/test/index.html'
             }
         }
    });
    //load package for task of watch
    grunt.loadNpmTasks('grunt-contrib-watch');
    //load package for task of requirejs
-   //grunt.loadNpmTasks('grunt-contrib-requirejs');
+   grunt.loadNpmTasks('grunt-contrib-requirejs');
    //load package for task of jshint
    grunt.loadNpmTasks('grunt-contrib-jshint');
-   //grunt.loadNpmTasks('grunt-contrib-connect');
+   //módulo para emular la conexión por consola de los tests
+   grunt.loadNpmTasks('grunt-contrib-connect');
    //load package for task of copy
    grunt.loadNpmTasks('grunt-contrib-copy');
    //load package for task of shell
    grunt.loadNpmTasks('grunt-exec');
    //Load the plugin that provides the "uglify" task
    //grunt.loadNpmTasks('grunt-contrib-requirejs');
-   grunt.loadNpmTasks('grunt-contrib-concat');
+   //grunt.loadNpmTasks('grunt-contrib-concat');
 
    //log the tasks
    grunt.log.write("running grunt for yoson");
    //enroll tasks
-   //grunt.registerTask('spec', ['jshint', 'connect', 'exec:jasmine']);
-   grunt.registerTask('spec', ['jshint']);
-   grunt.registerTask('build', ['exec:clean', 'copy:build', 'concat:files']);
+   grunt.registerTask('spec', ['jshint', 'connect', 'exec:jasmine']);
+   //grunt.registerTask('spec', ['jshint']);
+   //grunt.registerTask('build', ['exec:clean', 'copy:build', 'concat:files']);
+   grunt.registerTask('build', ['exec:clean', 'copy:build']);
    grunt.registerTask('default', ['spec', 'build']);
 }

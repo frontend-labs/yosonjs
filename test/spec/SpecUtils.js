@@ -1,24 +1,34 @@
 define([
-   '../src/utils/base.js'
+   '../src/core/comps/base.js'
   ],
-  function(){
-  describe('yosonUtils', function(){
-      var yoson;
+  function(utilBase){
+  describe('specUtils', function(){
+      var utils, array, result;
 
       beforeEach(function(){
-        yoson = yOSON;
+       utils = utilBase;
+       array = ['apple','pear','vine','clock'];
+       result=[];
       });
 
       it('should be a copy an array', function(){
-          var array = [1,"a","b"],
-              target = yoson.utils.copy([], array);
-          expect(target).toEqual(array);
+          result = utils.copy([], array);
+          expect(result).toEqual(array);
+      });
+
+      it('should be remove all elements array', function(){
+          result = utils.remove(array,0,4);
+          expect(result).toEqual([]);
       });
 
       it('should be remove a one element of array', function(){
-          //var array = [1,"a","b"];
-          //var result = yoson.utils.remove(array, 0, 1);
-          //expect(result).toEqual(["b"]);
+          result = utils.remove(array,0,1);
+          expect(result).toEqual(["vine","clock"]);
+      });
+
+      it('should be "apple" an element of array', function(){
+          result = utils.inArray(array, "apple");
+          expect(result).toEqual(true);
       });
   });
 });
