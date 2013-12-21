@@ -1,19 +1,15 @@
 module.exports = function(grunt){
+    var defaultOptsTmpl = {
+        requireConfigFile: 'RequireConfig.js',
+        requireConfig: {
+            baseUrl: './src/',
+        }
+    };
     grunt.initConfig({
         connect: {
-            uses_defaults: {}
-        },
-       //watch a files
-         watch: {
-             scripts: {
-                 files: ['src/**/*.js', 'spec/**/*.js', 'lib/**/*.js'],
-                 tasks: ['spec']
-             }
-         },
-         concat:{
-            files:{
-                src:['src/*.js'],
-                dest:'build/src/yoson.js'
+            test: {
+                port: 8000,
+                base: '.'
             }
         },
         //compile the scripts
@@ -48,14 +44,21 @@ module.exports = function(grunt){
         exec: {
             clean: {
                 command: 'rm -rf build'
-            },
-            jasmine: {
-                command: 'phantomjs run-jasmine.js http://0.0.0.0:8000/test/index.html'
+            }
+        },
+        jasmine:{
+            requirejs:{
+                src: 'src/**/*.js',
+                options: {
+                    specs: 'test/spec/Spec*.js',
+                    helpers: 'test/spec/*Helper.js',
+                    host: 'http://127.0.0.1:<%= connect.test.port %>/',
+                    template: require('grunt-template-jasmine-requirejs'),
+                    templateOptions: defaultOptsTmpl
+                }
             }
         }
    });
-   //load package for task of watch
-   grunt.loadNpmTasks('grunt-contrib-watch');
    //load package for task of requirejs
    grunt.loadNpmTasks('grunt-contrib-requirejs');
    //load package for task of jshint
@@ -66,16 +69,14 @@ module.exports = function(grunt){
    grunt.loadNpmTasks('grunt-contrib-copy');
    //load package for task of shell
    grunt.loadNpmTasks('grunt-exec');
-   //Load the plugin that provides the "uglify" task
-   //grunt.loadNpmTasks('grunt-contrib-requirejs');
-   //grunt.loadNpmTasks('grunt-contrib-concat');
+   //Load the plugin that provides the jasmine test
+   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
    //log the tasks
    grunt.log.write("running grunt for yoson");
    //enroll tasks
-   grunt.registerTask('spec', ['jshint', 'connect', 'exec:jasmine']);
-   //grunt.registerTask('spec', ['jshint']);
-   //grunt.registerTask('build', ['exec:clean', 'copy:build', 'concat:files']);
-   grunt.registerTask('build', ['exec:clean', 'copy:build']);
-   grunt.registerTask('default', ['spec', 'build']);
+   grunt.registerTask('spec', ['jshint', 'connect', 'jasmine:requirejs']);
+   //grunt.registerTask('build', ['exec:clean', 'copy:build']);
+   //grunt.registerTask('default', ['spec', 'build']);
+   grunt.registerTask('default', ['spec']);
 }

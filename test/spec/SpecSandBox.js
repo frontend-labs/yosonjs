@@ -1,5 +1,5 @@
 define([
-   '../src/core/comps/sandbox.js'
+   '../../src/core/comps/base.js'
   ],
   function(utilBase){
   describe('specSandBox', function(){

@@ -1,5 +1,5 @@
 define([
-   '../src/core/comps/base.js'
+   '../../src/core/comps/base.js'
   ],
   function(utilBase){
   describe('specUtils', function(){
