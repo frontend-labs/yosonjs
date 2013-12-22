@@ -45,7 +45,7 @@ define(['base', 'core/comps/sandbox'],
              modules[moduleId] = schemaModule;
              return true;
          } else {
-             throw "module with id" + moduleId + "already exists";
+             throw "module with id :: " + moduleId + " already exists";
          }
      },
      get = function(moduleId){
@@ -56,6 +56,7 @@ define(['base', 'core/comps/sandbox'],
          }
      },
      runOnly = function(moduleId, params){
+         var response = null;
             if(typeof modules[moduleId] !== "undefined"){
                 if(typeof params === "undefined"){
                     params = {};
@@ -75,8 +76,10 @@ define(['base', 'core/comps/sandbox'],
                         module.loaded = true;
                         module.onLoaded();
                     }
+                    response = module.loaded;
                 }
             }
+            return response;
      },
      runCollection = function(moduleIds){
          for(var i = 0; i < moduleIds.length; i++){
