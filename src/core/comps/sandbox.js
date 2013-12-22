@@ -4,6 +4,9 @@ define(['base'],
         return {
             events: function(){
 
+            },
+            trigger: function(){
+
             }
         };
     };
