@@ -1,34 +1,34 @@
-define([
-   '../../src/core/comps/base.js'
-  ],
-  function(utilBase){
-  describe('specSandBox', function(){
-      var utils, array, result;
+//define([
+   //'../../src/core/comps/sandbox.js'
+  //],
+  //function(utilBase){
+  //describe('specSandBox', function(){
+      //var utils, array, result;
 
-      beforeEach(function(){
-       utils = utilBase;
-       array = ['apple','pear','vine','clock'];
-       result=[];
-      });
+      //beforeEach(function(){
+       //utils = utilBase;
+       //array = ['apple','pear','vine','clock'];
+       //result=[];
+      //});
 
-      it('should be a copy an array', function(){
-          result = utils.copy([], array);
-          expect(result).toEqual(array);
-      });
+      //it('should be a copy an array', function(){
+          //result = utils.copy([], array);
+          //expect(result).toEqual(array);
+      //});
 
-      it('should be remove all elements array', function(){
-          result = utils.remove(array,0,4);
-          expect(result).toEqual([]);
-      });
+      //it('should be remove all elements array', function(){
+          //result = utils.remove(array,0,4);
+          //expect(result).toEqual([]);
+      //});
 
-      it('should be remove a one element of array', function(){
-          result = utils.remove(array,0,1);
-          expect(result).toEqual(["vine","clock"]);
-      });
+      //it('should be remove a one element of array', function(){
+          //result = utils.remove(array,0,1);
+          //expect(result).toEqual(["vine","clock"]);
+      //});
 
-      it('should be "apple" an element of array', function(){
-          result = utils.inArray(array, "apple");
-          expect(result).toEqual(true);
-      });
-  });
-});
+      //it('should be "apple" an element of array', function(){
+          //result = utils.inArray(array, "apple");
+          //expect(result).toEqual(true);
+      //});
+  //});
+//});

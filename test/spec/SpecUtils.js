@@ -1,12 +1,12 @@
 define([
-   '../../src/core/comps/base.js'
+   '../../src/core/comps/utils.js'
   ],
-  function(utilBase){
+  function(yOSON){
   describe('specUtils', function(){
       var utils, array, result;
 
       beforeEach(function(){
-       utils = utilBase;
+       utils = yOSON.utils;
        array = ['apple','pear','vine','clock'];
        result=[];
       });

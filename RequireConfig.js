@@ -1,9 +1,10 @@
 var require = {
-    //baseUrl: 'src',
+    baseUrl: './src',
     paths:{
         'spec':'spec',
+        'base':'./core/base',
 
-        'jquery':'../lib/jquery',
+        'jquery':'../test/lib/jquery',
 
         'sinon':'../lib/sinon',
         'jasmine':'../lib/jasmine-1.3.1/jasmine',
