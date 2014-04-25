@@ -20,16 +20,16 @@ module.exports = function(grunt){
                 //}
             //}
         //},
-        //copy: {
-            //build: {
-                //files: [
-                    //{expand: true, src: ['src/RequireConfig.js'], dest: 'build'},
-                    //{expand: true, src: ['lib/require.js'], dest: 'build'},
-                    //{expand: true, src: ['css/*.css'], dest: 'build'},
-                    //{expand: true, src: ['index.html'], dest: 'build'}
-                //]
-            //}
-        //},
+        copy: {
+            build: {
+                files: [
+                    {expand: true, src: ['src/RequireConfig.js'], dest: 'build'},
+                    {expand: true, src: ['lib/require.js'], dest: 'build'},
+                    {expand: true, src: ['css/*.css'], dest: 'build'},
+                    {expand: true, src: ['index.html'], dest: 'build'}
+                ]
+            }
+        },
         //for validation
         jshint: {
             options: {
@@ -38,11 +38,11 @@ module.exports = function(grunt){
             all: ['src/**/*.js', 'spec/**/*.js']
         },
         //for execute shell commands
-        //exec: {
-            //clean: {
-                //command: 'rm -rf build'
-            //}
-        //},
+        exec: {
+            clean: {
+                command: 'rm -fr build'
+            }
+        },
         jasmine:{
             requirejs:{
                 src: 'src/**/*.js',
