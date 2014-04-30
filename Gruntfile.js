@@ -10,26 +10,26 @@ module.exports = function(grunt){
             }
         },
         //compile the scripts
-         //requirejs:{
-            //compile:{
-                //options: {
-                    //mainConfigFile: 'src/RequireConfig.js',
-                    //baseUrl: "src",
-                    //name:'yOSON',
-                    //out:'build/src/yoson.js'
-                //}
-            //}
-        //},
-        copy: {
-            build: {
-                files: [
-                    {expand: true, src: ['src/RequireConfig.js'], dest: 'build'},
-                    {expand: true, src: ['lib/require.js'], dest: 'build'},
-                    {expand: true, src: ['css/*.css'], dest: 'build'},
-                    {expand: true, src: ['index.html'], dest: 'build'}
-                ]
+        requirejs:{
+            compile:{
+                options: {
+                    mainConfigFile: 'config/build.js',
+                    baseUrl: "src",
+                    name:'yoson',
+                    out:'build/src/yoson.js'
+                }
             }
         },
+        //copy: {
+            //build: {
+                //files: [
+                    //{expand: true, src: ['src/RequireConfig.js'], dest: 'build'},
+                    //{expand: true, src: ['lib/require.js'], dest: 'build'},
+                    //{expand: true, src: ['css/*.css'], dest: 'build'},
+                    //{expand: true, src: ['index.html'], dest: 'build'}
+                //]
+            //}
+        //},
         //for validation
         jshint: {
             options: {
@@ -57,7 +57,7 @@ module.exports = function(grunt){
         }
    });
    //load package for task of requirejs
-   //grunt.loadNpmTasks('grunt-contrib-requirejs');
+   grunt.loadNpmTasks('grunt-contrib-requirejs');
    //load package for task of jshint
    grunt.loadNpmTasks('grunt-contrib-jshint');
    //módulo para emular la conexión por consola de los tests
@@ -65,7 +65,7 @@ module.exports = function(grunt){
    //load package for task of copy
    //grunt.loadNpmTasks('grunt-contrib-copy');
    //load package for task of shell
-   //grunt.loadNpmTasks('grunt-exec');
+   grunt.loadNpmTasks('grunt-exec');
    //Load the plugin that provides the jasmine test
    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
@@ -73,7 +73,7 @@ module.exports = function(grunt){
    grunt.log.write("running grunt for yoson");
    //enroll tasks
    grunt.registerTask('spec', ['jshint', 'connect', 'jasmine:requirejs']);
-   //grunt.registerTask('build', ['exec:clean', 'copy:build']);
-   //grunt.registerTask('default', ['spec', 'build']);
-   grunt.registerTask('default', ['spec']);
+   grunt.registerTask('build', ['exec:clean', 'requirejs:compile']);
+   grunt.registerTask('default', ['spec', 'build']);
+   //grunt.registerTask('default', ['spec']);
 }
