@@ -282,6 +282,7 @@ yOSON.AppScript = (function(statHost, filesVers){
                     //loading
                     loadJs(srcItem, execFncs, function(){
                         log('srcItem', srcItem);
+                        log('execFncs', execFncs);
                         //ready!
                         //ScrFnc[codear(srcItem)].status = 1;
                         //addFnc(srcItem, fFnc);
