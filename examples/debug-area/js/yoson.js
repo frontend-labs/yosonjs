@@ -1,3 +1,12 @@
+window.log = (typeof (log) != "undefined") ? log : function () {
+    if (typeof (console) != "undefined") {
+        if (typeof (console.log.apply) != "undefined") {
+            console.log.apply(console, arguments)
+        } else {
+            console.log(Array.prototype.slice.call(arguments))
+        }
+    }
+};
 //Array.prototype.indexOf
 if(!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(needle) {
@@ -200,6 +209,7 @@ yOSON.AppScript = (function(statHost, filesVers){
     };
     /* Cargador de Javascript */
     var loadJs = function(url, fnc, onLoadScript){
+        log('solicitando url', url);
         var scr = document.createElement("script");
         scr.type = "text/javascript";
         if(scr.readyState){  /*IE*/
@@ -271,6 +281,7 @@ yOSON.AppScript = (function(statHost, filesVers){
                     }
                     //loading
                     loadJs(srcItem, execFncs, function(){
+                        log('srcItem', srcItem);
                         //ready!
                         //ScrFnc[codear(srcItem)].status = 1;
                         //addFnc(srcItem, fFnc);
@@ -286,7 +297,7 @@ yOSON.AppScript = (function(statHost, filesVers){
                         }
                     });
             };
-            //log("aUrl::",aUrl);
+            log("aUrl::",aUrl);
             loopArray(aUrl);
         },
         charge : function(aUrl, fFnc, sMod, lev){
@@ -467,8 +478,8 @@ yOSON.AppCore = (function(){
                            oParams = module.oParams;
                         //log("cargado  modulo con tarea", x, _this.getModuleWithTask( x ));
                        if(typeof task.running === "undefined"){
-                           //log("ejecutando modulo con tarea", x, _this.getModuleWithTask( x ));
-                            //log('|runModule'+(++window.cont)+'|:---> ', modules[x]);
+                            log("ejecutando modulo con tarea", x, _this.getModuleWithTask( x ));
+                            log('|runModule'+(++window.cont)+'|:---> ', modules[x]);
                             instance.init(oParams);
                             task.running = true;
                        }
