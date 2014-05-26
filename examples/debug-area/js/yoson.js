@@ -224,13 +224,13 @@ yOSON.AppScript = (function(statHost, filesVers){
                 }
             };
           }else{
-              scr.onload=function(){
-                  if(onLoadScript) {
-                    onLoadScript();
-                  } else {
-                    fnc(url);
-                  }
-              }
+            scr.onload = function(){
+                if(onLoadScript) {
+                  onLoadScript();
+                } else {
+                  fnc(url);
+                }
+            }
         }
         scr.src = url;
         document.getElementsByTagName("head")[0].appendChild(scr);
