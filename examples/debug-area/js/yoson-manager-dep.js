@@ -17,7 +17,6 @@ yOSON.Dependency.prototype.request = function(){
         this.requestIE(newScript);
     } else {
         newScript.onload = function(){
-            console.log('deberia cargar..');
             that.status = true;
         }
     }
@@ -29,7 +28,6 @@ yOSON.Dependency.prototype.requestIE = function(src){
     src.onreadystatechange = function(){
         if(src.readyState=="loaded" || scr.readyState=="complete"){
           scr.onreadystatechange=null;
-          console.log('deberia cargar..');
           that.status = true;
         }
     };
@@ -46,7 +44,7 @@ yOSON.DependencyManager = function(){
 };
 //método que crea el id segun la url ingresada
 yOSON.DependencyManager.prototype.generateId = function(url){
- this.id = (url.indexOf('//')!=-1)?url.split('//')[1].split('?')[0].replace(/[/.:]/g,'_'):url.split('?')[0].replace(/[/.:]/g,'_');
+ return (url.indexOf('//')!=-1)?url.split('//')[1].split('?')[0].replace(/[/.:]/g,'_'):url.split('?')[0].replace(/[/.:]/g,'_');
 };
 //Adiciona la dependencia a administrar con su url
 yOSON.DependencyManager.prototype.addScript = function(url){
@@ -60,16 +58,19 @@ yOSON.DependencyManager.prototype.addScript = function(url){
     }
 };
 //Metodo que indica que está lista la dependencia
-yOSON.DependencyManager.prototype.ready = function(url, callback){
-    var dependency = this.getDependency(url);
-    var readyEvent = setInterval(function(){
-        console.log('aun consultando', dependency.getStatus());
-        if(dependency.getStatus() == true){
-            console.log('dependency ready', dependency);
-            clearInterval(readyEvent);
-            callback();
-        }
-    }, 300);
+yOSON.DependencyManager.prototype.ready = function(urlCollection, callback){
+    for(var index = 0; index < urlCollection.length; index++){
+        var dependency = this.getDependency(urlCollection[index]);
+        console.log(dependency);
+        var readyEvent = setInterval(function(){
+            console.log('aun consultando', dependency.getStatus());
+            if(dependency.getStatus() == true){
+                //console.log('dependency ready', dependency);
+                clearInterval(readyEvent);
+                //callback();
+            }
+        }, 300);
+    }
 };
 //retorna la dependencia en memoria
 yOSON.DependencyManager.prototype.getDependency = function(url){
