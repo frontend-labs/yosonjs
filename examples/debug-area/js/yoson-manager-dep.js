@@ -41,35 +41,64 @@ yOSON.Dependency.prototype.getStatus = function(){
 //Administrador de dependencias
 yOSON.DependencyManager = function(){
     this.data = {};
+    this.veriferAvaliability = {};
+    this.loaded = {};
 };
 //método que crea el id segun la url ingresada
 yOSON.DependencyManager.prototype.generateId = function(url){
  return (url.indexOf('//')!=-1)?url.split('//')[1].split('?')[0].replace(/[/.:]/g,'_'):url.split('?')[0].replace(/[/.:]/g,'_');
 };
+
 //Adiciona la dependencia a administrar con su url
 yOSON.DependencyManager.prototype.addScript = function(url){
     var id = this.generateId( url );
     if(!this.alreadyInCollection(id)){
         this.data[id] = new yOSON.Dependency(url);
         console.log('new dependency', this.data[id]);
+        //Hago la consulta del script
+        //debe pasar en el flujo del ready para evitar errores de dependencias
         this.data[id].request();
     } else {
         console.log('dependency in cache', this.data[id]);
     }
 };
 //Metodo que indica que está lista la dependencia
-yOSON.DependencyManager.prototype.ready = function(urlCollection, callback){
-    for(var index = 0; index < urlCollection.length; index++){
-        var dependency = this.getDependency(urlCollection[index]);
-        console.log(dependency);
-        var readyEvent = setInterval(function(){
-            console.log('aun consultando', dependency.getStatus());
-            if(dependency.getStatus() == true){
-                //console.log('dependency ready', dependency);
-                clearInterval(readyEvent);
-                //callback();
+yOSON.DependencyManager.prototype.ready = function(urlList, callback){
+    //for(var index = 0; index < urlList.length; index++){
+        var index = 0,
+            that = this;
+        var queueQuering = function(list){
+            if(index < list.length){
+                console.log('queueQuering', list[index]);
+                that.avaliable(list[index], function(){
+                    console.log('ey!!!!', index);
+                    index++;
+                    queueQuering(urlList);
+                });
+            } else {
+                callback();
             }
-        }, 300);
+        };
+        queueQuering(urlList);
+    //}
+};
+
+yOSON.DependencyManager.prototype.avaliable = function(url, cb){
+    var that = this,
+        id = that.generateId(url),
+        dependency = that.getDependency(url);
+    console.log('consultando disponibilidad', dependency);
+    if(!this.alreadyLoaded(id)){
+        var veriferAvaliability = setInterval(function(){
+            if(dependency.getStatus() == true){
+                console.log( "cargo!" , dependency);
+                that.loaded[id] = true;
+                clearInterval(veriferAvaliability);
+                cb();
+            }
+        }, 500);
+    } else {
+        return true;
     }
 };
 //retorna la dependencia en memoria
@@ -80,4 +109,7 @@ yOSON.DependencyManager.prototype.getDependency = function(url){
 //Consulta si está agregada en la data del administrador
 yOSON.DependencyManager.prototype.alreadyInCollection = function(id){
     return this.data[id];
+};
+yOSON.DependencyManager.prototype.alreadyLoaded = function(id){
+    return this.loaded[id];
 };
