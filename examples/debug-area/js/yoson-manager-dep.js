@@ -41,7 +41,6 @@ yOSON.Dependency.prototype.getStatus = function(){
 //Administrador de dependencias
 yOSON.DependencyManager = function(){
     this.data = {};
-    this.veriferAvaliability = {};
     this.loaded = {};
 };
 //método que crea el id segun la url ingresada
@@ -56,45 +55,42 @@ yOSON.DependencyManager.prototype.addScript = function(url){
         this.data[id] = new yOSON.Dependency(url);
         console.log('new dependency', this.data[id]);
         //Hago la consulta del script
-        //debe pasar en el flujo del ready para evitar errores de dependencias
         this.data[id].request();
     } else {
         console.log('dependency in cache', this.data[id]);
     }
 };
 //Metodo que indica que está lista la dependencia
-yOSON.DependencyManager.prototype.ready = function(urlList, callback){
-    //for(var index = 0; index < urlList.length; index++){
+yOSON.DependencyManager.prototype.ready = function(urlList, onReady){
         var index = 0,
             that = this;
         var queueQuering = function(list){
             if(index < list.length){
-                console.log('queueQuering', list[index]);
+                that.addScript(list[index]);
                 that.avaliable(list[index], function(){
                     console.log('ey!!!!', index);
                     index++;
                     queueQuering(urlList);
                 });
             } else {
-                callback();
+                onReady.apply(that);
             }
         };
         queueQuering(urlList);
-    //}
 };
 
-yOSON.DependencyManager.prototype.avaliable = function(url, cb){
+yOSON.DependencyManager.prototype.avaliable = function(url, onAvaliable){
     var that = this,
         id = that.generateId(url),
         dependency = that.getDependency(url);
     console.log('consultando disponibilidad', dependency);
     if(!this.alreadyLoaded(id)){
-        var veriferAvaliability = setInterval(function(){
+        var checkStatusDependency = setInterval(function(){
             if(dependency.getStatus() == true){
                 console.log( "cargo!" , dependency);
                 that.loaded[id] = true;
-                clearInterval(veriferAvaliability);
-                cb();
+                clearInterval(checkStatusDependency);
+                onAvaliable.apply(that);
             }
         }, 500);
     } else {
@@ -110,6 +106,7 @@ yOSON.DependencyManager.prototype.getDependency = function(url){
 yOSON.DependencyManager.prototype.alreadyInCollection = function(id){
     return this.data[id];
 };
+//retorna si ya está cargado la dependencia completamente
 yOSON.DependencyManager.prototype.alreadyLoaded = function(id){
     return this.loaded[id];
 };
