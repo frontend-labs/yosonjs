@@ -53,7 +53,6 @@ yOSON.DependencyManager.prototype.addScript = function(url){
     var id = this.generateId( url );
     if(!this.alreadyInCollection(id)){
         this.data[id] = new yOSON.Dependency(url);
-        console.log('new dependency', this.data[id]);
         //Hago la consulta del script
         this.data[id].request();
     } else {
@@ -68,7 +67,6 @@ yOSON.DependencyManager.prototype.ready = function(urlList, onReady){
             if(index < list.length){
                 that.addScript(list[index]);
                 that.avaliable(list[index], function(){
-                    console.log('ey!!!!', index);
                     index++;
                     queueQuering(urlList);
                 });
@@ -78,16 +76,14 @@ yOSON.DependencyManager.prototype.ready = function(urlList, onReady){
         };
         queueQuering(urlList);
 };
-
+//Método que verifica si está lista el script agregado
 yOSON.DependencyManager.prototype.avaliable = function(url, onAvaliable){
     var that = this,
         id = that.generateId(url),
         dependency = that.getDependency(url);
-    console.log('consultando disponibilidad', dependency);
     if(!this.alreadyLoaded(id)){
         var checkStatusDependency = setInterval(function(){
             if(dependency.getStatus() == true){
-                console.log( "cargo!" , dependency);
                 that.loaded[id] = true;
                 clearInterval(checkStatusDependency);
                 onAvaliable.apply(that);
