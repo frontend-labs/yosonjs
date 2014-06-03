@@ -100,7 +100,7 @@ yOSON.modular.prototype.runModule = function(moduleName, optionalParameter){
 yOSON.modular.prototype.runModules = function(moduleNames){
     var that = this;
     //its necesary the parameter moduleNames must be a type Array
-    if(typeof moduleNames !== "Array"){
+    if(!moduleNames instanceof Array){
         return;
     }
 
