@@ -1,5 +1,5 @@
 //clase with pattern factory with the idea of create modules
-yOSON.modular = function(){
+yOSON.Modular = function(){
     this.modules = {};
     this.skeletonModule = {};
     this.components = {};
@@ -7,25 +7,21 @@ yOSON.modular = function(){
 };
 
 //the factory will receive components for create an module
-yOSON.modular.prototype.addComponent = function(nameComponent, componentSelf){
+yOSON.Modular.prototype.addComponent = function(nameComponent, componentSelf){
     this.components[ nameComponent ] = componentSelf;
 };
 
 //adding a module
-yOSON.modular.prototype.addModule = function(moduleName, moduleDefinition, dependences){
-    var dependencesProperty = [];
+yOSON.Modular.prototype.addModule = function(moduleName, moduleDefinition){
     if(this.existsModule(moduleName)){
         //mensaje ya existe modulo
     } else {
-        if(typeof dependences === "Array"){
-            dependencesProperty = dependences;
-        }
-        this.modules[moduleName] = this.createDefinitionModule(moduleName, moduleDefinition, dependencesProperty);
+        this.modules[moduleName] = this.createDefinitionModule(moduleName, moduleDefinition);
     }
 };
 
 //return the complete definition of an module with the components
-yOSON.modular.prototype.getModuleDefinition = function(moduleName){
+yOSON.Modular.prototype.getModuleDefinition = function(moduleName){
     var module = this.getModule(moduleName),
         moduleInstance = module.moduleDefinition(this.components),
         that = this;
@@ -41,7 +37,7 @@ yOSON.modular.prototype.getModuleDefinition = function(moduleName){
 };
 
 //create a method taking a name and function self
-yOSON.modular.prototype.addFunctionToDefinitionModule = function(functionName, functionSelf){
+yOSON.Modular.prototype.addFunctionToDefinitionModule = function(functionName, functionSelf){
     return function(){
         try {
             return functionSelf.apply(this, arguments);
@@ -52,7 +48,7 @@ yOSON.modular.prototype.addFunctionToDefinitionModule = function(functionName, f
 };
 
 //verifying the existence of one module by name
-yOSON.modular.prototype.existsModule = function(moduleName){
+yOSON.Modular.prototype.existsModule = function(moduleName){
     var founded = false;
     if(this.getModule(moduleName)){
         founded = true;
@@ -61,22 +57,21 @@ yOSON.modular.prototype.existsModule = function(moduleName){
 };
 
 //return the module from the collection of modules
-yOSON.modular.prototype.getModule = function(moduleName){
+yOSON.Modular.prototype.getModule = function(moduleName){
     return this.modules[moduleName];
 };
 
 // return the skeleton for the creation of module
 //creator of the definition ready for merge with the components
-yOSON.modular.prototype.createDefinitionModule = function(moduleName, moduleDefinition, dependences){
+yOSON.Modular.prototype.createDefinitionModule = function(moduleName, moduleDefinition){
     this.skeletonModule[moduleName] = {
-        'moduleDefinition': moduleDefinition,
-        'dependences': dependences
+        'moduleDefinition': moduleDefinition
     };
     return this.skeletonModule[moduleName];
 };
 
 //running the module
-yOSON.modular.prototype.runModule = function(moduleName, optionalParameter){
+yOSON.Modular.prototype.runModule = function(moduleName, optionalParameter){
     var parameters = {};
     console.log('this.existsModule(moduleName)', moduleName);
     if(this.existsModule(moduleName)){
@@ -97,7 +92,7 @@ yOSON.modular.prototype.runModule = function(moduleName, optionalParameter){
 };
 
 //running one list of modules
-yOSON.modular.prototype.runModules = function(moduleNames){
+yOSON.Modular.prototype.runModules = function(moduleNames){
     var that = this;
     //its necesary the parameter moduleNames must be a type Array
     if(!moduleNames instanceof Array){
