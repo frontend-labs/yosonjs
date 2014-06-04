@@ -7,6 +7,7 @@ var dependences = [
     'http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js',
     'http://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js'
 ];
+
 yOSON.AppCore = (function(){
     var dependenceByModule = {},
     setDependencesByModule = function(moduleName, dependencesOfModule){
@@ -32,24 +33,12 @@ yOSON.AppCore = (function(){
         }
     };
 })();
-//Append demo dependences
-//dependencyManager.addScript(dependences[0]);
-//dependencyManager.addScript(dependences[1]);
-//dependencyManager.addScript(dependences[2]);
-//when is ready
-dependencyManager.ready([dependences[0]], function(){
-    console.log('done!', $);
-});
-
-dependencyManager.ready(dependences, function(){
-    console.log('se debe ejecutar desde la cache del manager!', $.ui);
-});
 
 //1st executing modular with dependencyManager
 yOSON.AppCore.addModule('demoA', function(){
     return {
         init: function(){
-            console.log('Hello Im Ready', $);
+            console.log('Hello Im Ready in module A', $);
         }
     }
 }, dependences);
@@ -62,4 +51,6 @@ yOSON.AppCore.addModule('demoB', function(){
         }
     }
 }, dependences);
+
+yOSON.AppCore.runModule('demoA');
 yOSON.AppCore.runModule('demoB');
