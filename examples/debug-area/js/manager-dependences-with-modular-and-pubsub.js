@@ -1,5 +1,6 @@
 //define the modules
 var dependencyManager = new yOSON.DependencyManager();
+var objComunicator = new yOSON.Comunicator();
 var objModular = new yOSON.Modular();
 //append the demo urls
 var dependences = [
@@ -7,6 +8,12 @@ var dependences = [
     'http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js',
     'http://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js'
 ];
+
+//Append the methods to Bridge with modules
+objModular.addMethodToBrigde('events', objComunicator.subscribe);
+objModular.addMethodToBrigde('trigger', objComunicator.publish);
+objModular.addMethodToBrigde('stopEvent', objComunicator.stopSuscribe);
+
 yOSON.AppCore = (function(){
     var dependenceByModule = {},
     setDependencesByModule = function(moduleName, dependencesOfModule){
@@ -34,10 +41,12 @@ yOSON.AppCore = (function(){
 })();
 
 //1st executing modular with dependencyManager
-yOSON.AppCore.addModule('demoA', function(){
+yOSON.AppCore.addModule('demoA', function(Bridge){
     return {
         init: function(){
-            console.log('Hello Im Ready in A', $);
+            console.log('Hello Im Ready in module A', $);
+            console.log('Hello Im Ready in module A', Sb.events);
+            debugger;
         }
     }
 }, dependences);
@@ -48,7 +57,7 @@ yOSON.AppCore.addModule('demoB', function(){
         init: function(){
             console.log('Hello Im Ready from B', $.ui);
         }
-    }
+    };
 }, dependences);
 
 yOSON.AppCore.runModule('demoA');

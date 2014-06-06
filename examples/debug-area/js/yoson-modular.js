@@ -2,13 +2,13 @@
 yOSON.Modular = function(){
     this.modules = {};
     this.skeletonModule = {};
-    this.components = {};
+    this.entityBridge = {};
     this.debug = false;
 };
 
-//the factory will receive components for create an module
-yOSON.Modular.prototype.addComponent = function(nameComponent, componentSelf){
-    this.components[ nameComponent ] = componentSelf;
+//receive one method for the entity comunicator on modules
+yOSON.Modular.prototype.addMethodToBrigde = function(methodName, methodSelf){
+    this.entityBridge[ methodName ] = methodSelf;
 };
 
 //adding a module
@@ -23,7 +23,7 @@ yOSON.Modular.prototype.addModule = function(moduleName, moduleDefinition){
 //return the complete definition of an module with the components
 yOSON.Modular.prototype.getModuleDefinition = function(moduleName){
     var module = this.getModule(moduleName),
-        moduleInstance = module.moduleDefinition(this.components),
+        moduleInstance = module.moduleDefinition(this.entityBridge),
         that = this;
     if(!this.debug){
         for(var propertyName in moduleInstance){

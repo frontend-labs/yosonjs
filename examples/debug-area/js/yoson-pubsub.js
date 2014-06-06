@@ -1,9 +1,9 @@
 //Clase que se orienta al manejo de comunicacion entre modulos
-yOSON.comunicator = function(){
+yOSON.Comunicator = function(){
     this.events = {};
 };
 
-yOSON.comunicator.prototype.publish = function(eventName, argumentsOfEvent){
+yOSON.Comunicator.prototype.publish = function(eventName, argumentsOfEvent){
     var that = this;
     this.finderEvents([eventName], function(eventNameFound, eventFound){
         var instanceFound = eventFound.instanceOrigin,
@@ -13,7 +13,7 @@ yOSON.comunicator.prototype.publish = function(eventName, argumentsOfEvent){
     }, function(){});
 };
 
-yOSON.comunicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
+yOSON.Comunicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
     var that = this;
     console.log('searching...');
     this.finderEvents(eventNames, function(){
@@ -23,7 +23,7 @@ yOSON.comunicator.prototype.subscribe = function(eventNames, functionSelfEvent, 
     });
 };
 
-yOSON.comunicator.prototype.validateArguments = function(argumentsToValidate){
+yOSON.Comunicator.prototype.validateArguments = function(argumentsToValidate){
     var validArguments = [];
     if(typeof argumentsToValidate !== "undefined"){
         validArguments = argumentsToValidate;
@@ -31,14 +31,14 @@ yOSON.comunicator.prototype.validateArguments = function(argumentsToValidate){
     return validArguments;
 };
 
-yOSON.comunicator.prototype.stopSuscribe = function(EventsToStop, instanceOrigin){
+yOSON.Comunicator.prototype.stopSubscribe = function(EventsToStop, instanceOrigin){
     var that = this;
     this.finderEvents(EventsToStop, function(eventNameFound, eventFound){
         that.removeEvent(eventNameFound);
     }, function(){});
 };
 
-yOSON.comunicator.prototype.addEvent = function(eventName, functionOfEvent, instanceOrigin){
+yOSON.Comunicator.prototype.addEvent = function(eventName, functionOfEvent, instanceOrigin){
     var bodyNewEvent = {};
     bodyNewEvent['instanceOrigin'] = instanceOrigin;
     bodyNewEvent['functionSelf'] = functionOfEvent;
@@ -46,11 +46,11 @@ yOSON.comunicator.prototype.addEvent = function(eventName, functionOfEvent, inst
     return this;
 };
 
-yOSON.comunicator.prototype.removeEvent = function(eventName){
+yOSON.Comunicator.prototype.removeEvent = function(eventName){
     this.events[eventName] = null;
 };
 
-yOSON.comunicator.prototype.eventAlreadyRegistered = function(eventName){
+yOSON.Comunicator.prototype.eventAlreadyRegistered = function(eventName){
     var response = null;
     if(this.getEvent(eventName)){
         response = true;
@@ -58,11 +58,11 @@ yOSON.comunicator.prototype.eventAlreadyRegistered = function(eventName){
     return response;
 };
 
-yOSON.comunicator.prototype.getEvent = function(eventName){
+yOSON.Comunicator.prototype.getEvent = function(eventName){
     return this.events[eventName];
 };
 
-yOSON.comunicator.prototype.finderEvents = function(eventNames, whichEventFound, whichEventNotFound){
+yOSON.Comunicator.prototype.finderEvents = function(eventNames, whichEventFound, whichEventNotFound){
     var that = this;
     for(var index = 0; index < eventNames.length;index++){
         var eventName = eventNames[index];
