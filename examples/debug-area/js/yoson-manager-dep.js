@@ -42,7 +42,31 @@ yOSON.Dependency.prototype.getStatus = function(){
 yOSON.DependencyManager = function(){
     this.data = {};
     this.loaded = {};
+    this.config = {
+        staticHost: "",
+        versionUrl: ""
+    };
 };
+
+yOSON.DependencyManager.setStaticHost = function(hostName){
+    this.config.staticHost = hostName;
+};
+
+yOSON.DependencyManager.setVersionUrl = function(versionNumber){
+    this.config.versionUrl = versionNumber;
+};
+
+yOSON.DependencyManager.transformUrl = function(url){
+    var urlResult = "",
+        regularExpresion = /((http?|https):\/\/)(www)?(\w+[\./])+(\w*)/g;
+    if(regularExpresion.test(url)){
+        urlResult = url;
+    } else {
+        urlResult = this.config.staticHost + url;
+    }
+    return urlResult;
+};
+
 //método que crea el id segun la url ingresada
 yOSON.DependencyManager.prototype.generateId = function(url){
  return (url.indexOf('//')!=-1)?url.split('//')[1].split('?')[0].replace(/[/.:]/g,'_'):url.split('?')[0].replace(/[/.:]/g,'_');
@@ -50,9 +74,10 @@ yOSON.DependencyManager.prototype.generateId = function(url){
 
 //Adiciona la dependencia a administrar con su url
 yOSON.DependencyManager.prototype.addScript = function(url){
-    var id = this.generateId( url );
+    var urlTransformed = this.transformUrl(url);
+        id = this.generateId( urlTransformed );
     if(!this.alreadyInCollection(id)){
-        this.data[id] = new yOSON.Dependency(url);
+        this.data[id] = new yOSON.Dependency(urlTransformed);
         //Hago la consulta del script
         this.data[id].request();
     } else {
