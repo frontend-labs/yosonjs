@@ -9,6 +9,11 @@ var dependences = [
     'http://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js'
 ];
 
+//setting the dependencymanager
+var staticHost = "http://localhost:3000";
+dependencymanager.setStaticHost(staticHost);
+var version = "a1b2c3de4r5";
+dependencymanager.setVersionUrl(version);
 //Append the methods to Bridge with modules
 objModular.addMethodToBrigde('events', objComunicator.subscribe);
 objModular.addMethodToBrigde('trigger', objComunicator.publish);

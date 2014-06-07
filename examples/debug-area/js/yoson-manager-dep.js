@@ -48,21 +48,29 @@ yOSON.DependencyManager = function(){
     };
 };
 
-yOSON.DependencyManager.setStaticHost = function(hostName){
+yOSON.DependencyManager.prototype.setStaticHost = function(hostName){
     this.config.staticHost = hostName;
 };
 
-yOSON.DependencyManager.setVersionUrl = function(versionNumber){
+yOSON.DependencyManager.prototype.setVersionUrl = function(versionNumber){
     this.config.versionUrl = versionNumber;
 };
 
-yOSON.DependencyManager.transformUrl = function(url){
+yOSON.DependencyManager.prototype.getVersionUrl = function(){
+    var result = "";
+    if(this.config.versionUrl != ""){
+        result = "?" + this.config.versionUrl;
+    }
+    return result;
+};
+
+yOSON.DependencyManager.prototype.transformUrl = function(url){
     var urlResult = "",
         regularExpresion = /((http?|https):\/\/)(www)?(\w+[\./])+(\w*)/g;
     if(regularExpresion.test(url)){
         urlResult = url;
     } else {
-        urlResult = this.config.staticHost + url;
+        urlResult = this.config.staticHost + url + this.getVersionUrl();
     }
     return urlResult;
 };
