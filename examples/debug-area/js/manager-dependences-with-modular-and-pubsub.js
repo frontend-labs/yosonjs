@@ -9,11 +9,14 @@ var dependences = [
     'http://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js'
 ];
 
+var dependencesStatic = [
+    'yoson-load.js'
+];
 //setting the dependencymanager
-var staticHost = "http://localhost:3000";
-dependencymanager.setStaticHost(staticHost);
+var staticHost = "http://localhost:8000/debug-area/js/";
+dependencyManager.setStaticHost(staticHost);
 var version = "a1b2c3de4r5";
-dependencymanager.setVersionUrl(version);
+dependencyManager.setVersionUrl(version);
 //Append the methods to Bridge with modules
 objModular.addMethodToBrigde('events', objComunicator.subscribe);
 objModular.addMethodToBrigde('trigger', objComunicator.publish);
@@ -46,12 +49,11 @@ yOSON.AppCore = (function(){
 })();
 
 //1st executing modular with dependencyManager
-yOSON.AppCore.addModule('demoA', function(Bridge){
+yOSON.AppCore.addModule('demoA', function(Sb){
     return {
         init: function(){
             console.log('Hello Im Ready in module A', $);
             console.log('Hello Im Ready in module A', Sb.events);
-            debugger;
         }
     }
 }, dependences);
@@ -60,10 +62,10 @@ yOSON.AppCore.addModule('demoA', function(Bridge){
 yOSON.AppCore.addModule('demoB', function(){
     return {
         init: function(){
-            console.log('Hello Im Ready from B', $.ui);
+            console.log('Hello Im Ready from B', yOSON.Loader);
         }
     };
-}, dependences);
+}, dependencesStatic);
 
 yOSON.AppCore.runModule('demoA');
 yOSON.AppCore.runModule('demoB');

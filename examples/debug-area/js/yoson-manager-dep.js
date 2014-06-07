@@ -4,7 +4,7 @@
 //y notifica el status del mismo
 yOSON.Dependency = function(url){
     this.url = url;
-    this.status = false;
+    this.status = "request";
 };
 //realiza el request
 yOSON.Dependency.prototype.request = function(){
@@ -17,7 +17,10 @@ yOSON.Dependency.prototype.request = function(){
         this.requestIE(newScript);
     } else {
         newScript.onload = function(){
-            that.status = true;
+            that.status = "ready";
+        }
+        newScript.error = function(){
+            that.status = "error";
         }
     }
     document.getElementsByTagName("head")[0].appendChild(newScript);
@@ -28,7 +31,9 @@ yOSON.Dependency.prototype.requestIE = function(src){
     src.onreadystatechange = function(){
         if(src.readyState=="loaded" || scr.readyState=="complete"){
           scr.onreadystatechange=null;
-          that.status = true;
+          that.status = "ready";
+        } else {
+            that.status = "error";
         }
     };
 };
@@ -82,10 +87,9 @@ yOSON.DependencyManager.prototype.generateId = function(url){
 
 //Adiciona la dependencia a administrar con su url
 yOSON.DependencyManager.prototype.addScript = function(url){
-    var urlTransformed = this.transformUrl(url);
-        id = this.generateId( urlTransformed );
+    var id = this.generateId( url );
     if(!this.alreadyInCollection(id)){
-        this.data[id] = new yOSON.Dependency(urlTransformed);
+        this.data[id] = new yOSON.Dependency(url);
         //Hago la consulta del script
         this.data[id].request();
     } else {
@@ -97,9 +101,10 @@ yOSON.DependencyManager.prototype.ready = function(urlList, onReady){
         var index = 0,
             that = this;
         var queueQuering = function(list){
+            var urlToQuery = that.transformUrl(list[index]);
             if(index < list.length){
-                that.addScript(list[index]);
-                that.avaliable(list[index], function(){
+                that.addScript(urlToQuery);
+                that.avaliable(urlToQuery, function(){
                     index++;
                     queueQuering(urlList);
                 });
@@ -116,7 +121,7 @@ yOSON.DependencyManager.prototype.avaliable = function(url, onAvaliable){
         dependency = that.getDependency(url);
     if(!this.alreadyLoaded(id)){
         var checkStatusDependency = setInterval(function(){
-            if(dependency.getStatus() == true){
+            if(dependency.getStatus() == "ready"){
                 that.loaded[id] = true;
                 clearInterval(checkStatusDependency);
                 onAvaliable.apply(that);
