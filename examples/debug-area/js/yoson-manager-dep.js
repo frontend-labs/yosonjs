@@ -66,7 +66,7 @@ yOSON.DependencyManager.prototype.getVersionUrl = function(){
 
 yOSON.DependencyManager.prototype.transformUrl = function(url){
     var urlResult = "",
-        regularExpresion = /((http?|https):\/\/)(www)?(\w+[\./])+(\w*)/g;
+        regularExpresion = /((http?|https):\/\/)(www)?([\w-]+\.\w+)+(\/[\w-]+)+\.\w+/g;
     if(regularExpresion.test(url)){
         urlResult = url;
     } else {
