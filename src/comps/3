@@ -25,14 +25,14 @@ yOSON.Modular.prototype.getModuleDefinition = function(moduleName){
     var module = this.getModule(moduleName),
         moduleInstance = module.moduleDefinition(this.entityBridge),
         that = this;
-
-    for(var propertyName in moduleInstance){
-        var method = moduleInstance[propertyName];
-        if(typeof method === "function"){
-            moduleInstance[propertyName] = that.addFunctionToDefinitionModule(propertyName, method);
+    if(!this.debug){
+        for(var propertyName in moduleInstance){
+            var method = moduleInstance[propertyName];
+            if(typeof method === "function"){
+                moduleInstance[propertyName] = that.addFunctionToDefinitionModule(propertyName, method);
+            }
         }
     }
-
     return moduleInstance;
 };
 
@@ -66,8 +66,7 @@ yOSON.Modular.prototype.getModule = function(moduleName){
 yOSON.Modular.prototype.createDefinitionModule = function(moduleName, moduleDefinition){
     this.skeletonModule[moduleName] = {
         'moduleDefinition': moduleDefinition,
-        'running': false,
-        'status': null
+        'status': null,
     };
     return this.skeletonModule[moduleName];
 };
@@ -84,11 +83,10 @@ yOSON.Modular.prototype.runModule = function(moduleName, optionalParameter){
         parameters.moduleName = moduleName;
 
         var moduleDefinition = this.getModuleDefinition(moduleName);
-        moduleDefinition.running = true;
 
         if(moduleDefinition.hasOwnProperty('init')){
             moduleDefinition.init();
-            this.setStatusModule(moduleName, "success");
+            this.setStatusModule(moduleName, "ready");
         } else {
             //message modulo dont run
             this.setStatusModule(moduleName, "error");
@@ -110,32 +108,6 @@ yOSON.Modular.prototype.runModules = function(moduleNames){
             that.runModule(moduleName);
         }
     }
-};
-
-yOSON.Modular.prototype.allModulesAreRunning = function(){
-    var runningModules = 0,
-        totalModules = 0,
-        result = false;
-
-    for(var moduleName in this.modules){
-        if(this.existsModule(moduleName)){
-            var instanceOfModule = this.getModuleDefinition(moduleName);
-            if(instanceOfModule.running){
-                runningModules++;
-            }
-            totalModules++;
-        }
-    }
-
-    if(totalModules > 0){
-        if(runningModules == totalModules){
-            result = true;
-        }
-    } else {
-        result true;
-    }
-
-    return result;
 };
 
 //get the current status of an module
