@@ -1,7 +1,15 @@
 module.exports = function(grunt){
     var defaultOptsTmpl = {
         requireConfigFile: 'RequireConfig.js'
-    };
+    },
+    filesToConcat = [
+       "src/comps/dependency.js",
+       "src/comps/dependency-manager.js",
+       "src/comps/modular.js",
+       "src/comps/comunicator.js",
+       "src/comps/loader.js",
+       "src/yoson.js"
+    ];
     grunt.initConfig({
         connect: {
             test: {
@@ -9,27 +17,21 @@ module.exports = function(grunt){
                 base: '.'
             }
         },
-        //compile the scripts
-        requirejs:{
-            compile:{
-                options: {
-                    mainConfigFile: 'config/build.js',
-                    baseUrl: "src",
-                    name:'yoson',
-                    out:'build/src/yoson.js'
+        //concat
+        concat: {
+            dist: {
+                src: filesToConcat,
+                dest: "build/yoson-all.js"
+            }
+        },
+        //compress
+        uglify: {
+            production:{
+                files: {
+                    'build/yoson-min-all.js':['build/yoson-all.js']
                 }
             }
         },
-        //copy: {
-            //build: {
-                //files: [
-                    //{expand: true, src: ['src/RequireConfig.js'], dest: 'build'},
-                    //{expand: true, src: ['lib/require.js'], dest: 'build'},
-                    //{expand: true, src: ['css/*.css'], dest: 'build'},
-                    //{expand: true, src: ['index.html'], dest: 'build'}
-                //]
-            //}
-        //},
         //for validation
         jshint: {
             options: {
@@ -56,14 +58,17 @@ module.exports = function(grunt){
             }
         }
    });
+
    //load package for task of requirejs
    grunt.loadNpmTasks('grunt-contrib-requirejs');
    //load package for task of jshint
    grunt.loadNpmTasks('grunt-contrib-jshint');
    //módulo para emular la conexión por consola de los tests
    grunt.loadNpmTasks('grunt-contrib-connect');
-   //load package for task of copy
-   //grunt.loadNpmTasks('grunt-contrib-copy');
+   //load package for task of concat
+   grunt.loadNpmTasks('grunt-contrib-concat');
+   //load package for task of uglify compress
+   grunt.loadNpmTasks('grunt-contrib-uglify');
    //load package for task of shell
    grunt.loadNpmTasks('grunt-exec');
    //Load the plugin that provides the jasmine test
@@ -73,7 +78,7 @@ module.exports = function(grunt){
    grunt.log.write("running grunt for yoson");
    //enroll tasks
    grunt.registerTask('spec', ['jshint', 'connect', 'jasmine:requirejs']);
-   grunt.registerTask('build', ['exec:clean', 'requirejs:compile']);
+   grunt.registerTask('build', ['exec:clean', 'concat', 'uglify']);
    grunt.registerTask('default', ['spec', 'build']);
    //grunt.registerTask('default', ['spec']);
 }

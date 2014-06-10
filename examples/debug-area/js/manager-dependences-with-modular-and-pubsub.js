@@ -10,6 +10,7 @@ var dependences = [
 ];
 
 var dependencesStatic = [
+    'demo.js',
     'yoson-load.js'
 ];
 //setting the dependencymanager
@@ -18,9 +19,8 @@ dependencyManager.setStaticHost(staticHost);
 var version = "a1b2c3de4r5";
 dependencyManager.setVersionUrl(version);
 //Append the methods to Bridge with modules
-objModular.addMethodToBrigde('events', objComunicator.subscribe);
-objModular.addMethodToBrigde('trigger', objComunicator.publish);
-objModular.addMethodToBrigde('stopEvent', objComunicator.stopSuscribe);
+objModular.addMethodToBrigde('events', yOSON.Comunicator, "subscribe");
+objModular.addMethodToBrigde('trigger',yOSON.Comunicator, "publish");
 
 yOSON.AppCore = (function(){
     var dependenceByModule = {},
@@ -50,22 +50,26 @@ yOSON.AppCore = (function(){
 
 //1st executing modular with dependencyManager
 yOSON.AppCore.addModule('demoA', function(Sb){
+    var nuevo = function(){
+        console.log('holaaaaaaaaaaaaaa');
+    };
     return {
         init: function(){
             console.log('Hello Im Ready in module A', $);
-            console.log('Hello Im Ready in module A', Sb.events);
+            Sb.events(['nuevo'], nuevo, this);
         }
     }
 }, dependences);
 
 //2nd executing modular with dependencyManager
-yOSON.AppCore.addModule('demoB', function(){
+yOSON.AppCore.addModule('demoB', function(Sb){
     return {
         init: function(){
-            console.log('Hello Im Ready from B', yOSON.Loader);
+            Sb.trigger('nuevo');
+            console.log('Hello Im Ready from B', yOSON);
         }
     };
-}, dependencesStatic);
+}, []);
 
 yOSON.AppCore.runModule('demoA');
 yOSON.AppCore.runModule('demoB');
