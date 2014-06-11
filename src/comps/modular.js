@@ -1,6 +1,7 @@
 //clase with pattern factory with the idea of create modules
 yOSON.Modular = function(){
     this.modules = {};
+    this.runningModules = {};
     this.skeletonModule = {};
     this.entityBridge = {};
     this.debug = false;
@@ -29,7 +30,7 @@ yOSON.Modular.prototype.getModuleDefinition = function(moduleName){
     for(var propertyName in moduleInstance){
         var method = moduleInstance[propertyName];
         if(typeof method === "function"){
-            moduleInstance[propertyName] = that.addFunctionToDefinitionModule(propertyName, method);
+            moduleInstance[propertyName] = that.addFunctionToDefinitionModule(moduleName, propertyName, method);
         }
     }
 
@@ -37,12 +38,12 @@ yOSON.Modular.prototype.getModuleDefinition = function(moduleName){
 };
 
 //create a method taking a name and function self
-yOSON.Modular.prototype.addFunctionToDefinitionModule = function(functionName, functionSelf){
+yOSON.Modular.prototype.addFunctionToDefinitionModule = function(moduleName, functionName, functionSelf){
     return function(){
         try {
             return functionSelf.apply(this, arguments);
         } catch( ex ){
-            console.log(ex.message);
+            console.log("Modulo:"+ moduleName + "." + functionName + "(): " + ex.message);
         }
     };
 };
@@ -72,13 +73,16 @@ yOSON.Modular.prototype.createDefinitionModule = function(moduleName, moduleDefi
 
 //running the module
 yOSON.Modular.prototype.runModule = function(moduleName, optionalParameter){
-    var parameters = {};
-    console.log('this.existsModule(moduleName)', moduleName);
+    var parameters = null;
     if(this.existsModule(moduleName)){
+        console.log('running Module:', moduleName);
 
-        if(typeof optionalParameter !== "undefined"){
+        if(typeof optionalParameter === "undefined"){
+            parameters = {};
+        } else {
             parameters = optionalParameter;
         }
+
         parameters.moduleName = moduleName;
 
         var moduleDefinition = this.getModuleDefinition(moduleName);
@@ -86,11 +90,9 @@ yOSON.Modular.prototype.runModule = function(moduleName, optionalParameter){
         this.runningModule(moduleName);
 
         if(moduleDefinition.hasOwnProperty('init')){
-            moduleDefinition.init();
-            this.setStatusModule(moduleName, "success");
+            moduleDefinition.init(parameters);
         } else {
             //message modulo dont run
-            this.setStatusModule(moduleName, "error");
         }
     }
 };
@@ -111,7 +113,6 @@ yOSON.Modular.prototype.runModules = function(moduleNames){
     }
 };
 
-
 yOSON.Modular.prototype.runningModule = function(moduleName){
     this.modules[moduleName].running = true;
 };
@@ -120,20 +121,31 @@ yOSON.Modular.prototype.moduleIsRunning = function(moduleName){
     return this.modules[moduleName].running;
 };
 
+yOSON.Modular.prototype.setStatusModule = function(moduleName, statusName){
+    this.modules[moduleName].status = statusName;
+};
+
+yOSON.Modular.prototype.getStatusModule = function(moduleName){
+    return this.modules[moduleName].status;
+};
+
 yOSON.Modular.prototype.allModulesRunning = function(onNotFinished, onFinished){
     var that = this;
     var checkModulesRunning = setInterval(function(){
-        var runningModules = 0,
-            totalModules = 0;
+        var startedModules = 0,
+            runningModules = 0;
 
         for(var moduleName in that.modules){
             if(that.moduleIsRunning(moduleName)){
                 runningModules++;
             }
-            totalModules++;
+            if(that.getStatusModule(moduleName) == "start"){
+                startedModules++;
+            }
         }
-        if(totalModules > 0){
-            if(runningModules == totalModules){
+
+        if(startedModules > 0){
+            if( startedModules == runningModules){
                 onFinished.call(that);
                 clearInterval(checkModulesRunning);
             } else {
@@ -145,16 +157,4 @@ yOSON.Modular.prototype.allModulesRunning = function(onNotFinished, onFinished){
         }
 
     }, 200);
-
-};
-
-//get the current status of an module
-yOSON.Modular.prototype.setStatusModule = function(moduleName, status){
-    var moduleDefinition = this.getModuleDefinition(moduleName);
-    moduleDefinition.status = status;
-};
-//get the current status of an module
-yOSON.Modular.prototype.getStatusModule = function(moduleName){
-    var moduleDefinition = this.getModuleDefinition(moduleName);
-    return moduleDefinition.status;
 };

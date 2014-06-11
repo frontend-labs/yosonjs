@@ -9,17 +9,16 @@ yOSON.Comunicator.prototype.publish = function(eventName, argumentsOfEvent){
         var instanceFound = eventFound.instanceOrigin,
             functionFound = eventFound.functionSelf,
             validArguments = that.validateArguments(argumentsOfEvent);
+        console.log('execute event', eventName);
         functionFound.call(instanceFound, validArguments);
     }, function(){});
 };
 
 yOSON.Comunicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
     var that = this;
-    console.log('searching...');
-    console.log('this', this);
     this.finderEvents(eventNames, function(){
     }, function(eventName){
-        console.log('registering', eventName);
+        console.log('register event', eventName);
         that.addEvent(eventName, functionSelfEvent, instanceOrigin);
     });
 };
@@ -69,10 +68,8 @@ yOSON.Comunicator.prototype.finderEvents = function(eventNames, whichEventFound,
         var eventName = eventNames[index];
         if(that.eventAlreadyRegistered(eventName)){
             var eventFound = that.getEvent(eventName);
-            console.log('encontrado', eventName);
             whichEventFound.call(that, eventName, eventFound);
         } else {
-            console.log('no encontrado', eventName);
             whichEventNotFound.call(that, eventName);
         }
     }

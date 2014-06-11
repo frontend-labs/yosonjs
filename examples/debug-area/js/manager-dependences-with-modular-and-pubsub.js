@@ -16,11 +16,13 @@ objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, i
 objModular.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
     var eventsWaiting = {};
 
+    console.log('corriendo evento allModulesRunning', eventName);
     objModular.allModulesRunning(function(){
         eventsWaiting[eventName] = argumentsOfEvent;
     }, function(){
         //if have events waiting
         for(var eventsForTrigger in eventsWaiting){
+            console.log('corriendo evento', eventsWaiting[eventsForTrigger]);
             objComunicator.publish(eventsForTrigger , eventsWaiting[eventsForTrigger]);
         }
         objComunicator.publish(eventName, argumentsOfEvent);
@@ -44,10 +46,11 @@ yOSON.AppCore = (function(){
             setDependencesByModule(moduleName, dependences);
             objModular.addModule(moduleName, moduleDefinition);
         },
-        runModule: function(moduleName){
+        runModule: function(moduleName, optionalParameter){
             var dependencesToLoad = getDependencesByModule(moduleName);
+            objModular.setStatusModule(moduleName, "start");
             dependencyManager.ready(dependencesToLoad,function(){
-                objModular.runModule(moduleName);
+                objModular.runModule(moduleName, optionalParameter);
             });
         }
     };
@@ -68,7 +71,8 @@ yOSON.AppCore.addModule('demoA', function(Sb){
     var nuevo = function(){
     };
     return {
-        init: function(){
+        init: function(ar){
+            console.log('ar', ar);
             Sb.trigger('nuevo');
             console.log('Hello Im Ready in module A');
         }
@@ -77,8 +81,8 @@ yOSON.AppCore.addModule('demoA', function(Sb){
 
 //2nd executing modular with dependencyManager
 yOSON.AppCore.addModule('demoB', function(Sb){
-    var nuevo = function(){
-        console.log('holaaaaaaaaaaaaaa :D');
+    var nuevo = function(mensaje){
+        alert('holaaaaaaaaaaaaaa :D' + mensaje);
     };
     return {
         init: function(){
@@ -88,5 +92,36 @@ yOSON.AppCore.addModule('demoB', function(Sb){
     };
 }, dependences);
 
-yOSON.AppCore.runModule('demoA');
+yOSON.AppCore.addModule('demoC', function(Sb){
+    var st = {
+        link: "#demoLink"
+    };
+    return {
+        init : function(oParams){
+            $(st.link).on("click", function(evt){
+                console.log('oParams', oParams);
+                Sb.trigger('nuevo', oParams.mensaje);
+                evt.preventDefault();
+            });
+        }
+    }
+}, dependences);
+
+yOSON.AppCore.addModule('demoD', function(Sb){
+    var st = {
+        link: "#demoLink"
+    };
+    return {
+        init : function(oParams){
+            $(st.link).on("click", function(evt){
+                console.log('oParams', oParams);
+                Sb.trigger('nuevo', oParams.mensaje);
+                evt.preventDefault();
+            });
+        }
+    }
+}, dependences);
+
+yOSON.AppCore.runModule('demoA', {ar:"a"});
 yOSON.AppCore.runModule('demoB');
+yOSON.AppCore.runModule('demoC',{mensaje:"eeeey"});

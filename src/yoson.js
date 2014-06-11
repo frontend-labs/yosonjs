@@ -5,9 +5,24 @@ yOSON.AppCore = (function(){
         dependenceByModule = {};
 
     //setting the main methods in the bridge of an module
-    objModular.addMethodToBrigde('events', objComunicator.subscribe);
-    objModular.addMethodToBrigde('trigger', objComunicator.publish);
-    objModular.addMethodToBrigde('stopEvent', objComunicator.stopSubscribe);
+    objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
+        objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
+    });
+
+    objModular.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
+        var eventsWaiting = {};
+
+        console.log('corriendo evento', eventName);
+        objModular.allModulesRunning(function(){
+            eventsWaiting[eventName] = argumentsOfEvent;
+        }, function(){
+            //if have events waiting
+            for(var eventsForTrigger in eventsWaiting){
+                objComunicator.publish(eventsForTrigger , eventsWaiting[eventsForTrigger]);
+            }
+            objComunicator.publish(eventName, argumentsOfEvent);
+        });
+    });
 
     //managing the dependences
     var setDependencesByModule = function(moduleName, dependencesOfModule){
@@ -26,10 +41,11 @@ yOSON.AppCore = (function(){
             setDependencesByModule(moduleName, dependences);
             objModular.addModule(moduleName, moduleDefinition);
         },
-        runModule: function(moduleName){
+        runModule: function(moduleName, optionalParameter){
             var dependencesToLoad = getDependencesByModule(moduleName);
+            objModular.setStatusModule(moduleName, "start");
             dependencyManager.ready(dependencesToLoad,function(){
-                objModular.runModule(moduleName);
+                objModular.runModule(moduleName, optionalParameter);
             });
         },
         setStaticHost: function(hostName){

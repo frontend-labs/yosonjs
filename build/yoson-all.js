@@ -169,6 +169,7 @@ yOSON.DependencyManager.prototype.alreadyLoaded = function(id){
 //clase with pattern factory with the idea of create modules
 yOSON.Modular = function(){
     this.modules = {};
+    this.runningModules = {};
     this.skeletonModule = {};
     this.entityBridge = {};
     this.debug = false;
@@ -176,9 +177,7 @@ yOSON.Modular = function(){
 
 //receive one method for the entity comunicator on modules
 yOSON.Modular.prototype.addMethodToBrigde = function(methodName, methodSelf){
-    this.entityBridge[ methodName ] = function(){
-        return methodSelf;
-    }();
+    this.entityBridge[methodName] = methodSelf;
 };
 
 //adding a module
@@ -195,24 +194,24 @@ yOSON.Modular.prototype.getModuleDefinition = function(moduleName){
     var module = this.getModule(moduleName),
         moduleInstance = module.moduleDefinition(this.entityBridge),
         that = this;
-    if(!this.debug){
-        for(var propertyName in moduleInstance){
-            var method = moduleInstance[propertyName];
-            if(typeof method === "function"){
-                moduleInstance[propertyName] = that.addFunctionToDefinitionModule(propertyName, method);
-            }
+
+    for(var propertyName in moduleInstance){
+        var method = moduleInstance[propertyName];
+        if(typeof method === "function"){
+            moduleInstance[propertyName] = that.addFunctionToDefinitionModule(moduleName, propertyName, method);
         }
     }
+
     return moduleInstance;
 };
 
 //create a method taking a name and function self
-yOSON.Modular.prototype.addFunctionToDefinitionModule = function(functionName, functionSelf){
+yOSON.Modular.prototype.addFunctionToDefinitionModule = function(moduleName, functionName, functionSelf){
     return function(){
         try {
             return functionSelf.apply(this, arguments);
         } catch( ex ){
-            console.log(ex.message);
+            console.log("Modulo:"+ moduleName + "." + functionName + "(): " + ex.message);
         }
     };
 };
@@ -235,26 +234,31 @@ yOSON.Modular.prototype.getModule = function(moduleName){
 //creator of the definition ready for merge with the components
 yOSON.Modular.prototype.createDefinitionModule = function(moduleName, moduleDefinition){
     this.skeletonModule[moduleName] = {
-        'moduleDefinition': moduleDefinition
+        'moduleDefinition': moduleDefinition,
     };
     return this.skeletonModule[moduleName];
 };
 
 //running the module
 yOSON.Modular.prototype.runModule = function(moduleName, optionalParameter){
-    var parameters = {};
-    console.log('this.existsModule(moduleName)', moduleName);
+    var parameters = null;
     if(this.existsModule(moduleName)){
+        console.log('running Module:', moduleName);
 
-        if(typeof optionalParameter !== "undefined"){
+        if(typeof optionalParameter === "undefined"){
+            parameters = {};
+        } else {
             parameters = optionalParameter;
         }
+
         parameters.moduleName = moduleName;
 
         var moduleDefinition = this.getModuleDefinition(moduleName);
 
+        this.runningModule(moduleName);
+
         if(moduleDefinition.hasOwnProperty('init')){
-            moduleDefinition.init();
+            moduleDefinition.init(parameters);
         } else {
             //message modulo dont run
         }
@@ -277,6 +281,51 @@ yOSON.Modular.prototype.runModules = function(moduleNames){
     }
 };
 
+yOSON.Modular.prototype.runningModule = function(moduleName){
+    this.modules[moduleName].running = true;
+};
+
+yOSON.Modular.prototype.moduleIsRunning = function(moduleName){
+    return this.modules[moduleName].running;
+};
+
+yOSON.Modular.prototype.setStatusModule = function(moduleName, statusName){
+    this.modules[moduleName].status = statusName;
+};
+
+yOSON.Modular.prototype.getStatusModule = function(moduleName){
+    return this.modules[moduleName].status;
+};
+yOSON.Modular.prototype.allModulesRunning = function(onNotFinished, onFinished){
+    var that = this;
+    var checkModulesRunning = setInterval(function(){
+        var startedModules = 0,
+            runningModules  = 0;
+
+        for(var moduleName in that.modules){
+            if(that.moduleIsRunning(moduleName)){
+                runningModules++;
+            }
+            if(that.getStatusModule(moduleName) == "start"){
+                startedModules++;
+            }
+        }
+
+        if(startedModules > 0){
+            if( startedModules == runningModules){
+                onFinished.call(that);
+                clearInterval(checkModulesRunning);
+            } else {
+                onNotFinished.call(that);
+            }
+        } else {
+            onFinished.call(that);
+            clearInterval(checkModulesRunning);
+        }
+
+    }, 200);
+};
+
 //Clase que se orienta al manejo de comunicacion entre modulos
 yOSON.Comunicator = function(){
     this.events = {};
@@ -288,17 +337,16 @@ yOSON.Comunicator.prototype.publish = function(eventName, argumentsOfEvent){
         var instanceFound = eventFound.instanceOrigin,
             functionFound = eventFound.functionSelf,
             validArguments = that.validateArguments(argumentsOfEvent);
+        console.log('execute event', eventName);
         functionFound.call(instanceFound, validArguments);
     }, function(){});
 };
 
 yOSON.Comunicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
     var that = this;
-    console.log('searching...');
-    console.log('this', this);
     this.finderEvents(eventNames, function(){
     }, function(eventName){
-        console.log('registering', eventName);
+        console.log('register event', eventName);
         that.addEvent(eventName, functionSelfEvent, instanceOrigin);
     });
 };
@@ -348,10 +396,8 @@ yOSON.Comunicator.prototype.finderEvents = function(eventNames, whichEventFound,
         var eventName = eventNames[index];
         if(that.eventAlreadyRegistered(eventName)){
             var eventFound = that.getEvent(eventName);
-            console.log('encontrado', eventName);
             whichEventFound.call(that, eventName, eventFound);
         } else {
-            console.log('no encontrado', eventName);
             whichEventNotFound.call(that, eventName);
         }
     }
@@ -493,9 +539,24 @@ yOSON.AppCore = (function(){
         dependenceByModule = {};
 
     //setting the main methods in the bridge of an module
-    objModular.addMethodToBrigde('events', objComunicator.subscribe);
-    objModular.addMethodToBrigde('trigger', objComunicator.publish);
-    objModular.addMethodToBrigde('stopEvent', objComunicator.stopSubscribe);
+    objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
+        objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
+    });
+
+    objModular.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
+        var eventsWaiting = {};
+
+        console.log('corriendo evento', eventName);
+        objModular.allModulesRunning(function(){
+            eventsWaiting[eventName] = argumentsOfEvent;
+        }, function(){
+            //if have events waiting
+            for(var eventsForTrigger in eventsWaiting){
+                objComunicator.publish(eventsForTrigger , eventsWaiting[eventsForTrigger]);
+            }
+            objComunicator.publish(eventName, argumentsOfEvent);
+        });
+    });
 
     //managing the dependences
     var setDependencesByModule = function(moduleName, dependencesOfModule){
@@ -514,10 +575,11 @@ yOSON.AppCore = (function(){
             setDependencesByModule(moduleName, dependences);
             objModular.addModule(moduleName, moduleDefinition);
         },
-        runModule: function(moduleName){
+        runModule: function(moduleName, optionalParameter){
             var dependencesToLoad = getDependencesByModule(moduleName);
+            objModular.setStatusModule(moduleName, "start");
             dependencyManager.ready(dependencesToLoad,function(){
-                objModular.runModule(moduleName);
+                objModular.runModule(moduleName, optionalParameter);
             });
         },
         setStaticHost: function(hostName){
