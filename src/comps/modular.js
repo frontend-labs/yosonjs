@@ -66,8 +66,6 @@ yOSON.Modular.prototype.getModule = function(moduleName){
 yOSON.Modular.prototype.createDefinitionModule = function(moduleName, moduleDefinition){
     this.skeletonModule[moduleName] = {
         'moduleDefinition': moduleDefinition,
-        'running': false,
-        'status': null
     };
     return this.skeletonModule[moduleName];
 };
@@ -84,7 +82,8 @@ yOSON.Modular.prototype.runModule = function(moduleName, optionalParameter){
         parameters.moduleName = moduleName;
 
         var moduleDefinition = this.getModuleDefinition(moduleName);
-        moduleDefinition.running = true;
+
+        this.runningModule(moduleName);
 
         if(moduleDefinition.hasOwnProperty('init')){
             moduleDefinition.init();
@@ -112,30 +111,41 @@ yOSON.Modular.prototype.runModules = function(moduleNames){
     }
 };
 
-yOSON.Modular.prototype.allModulesAreRunning = function(){
-    var runningModules = 0,
-        totalModules = 0,
-        result = false;
 
-    for(var moduleName in this.modules){
-        if(this.existsModule(moduleName)){
-            var instanceOfModule = this.getModuleDefinition(moduleName);
-            if(instanceOfModule.running){
+yOSON.Modular.prototype.runningModule = function(moduleName){
+    this.modules[moduleName].running = true;
+};
+
+yOSON.Modular.prototype.moduleIsRunning = function(moduleName){
+    return this.modules[moduleName].running;
+};
+
+yOSON.Modular.prototype.allModulesRunning = function(onNotFinished, onFinished){
+    var that = this;
+    var checkModulesRunning = setInterval(function(){
+        var runningModules = 0,
+            totalModules = 0;
+
+        for(var moduleName in that.modules){
+            if(that.moduleIsRunning(moduleName)){
                 runningModules++;
             }
             totalModules++;
         }
-    }
-
-    if(totalModules > 0){
-        if(runningModules == totalModules){
-            result = true;
+        if(totalModules > 0){
+            if(runningModules == totalModules){
+                onFinished.call(that);
+                clearInterval(checkModulesRunning);
+            } else {
+                onNotFinished.call(that);
+            }
+        } else {
+            onFinished.call(that);
+            clearInterval(checkModulesRunning);
         }
-    } else {
-        result true;
-    }
 
-    return result;
+    }, 200);
+
 };
 
 //get the current status of an module

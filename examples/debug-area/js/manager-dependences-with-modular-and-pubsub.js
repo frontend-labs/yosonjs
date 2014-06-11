@@ -14,7 +14,17 @@ objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, i
 });
 
 objModular.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
-    objComunicator.publish(eventName, argumentsOfEvent);
+    var eventsWaiting = {};
+
+    objModular.allModulesRunning(function(){
+        eventsWaiting[eventName] = argumentsOfEvent;
+    }, function(){
+        //if have events waiting
+        for(var eventsForTrigger in eventsWaiting){
+            objComunicator.publish(eventsForTrigger , eventsWaiting[eventsForTrigger]);
+        }
+        objComunicator.publish(eventName, argumentsOfEvent);
+    });
 });
 
 yOSON.AppCore = (function(){
@@ -56,28 +66,27 @@ var dependencesStatic = [
 //1st executing modular with dependencyManager
 yOSON.AppCore.addModule('demoA', function(Sb){
     var nuevo = function(){
-        nuevodentrodeotronuevo();
-    },
-    nuevodentrodeotronuevo = function(){
+    };
+    return {
+        init: function(){
+            Sb.trigger('nuevo');
+            console.log('Hello Im Ready in module A');
+        }
+    };
+}, dependences);
+
+//2nd executing modular with dependencyManager
+yOSON.AppCore.addModule('demoB', function(Sb){
+    var nuevo = function(){
         console.log('holaaaaaaaaaaaaaa :D');
     };
     return {
         init: function(){
             Sb.events(['nuevo'], nuevo, this);
-            console.log('Hello Im Ready in module A');
-        }
-    };
-});
-
-//2nd executing modular with dependencyManager
-yOSON.AppCore.addModule('demoB', function(Sb){
-    return {
-        init: function(){
-            Sb.trigger('nuevo');
             console.log('Hello Im Ready from B', yOSON);
         }
     };
-});
+}, dependences);
 
 yOSON.AppCore.runModule('demoA');
 yOSON.AppCore.runModule('demoB');
