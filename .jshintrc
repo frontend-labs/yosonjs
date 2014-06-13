@@ -14,5 +14,9 @@
     "expect": false,
     "it": false,
     "xit": false
-  }
+  },
+  "predef":[
+    "yOSON",
+    "console"
+  ]
 }

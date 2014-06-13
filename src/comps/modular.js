@@ -4,6 +4,7 @@ yOSON.Modular = function(){
     this.runningModules = {};
     this.skeletonModule = {};
     this.entityBridge = {};
+    this.alreadyAllModulesBeRunning = null;
     this.debug = false;
 };
 
@@ -131,30 +132,36 @@ yOSON.Modular.prototype.getStatusModule = function(moduleName){
 
 yOSON.Modular.prototype.allModulesRunning = function(onNotFinished, onFinished){
     var that = this;
-    var checkModulesRunning = setInterval(function(){
-        var startedModules = 0,
-            runningModules = 0;
+    if(this.alreadyAllModulesBeRunning){
+        onFinished.call(that);
+    } else {
+        var checkModulesRunning = setInterval(function(){
+            var startedModules = 0,
+                runningModules = 0;
 
-        for(var moduleName in that.modules){
-            if(that.moduleIsRunning(moduleName)){
-                runningModules++;
+            for(var moduleName in that.modules){
+                if(that.moduleIsRunning(moduleName)){
+                    runningModules++;
+                }
+                if(that.getStatusModule(moduleName) == "start"){
+                    startedModules++;
+                }
             }
-            if(that.getStatusModule(moduleName) == "start"){
-                startedModules++;
-            }
-        }
 
-        if(startedModules > 0){
-            if( startedModules == runningModules){
+            if(startedModules > 0){
+                if( startedModules == runningModules){
+                    this.alreadyAllModulesBeRunning = true;
+                    onFinished.call(that);
+                    clearInterval(checkModulesRunning);
+                } else {
+                    onNotFinished.call(that);
+                }
+            } else {
+                this.alreadyAllModulesBeRunning = true;
                 onFinished.call(that);
                 clearInterval(checkModulesRunning);
-            } else {
-                onNotFinished.call(that);
             }
-        } else {
-            onFinished.call(that);
-            clearInterval(checkModulesRunning);
-        }
 
-    }, 200);
+        }, 200);
+    }
 };

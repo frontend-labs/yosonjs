@@ -19,7 +19,7 @@ yOSON.DependencyManager.prototype.setVersionUrl = function(versionNumber){
 
 yOSON.DependencyManager.prototype.getVersionUrl = function(){
     var result = "";
-    if(this.config.versionUrl != ""){
+    if(this.config.versionUrl !== ""){
         result = "?" + this.config.versionUrl;
     }
     return result;

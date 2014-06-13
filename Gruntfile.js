@@ -3,6 +3,7 @@ module.exports = function(grunt){
         requireConfigFile: 'RequireConfig.js'
     },
     filesToConcat = [
+       "src/comps/namespace.js",
        "src/comps/dependency.js",
        "src/comps/dependency-manager.js",
        "src/comps/modular.js",
@@ -77,7 +78,7 @@ module.exports = function(grunt){
    //log the tasks
    grunt.log.write("running grunt for yoson");
    //enroll tasks
-   grunt.registerTask('spec', ['jshint', 'connect', 'jasmine:requirejs']);
+   grunt.registerTask('spec', ['connect', 'jasmine:requirejs']);
    grunt.registerTask('build', ['exec:clean', 'concat', 'uglify']);
    grunt.registerTask('default', ['spec', 'build']);
    //grunt.registerTask('default', ['spec']);

@@ -19,7 +19,7 @@ yOSON.Dependency.prototype.request = function(){
     } else {
         newScript.onload = function(){
             that.status = "ready";
-        }
+        };
         newScript.onerror = function(){
             that.onErrorRequest();
         };
@@ -30,8 +30,8 @@ yOSON.Dependency.prototype.request = function(){
 yOSON.Dependency.prototype.requestIE = function(src){
     var that = this;
     src.onreadystatechange = function(){
-        if(src.readyState=="loaded" || scr.readyState=="complete"){
-          scr.onreadystatechange=null;
+        if(src.readyState=="loaded" || src.readyState=="complete"){
+          src.onreadystatechange=null;
           that.status = "ready";
         } else {
             that.onErrorRequest();

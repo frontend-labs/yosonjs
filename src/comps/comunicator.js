@@ -40,8 +40,8 @@ yOSON.Comunicator.prototype.stopSubscribe = function(EventsToStop, instanceOrigi
 
 yOSON.Comunicator.prototype.addEvent = function(eventName, functionOfEvent, instanceOrigin){
     var bodyNewEvent = {};
-    bodyNewEvent['instanceOrigin'] = instanceOrigin;
-    bodyNewEvent['functionSelf'] = functionOfEvent;
+    bodyNewEvent.instanceOrigin = instanceOrigin;
+    bodyNewEvent.functionSelf = functionOfEvent;
     this.events[eventName] = bodyNewEvent;
     return this;
 };
