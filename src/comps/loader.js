@@ -1,12 +1,12 @@
 //Clase que se orienta al manejo de comunicacion entre modulos
-yOSON.Loader = function(schema){
+Loader = function(schema){
     this.schema = schema;
     this.modules = this.schema.modules;
     this.controllers = {};
     this.actions = {};
 };
 
-yOSON.Loader.prototype.init = function(moduleName, controllerName, actionName){
+Loader.prototype.init = function(moduleName, controllerName, actionName){
 
     var moduleNameToQuery = this.checkLevelName(moduleName);
     var controllerNameToQuery = this.checkLevelName(controllerName);
@@ -27,7 +27,7 @@ yOSON.Loader.prototype.init = function(moduleName, controllerName, actionName){
     });
 };
 
-yOSON.Loader.prototype.checkLevelName = function(levelName){
+Loader.prototype.checkLevelName = function(levelName){
     var result = "";
     if(typeof levelName === "undefined"){
 
@@ -37,11 +37,11 @@ yOSON.Loader.prototype.checkLevelName = function(levelName){
     return result;
 };
 
-yOSON.Loader.prototype.getModuleByName = function(moduleName){
+Loader.prototype.getModuleByName = function(moduleName){
     return this.modules[moduleName];
 };
 
-yOSON.Loader.prototype.existsModuleByName = function(moduleName){
+Loader.prototype.existsModuleByName = function(moduleName){
     var result = false;
     if(this.getModuleByName(moduleName)){
         result = true;
@@ -49,7 +49,7 @@ yOSON.Loader.prototype.existsModuleByName = function(moduleName){
     return result;
 };
 
-yOSON.Loader.prototype.getByDefaultInModuleLevel = function(){
+Loader.prototype.getByDefaultInModuleLevel = function(){
     if(typeof this.modules.byDefault === "function"){
         this.modules.byDefault();
     } else {
@@ -57,7 +57,7 @@ yOSON.Loader.prototype.getByDefaultInModuleLevel = function(){
     }
 };
 
-yOSON.Loader.prototype.runModuleLevel = function(moduleName, onModuleFound, onModuleNotFound){
+Loader.prototype.runModuleLevel = function(moduleName, onModuleFound, onModuleNotFound){
     this.schema.modules.allModules();
     if(this.existsModuleByName(moduleName)){
         var module = this.getModuleByName(moduleName);
@@ -67,11 +67,11 @@ yOSON.Loader.prototype.runModuleLevel = function(moduleName, onModuleFound, onMo
     }
 };
 
-yOSON.Loader.prototype.getControllerByNameInModule = function(controllerName, moduleSelf){
+Loader.prototype.getControllerByNameInModule = function(controllerName, moduleSelf){
     return moduleSelf.controllers[controllerName];
 };
 
-yOSON.Loader.prototype.existsControllerByName = function(module, controllerName){
+Loader.prototype.existsControllerByName = function(module, controllerName){
     var result = false;
     if(this.getControllerByNameInModule(controllerName, module)){
         result = true;
@@ -79,7 +79,7 @@ yOSON.Loader.prototype.existsControllerByName = function(module, controllerName)
     return result;
 };
 
-yOSON.Loader.prototype.getByDefaultInControllerLevel = function(moduleSelf){
+Loader.prototype.getByDefaultInControllerLevel = function(moduleSelf){
     if(typeof moduleSelf.controllers.byDefault === "function"){
         moduleSelf.controllers.byDefault();
     } else {
@@ -87,7 +87,7 @@ yOSON.Loader.prototype.getByDefaultInControllerLevel = function(moduleSelf){
     }
 };
 
-yOSON.Loader.prototype.runControllerLevel = function(moduleSelf, controllerName, onControllerFound, onControllerNotFound){
+Loader.prototype.runControllerLevel = function(moduleSelf, controllerName, onControllerFound, onControllerNotFound){
     moduleSelf.allControllers();
     if(this.existsControllerByName(moduleSelf, controllerName)){
         var controller = this.getControllerByNameInModule(controllerName, moduleSelf);
@@ -97,11 +97,11 @@ yOSON.Loader.prototype.runControllerLevel = function(moduleSelf, controllerName,
     }
 };
 
-yOSON.Loader.prototype.getActionByNameInController = function(actionName, controller){
+Loader.prototype.getActionByNameInController = function(actionName, controller){
     return controller.actions[actionName];
 };
 
-yOSON.Loader.prototype.existsActionInController = function(controller, actionName){
+Loader.prototype.existsActionInController = function(controller, actionName){
     var result = false;
     if(this.getActionByNameInController(actionName, controller)){
         result = true;
@@ -109,7 +109,7 @@ yOSON.Loader.prototype.existsActionInController = function(controller, actionNam
     return result;
 };
 
-yOSON.Loader.prototype.getByDefaultInActionLevel = function(controllerSelf){
+Loader.prototype.getByDefaultInActionLevel = function(controllerSelf){
     if(typeof controllerSelf.actions.byDefault === "function"){
         controllerSelf.actions.byDefault();
     } else {
@@ -117,7 +117,7 @@ yOSON.Loader.prototype.getByDefaultInActionLevel = function(controllerSelf){
     }
 };
 
-yOSON.Loader.prototype.runActionLevel = function(controllerSelf, actionName, onActionFound, onActionNotFound){
+Loader.prototype.runActionLevel = function(controllerSelf, actionName, onActionFound, onActionNotFound){
     controllerSelf.allActions();
     if(this.existsActionInController(controllerSelf, actionName)){
         var action = this.getActionByNameInController(actionName, controllerSelf);

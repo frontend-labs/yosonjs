@@ -2,7 +2,7 @@ var require = {
     baseUrl: './src',
     paths:{
         'spec':'spec',
-        'base':'./core/base',
+        'yoson':'./yoson',
 
         'jquery':'../test/lib/jquery',
 

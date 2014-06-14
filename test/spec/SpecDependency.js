@@ -1,8 +1,8 @@
 define([
-   '../../src/core/comps/dependency.js'
+   '../../src/comps/dependency.js'
   ],
   function(Dependency){
-  describe('specUtils', function(){
+  describe('Dependency Component', function(){
       var utils, array, result, dependencyObjTest, successDependenceUrl, failDependenceUrl;
 
       beforeEach(function(){
