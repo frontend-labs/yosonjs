@@ -7,7 +7,7 @@ define([
 
       beforeEach(function(){
        result = null;
-       dependencyObjTest = new Dependency(successDependenceUrl);
+       dependencyObjTest = null;
        successDependenceUrl = "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js";
        failDependenceUrl = "http://holamundooo.com/demo.js";
       });
