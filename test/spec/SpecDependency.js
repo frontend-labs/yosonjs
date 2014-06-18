@@ -28,7 +28,7 @@ define([
           dependencyObjTest = new Dependency(failDependenceUrl);
           dependencyObjTest.request();
 
-          waits(1000);
+          waits(500);
 
           runs(function(){
               expect(dependencyObjTest.getStatus()).toEqual("error");
