@@ -7,23 +7,33 @@ define([
 
       beforeEach(function(){
        result = null;
-       dependencyObjTest = null;
+       dependencyObjTest = new Dependency(successDependenceUrl);
        successDependenceUrl = "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js";
-       failDependenceUrl = "http://hello.im/fake.js";
+       failDependenceUrl = "http://holamundooo.com/demo.js";
       });
 
       it('should be a success request', function(){
           dependencyObjTest = new Dependency(successDependenceUrl);
           dependencyObjTest.request();
-          result = dependencyObjTest.getStatus();
-          expect(result).toEqual("ready");
+
+          waits(1200);
+
+          runs(function(){
+              expect(dependencyObjTest.getStatus()).toEqual("ready");
+          });
+
       });
 
       it('should be a fail request', function(){
           dependencyObjTest = new Dependency(failDependenceUrl);
           dependencyObjTest.request();
-          result = dependencyObjTest.getStatus();
-          expect(result).toEqual("error");
+
+          waits(1000);
+
+          runs(function(){
+              expect(dependencyObjTest.getStatus()).toEqual("error");
+          });
+
       });
 
   });
