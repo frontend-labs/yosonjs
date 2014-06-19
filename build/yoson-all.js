@@ -67,8 +67,9 @@ define([
 });
 
 define([
-    "../yoson"
-], function(yOSON){
+    "yoson",
+    "../../src/comps/dependency.js"
+], function(yOSON, Dependency){
     //clase manager de los objetos Dependency
     //Administrador de dependencias
     DependencyManager = function(){
@@ -82,6 +83,10 @@ define([
 
     DependencyManager.prototype.setStaticHost = function(hostName){
         this.config.staticHost = hostName;
+    };
+
+    DependencyManager.prototype.getStaticHost = function(){
+        return this.config.staticHost;
     };
 
     DependencyManager.prototype.setVersionUrl = function(versionNumber){
@@ -116,7 +121,7 @@ define([
     DependencyManager.prototype.addScript = function(url){
         var id = this.generateId( url );
         if(!this.alreadyInCollection(id)){
-            this.data[id] = new yOSON.Dependency(url);
+            this.data[id] = new Dependency(url);
             //Hago la consulta del script
             this.data[id].request();
         } else {
