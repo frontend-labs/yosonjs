@@ -96,7 +96,7 @@ define([
     DependencyManager.prototype.getVersionUrl = function(){
         var result = "";
         if(this.config.versionUrl !== ""){
-            result = "?" + this.config.versionUrl;
+            result = this.config.versionUrl;
         }
         return result;
     };
