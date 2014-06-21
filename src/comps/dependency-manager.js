@@ -53,13 +53,14 @@ define([
     DependencyManager.prototype.addScript = function(url){
         var id = this.generateId( url );
         if(!this.alreadyInCollection(id)){
+            console.info('querying in cache', this.data[id]);
+        } else {
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
             this.data[id].request();
-        } else {
-            console.log('dependency in cache', this.data[id]);
         }
     };
+
     //Metodo que indica que está lista la dependencia
     DependencyManager.prototype.ready = function(urlList, onReady){
         var index = 0,
@@ -78,6 +79,7 @@ define([
         };
         queueQuering(urlList);
     };
+
     //Método que verifica si está lista el script agregado
     DependencyManager.prototype.avaliable = function(url, onAvaliable){
         var that = this,

@@ -6,8 +6,8 @@ module.exports = function(grunt){
         rdefineEnd =  /\}\);[^}\w]*$/,
         config = {
             baseUrl: "src",
-            name: "jquery",
-            out: "dist/jquery.js",
+            name: "yoson",
+            out: "build/yoson.js",
             optimize: "none",
             findNestedDependencies: true,
             skipSemiColonInsertion: true,
@@ -18,7 +18,7 @@ module.exports = function(grunt){
             onBuildWrite: convert
         }
 
-    var convert = function(){
+    var convert = function(name, path, contents){
 
     }
 };
