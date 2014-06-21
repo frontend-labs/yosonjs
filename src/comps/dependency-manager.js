@@ -52,7 +52,7 @@ define([
     //Adiciona la dependencia a administrar con su url
     DependencyManager.prototype.addScript = function(url){
         var id = this.generateId( url );
-        if(!this.alreadyInCollection(id)){
+        if(this.alreadyInCollection(id)){
             console.info('querying in cache', this.data[id]);
         } else {
             this.data[id] = new Dependency(url);
