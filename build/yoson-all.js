@@ -120,14 +120,16 @@ define([
     //Adiciona la dependencia a administrar con su url
     DependencyManager.prototype.addScript = function(url){
         var id = this.generateId( url );
-        if(!this.alreadyInCollection(id)){
+        if(this.alreadyInCollection(id)){
+            return 'the dependence already appended';
+        } else {
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
             this.data[id].request();
-        } else {
-            console.log('dependency in cache', this.data[id]);
+            return true;
         }
     };
+
     //Metodo que indica que está lista la dependencia
     DependencyManager.prototype.ready = function(urlList, onReady){
         var index = 0,
@@ -146,6 +148,7 @@ define([
         };
         queueQuering(urlList);
     };
+
     //Método que verifica si está lista el script agregado
     DependencyManager.prototype.avaliable = function(url, onAvaliable){
         var that = this,

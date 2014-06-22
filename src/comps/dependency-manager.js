@@ -53,11 +53,12 @@ define([
     DependencyManager.prototype.addScript = function(url){
         var id = this.generateId( url );
         if(this.alreadyInCollection(id)){
-            console.info('querying in cache', this.data[id]);
+            return 'the dependence already appended';
         } else {
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
             this.data[id].request();
+            return true;
         }
     };
 
