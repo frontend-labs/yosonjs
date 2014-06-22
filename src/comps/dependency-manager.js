@@ -94,9 +94,9 @@ define([
                     onAvaliable.apply(that);
                 }
                 if(dependency.getStatus() == "error"){
+                    onAvaliable = null;
                     console.warn(dependency.getErrorMessage());
                     clearInterval(checkStatusDependency);
-                    onAvaliable = null;
                 }
             }, 500);
         } else {

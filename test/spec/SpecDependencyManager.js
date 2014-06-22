@@ -87,5 +87,31 @@ define([
 
           });
 
+          it('should be run the callback when the dependence its avaliable', function(){
+            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js",
+                onAvaliable = jasmine.createSpy("onAvaliable");
+
+            objDependencyManager.addScript(dependence);
+            objDependencyManager.avaliable(dependence, onAvaliable);
+            waits(500);
+
+            runs(function(){
+                expect(onAvaliable).toHaveBeenCalled();
+            });
+          });
+
+          it('should be dont run the callback when the dependence return an error', function(){
+            var dependence = "http://helloworld.cc/js/wrongscript.js",
+                onAvaliable = jasmine.createSpy("onAvaliable");
+
+            objDependencyManager.addScript(dependence);
+            objDependencyManager.avaliable(dependence, onAvaliable);
+            waits(500);
+
+            runs(function(){
+                expect(onAvaliable).not.toHaveBeenCalled();
+            });
+
+          });
       });
 });
