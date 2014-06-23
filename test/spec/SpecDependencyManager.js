@@ -113,5 +113,14 @@ define([
             });
 
           });
+
+          it('should be get the dependence self', function(){
+            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
+
+            objDependencyManager.addScript(dependence);
+            var resultDependence = objDependencyManager.getDependency(dependence);
+            expect(resultDependence instanceof Dependency).toBeTruthy();
+          });
+
       });
 });
