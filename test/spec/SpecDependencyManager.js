@@ -1,7 +1,8 @@
 define([
+   '../../src/comps/dependency.js',
    '../../src/comps/dependency-manager.js'
   ],
-  function(DependencyManager){
+  function(Dependency, DependencyManager){
       describe("DependencyManager Component", function(){
           var versionUrl,
               staticHost,
@@ -120,6 +121,27 @@ define([
             objDependencyManager.addScript(dependence);
             var resultDependence = objDependencyManager.getDependency(dependence);
             expect(resultDependence instanceof Dependency).toBeTruthy();
+          });
+
+          it('should be return if the dependence its already in the collection of the manager', function(){
+            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
+
+            objDependencyManager.addScript(dependence);
+            var idOfDependence = objDependencyManager.generateId(dependence);
+            var resultDependence = objDependencyManager.alreadyInCollection(idOfDependence);
+            expect(resultDependence instanceof Dependency).toBeTruthy();
+          });
+
+          it('should be return the dependence its already loaded in the dependence manager', function(){
+            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
+            objDependencyManager.addScript(dependence);
+            objDependencyManager.avaliable(dependence, function(){});
+            waits(500);
+
+            runs(function(){
+                var idOfDependence = objDependencyManager.generateId(dependence);
+                expect(objDependencyManager.alreadyLoaded(idOfDependence)).toBeTruthy();
+            });
           });
 
       });

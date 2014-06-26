@@ -6,7 +6,7 @@ define([
     'yoson'
 ], function(yOSON){
 
-    Dependency = function(url){
+    var Dependency = function(url){
         this.url = url;
         this.status = "request";
         this.message = "";
@@ -72,7 +72,7 @@ define([
 ], function(yOSON, Dependency){
     //clase manager de los objetos Dependency
     //Administrador de dependencias
-    DependencyManager = function(){
+    var DependencyManager = function(){
         this.data = {};
         this.loaded = {};
         this.config = {
@@ -193,7 +193,7 @@ define([
     "../yoson"
 ], function(yOSON){
     //clase with pattern factory with the idea of create modules
-    Modular = function(){
+    var Modular = function(){
         this.modules = {};
         this.runningModules = {};
         this.skeletonModule = {};
@@ -370,7 +370,7 @@ define([
 ], function(yOSON){
 
     //Clase que se orienta al manejo de comunicacion entre modulos
-    Comunicator = function(){
+    var Comunicator = function(){
         this.events = {};
     };
 
