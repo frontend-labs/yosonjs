@@ -3,7 +3,7 @@ define([
 ], function(yOSON){
 
     //Clase que se orienta al manejo de comunicacion entre modulos
-    Comunicator = function(){
+    var Comunicator = function(){
         this.events = {};
     };
 

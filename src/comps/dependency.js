@@ -6,7 +6,7 @@ define([
     'yoson'
 ], function(yOSON){
 
-    Dependency = function(url){
+    var Dependency = function(url){
         this.url = url;
         this.status = "request";
         this.message = "";

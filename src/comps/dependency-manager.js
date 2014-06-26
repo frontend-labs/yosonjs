@@ -4,7 +4,7 @@ define([
 ], function(yOSON, Dependency){
     //clase manager de los objetos Dependency
     //Administrador de dependencias
-    DependencyManager = function(){
+    var DependencyManager = function(){
         this.data = {};
         this.loaded = {};
         this.config = {

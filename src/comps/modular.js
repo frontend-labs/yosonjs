@@ -2,7 +2,7 @@ define([
     "../yoson"
 ], function(yOSON){
     //clase with pattern factory with the idea of create modules
-    Modular = function(){
+    var Modular = function(){
         this.modules = {};
         this.runningModules = {};
         this.skeletonModule = {};
