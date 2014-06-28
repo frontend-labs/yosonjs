@@ -8,7 +8,7 @@ define([
           beforeEach(function(){
            result = null;
            dependencyObjTest = null;
-           successDependenceUrl = "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js";
+           successDependenceUrl = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
            failDependenceUrl = "http://holamundooo.com/demo.js";
           });
 
@@ -16,7 +16,7 @@ define([
               dependencyObjTest = new Dependency(successDependenceUrl);
               dependencyObjTest.request();
 
-              waits(1200);
+              waits(500);
 
               runs(function(){
                   expect(dependencyObjTest.getStatus()).toEqual("ready");

@@ -366,23 +366,12 @@ define([
 });
 
 define([
-    "../yoson"
+    "yoson"
 ], function(yOSON){
 
     //Clase que se orienta al manejo de comunicacion entre modulos
     var Comunicator = function(){
         this.events = {};
-    };
-
-    Comunicator.prototype.publish = function(eventName, argumentsOfEvent){
-        var that = this;
-        this.finderEvents([eventName], function(eventNameFound, eventFound){
-            var instanceFound = eventFound.instanceOrigin,
-                functionFound = eventFound.functionSelf,
-                validArguments = that.validateArguments(argumentsOfEvent);
-            console.log('execute event', eventName);
-            functionFound.call(instanceFound, validArguments);
-        }, function(){});
     };
 
     Comunicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
@@ -394,6 +383,16 @@ define([
         });
     };
 
+    Comunicator.prototype.publish = function(eventName, argumentsOfEvent){
+        var that = this;
+        this.finderEvents([eventName], function(eventNameFound, eventFound){
+            var instanceFound = eventFound.instanceOrigin,
+                functionFound = eventFound.functionSelf,
+                validArguments = that.validateArguments(argumentsOfEvent);
+            functionFound.apply(instanceFound, validArguments);
+        }, function(){});
+    };
+
     Comunicator.prototype.validateArguments = function(argumentsToValidate){
         var validArguments = [];
         if(typeof argumentsToValidate !== "undefined"){
@@ -402,7 +401,7 @@ define([
         return validArguments;
     };
 
-    Comunicator.prototype.stopSubscribe = function(EventsToStop, instanceOrigin){
+    Comunicator.prototype.stopSubscribe = function(EventsToStop){
         var that = this;
         this.finderEvents(EventsToStop, function(eventNameFound, eventFound){
             that.removeEvent(eventNameFound);
@@ -418,11 +417,11 @@ define([
     };
 
     Comunicator.prototype.removeEvent = function(eventName){
-        this.events[eventName] = null;
+        delete this.events[eventName];
     };
 
     Comunicator.prototype.eventAlreadyRegistered = function(eventName){
-        var response = null;
+        var response = false;
         if(this.getEvent(eventName)){
             response = true;
         }

@@ -80,7 +80,7 @@ define([
 
             objDependencyManager.ready([dependence], onReady);
 
-            waits(500);
+            waits(1200);
 
             runs(function(){
                 expect(onReady).toHaveBeenCalled();
