@@ -114,16 +114,20 @@ function(Comunicator){
                 var eventName = "methodToRegister";
                 var eventSelf = function(){};
                 var onFoundEvent = jasmine.createSpy("onFoundEvent");
+                var onNotFoundEvent = jasmine.createSpy("onNotFoundEvent");
 
                 objComunicator.addEvent(eventName, eventSelf, this);
-                objComunicator.finderEvents([eventName], onFoundEvent, function(){});
+                objComunicator.finderEvents([eventName], onFoundEvent, onNotFoundEvent);
                 expect(onFoundEvent).toHaveBeenCalled();
+                expect(onNotFoundEvent).not.toHaveBeenCalled();
             });
 
             it("should be when not found an event", function(){
                 var eventName = "methodNotToRegister";
+                var onFoundEvent = jasmine.createSpy("onFoundEvent");
                 var onNotFoundEvent = jasmine.createSpy("onNotFoundEvent");
-                objComunicator.finderEvents([eventName], function(){}, onNotFoundEvent);
+                objComunicator.finderEvents([eventName], onFoundEvent, onNotFoundEvent);
+                expect(onFoundEvent).not.toHaveBeenCalled();
                 expect(onNotFoundEvent).toHaveBeenCalled();
             });
 
