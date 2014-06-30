@@ -42,7 +42,10 @@ module.exports = function(grunt){
         },
         //for execute shell commands
         exec: {
-            clean: {
+            cleanDist: {
+                command: 'rm -fr dist'
+            },
+            cleanBuild: {
                 command: 'rm -fr build'
             }
         },
@@ -75,11 +78,15 @@ module.exports = function(grunt){
    //Load the plugin that provides the jasmine test
    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
+   //Load the tasks
+   grunt.loadTasks('tasks');
+
    //log the tasks
    grunt.log.write("running grunt for yoson");
    //enroll tasks
    grunt.registerTask('spec', ['connect', 'jasmine:requirejs']);
-   grunt.registerTask('build', ['exec:clean', 'concat', 'uglify']);
-   grunt.registerTask('default', ['spec', 'build']);
+   grunt.registerTask('dist', ['exec:cleanDist', 'generateDist']);
+   grunt.registerTask('build', ['exec:cleanBuild', 'concat', 'uglify']);
+   grunt.registerTask('default', ['spec', 'dist', 'build']);
    //grunt.registerTask('default', ['spec']);
-}
+};
