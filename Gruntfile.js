@@ -23,6 +23,21 @@ module.exports = function(grunt){
             production:{
                 files: {
                     'build/yoson-min.js':['dist/yoson.js']
+                },
+                options:{
+                    preserveComments: false,
+                    sourceMap: "dist/yoson.min.map",
+                    sourceMappingURL: "yoson.min.map",
+                    report: "min",
+                    beautify:{
+                        ascii_only: true
+                    },
+                    banner: "frontendlabs comunity",
+                    compress: {
+                        hoist_funs: false,
+                        loops: false,
+                        unused: false
+                    }
                 }
             }
         },
