@@ -1,9 +1,9 @@
 define([
     "yoson",
-    "comps/dependency",
     "comps/dependency-manager",
     "comps/modular",
     "comps/comunicator",
+    "comps/loader",
 ], function(yOSON){
     yOSON.AppCore = (function(){
         var objModular = new yOSON.Modular(),
