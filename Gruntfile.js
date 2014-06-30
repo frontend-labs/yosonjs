@@ -18,18 +18,11 @@ module.exports = function(grunt){
                 base: '.'
             }
         },
-        //concat
-        concat: {
-            dist: {
-                src: filesToConcat,
-                dest: "build/yoson-all.js"
-            }
-        },
         //compress
         uglify: {
             production:{
                 files: {
-                    'build/yoson-min-all.js':['build/yoson-all.js']
+                    'build/yoson-min.js':['dist/yoson.js']
                 }
             }
         },
@@ -69,8 +62,6 @@ module.exports = function(grunt){
    grunt.loadNpmTasks('grunt-contrib-jshint');
    //módulo para emular la conexión por consola de los tests
    grunt.loadNpmTasks('grunt-contrib-connect');
-   //load package for task of concat
-   grunt.loadNpmTasks('grunt-contrib-concat');
    //load package for task of uglify compress
    grunt.loadNpmTasks('grunt-contrib-uglify');
    //load package for task of shell
@@ -86,7 +77,7 @@ module.exports = function(grunt){
    //enroll tasks
    grunt.registerTask('spec', ['connect', 'jasmine:requirejs']);
    grunt.registerTask('dist', ['exec:cleanDist', 'generateDist']);
-   grunt.registerTask('build', ['exec:cleanBuild', 'concat', 'uglify']);
+   grunt.registerTask('build', ['exec:cleanBuild', 'uglify']);
    grunt.registerTask('default', ['spec', 'dist', 'build']);
    //grunt.registerTask('default', ['spec']);
 };
