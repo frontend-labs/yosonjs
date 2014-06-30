@@ -25,7 +25,7 @@ module.exports = function(grunt){
                     beautify:{
                         ascii_only: true
                     },
-                    banner: "/*! frontendlabs comunity",
+                    banner: "/*! frontendlabs comunity */",
                     compress: {
                         hoist_funs: false,
                         loops: false,
