@@ -1,16 +1,9 @@
 module.exports = function(grunt){
+
     var defaultOptsTmpl = {
         requireConfigFile: 'RequireConfig.js'
-    },
-    filesToConcat = [
-       "src/comps/namespace.js",
-       "src/comps/dependency.js",
-       "src/comps/dependency-manager.js",
-       "src/comps/modular.js",
-       "src/comps/comunicator.js",
-       "src/comps/loader.js",
-       "src/yoson.js"
-    ];
+    };
+
     grunt.initConfig({
         connect: {
             test: {
