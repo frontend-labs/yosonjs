@@ -1,5 +1,5 @@
 define([
-    "../yoson"
+    "yoson"
 ], function(yOSON){
     //clase with pattern factory with the idea of create modules
     var Modular = function(){

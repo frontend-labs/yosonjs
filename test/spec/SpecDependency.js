@@ -3,10 +3,10 @@ define([
   ],
   function(Dependency){
       describe('Dependency Component', function(){
-          var utils, array, result, dependencyObjTest, successDependenceUrl, failDependenceUrl;
+          var utils, array, status, dependencyObjTest, successDependenceUrl, failDependenceUrl;
 
           beforeEach(function(){
-           result = null;
+           var status = "";
            dependencyObjTest = null;
            successDependenceUrl = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
            failDependenceUrl = "http://holamundooo.com/demo.js";
@@ -14,24 +14,37 @@ define([
 
           it('should be a success request', function(){
               dependencyObjTest = new Dependency(successDependenceUrl);
-              dependencyObjTest.request();
+              dependencyObjTest.request({
+                  onReady: function(){
+                      status = "ready";
+                  }
+              });
 
-              waits(500);
+              waitsFor(function(){
+                  return status;
+              }, 2000);
 
               runs(function(){
-                  expect(dependencyObjTest.getStatus()).toEqual("ready");
+                  expect(status).toEqual("ready");
               });
 
           });
 
           it('should be a fail request', function(){
+              status = "";
               dependencyObjTest = new Dependency(failDependenceUrl);
-              dependencyObjTest.request();
+              dependencyObjTest.request({
+                  onError: function(){
+                      status = "error";
+                  }
+              });
 
-              waits(500);
+              waitsFor(function(){
+                  return status;
+              }, 2000);
 
               runs(function(){
-                  expect(dependencyObjTest.getStatus()).toEqual("error");
+                  expect(status).toEqual("error");
               });
 
           });
