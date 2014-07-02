@@ -70,30 +70,27 @@ define([
     //creator of the definition ready for merge with the components
     Modular.prototype.createDefinitionModule = function(moduleName, moduleDefinition){
         this.skeletonModule[moduleName] = {
-            'moduleDefinition': moduleDefinition,
+            'moduleDefinition': moduleDefinition
         };
         return this.skeletonModule[moduleName];
     };
 
     //running the module
-    Modular.prototype.runModule = function(moduleName, optionalParameter){
-        var parameters = null;
+    Modular.prototype.runModule = function(moduleName, optionalParameters){
+        var parameters = "";
         if(this.existsModule(moduleName)){
-            console.log('running Module:', moduleName);
-
-            if(typeof optionalParameter === "undefined"){
+            if(typeof optionalParameters === "undefined"){
                 parameters = {};
             } else {
-                parameters = optionalParameter;
+                parameters = optionalParameters;
             }
 
             parameters.moduleName = moduleName;
 
             var moduleDefinition = this.getModuleDefinition(moduleName);
 
-            this.runningModule(moduleName);
-
-            if(moduleDefinition.hasOwnProperty('init')){
+            if(typeof moduleDefinition.init === "function"){
+                this.runningModule(moduleName);
                 moduleDefinition.init(parameters);
             } else {
                 //message modulo dont run

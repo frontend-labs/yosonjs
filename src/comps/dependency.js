@@ -15,9 +15,11 @@ define([
     Dependency.prototype.request = function(events){
 
         var that = this;
-        var events = that.dealCallbackEvents(events);
         //console.log('solicitando url', this.url);
 
+        this.events = events || {};
+
+        this.onRequest();
         newScript = document.createElement("script");
         newScript.type = "text/javascript";
         newScript.src = this.url;
@@ -26,10 +28,10 @@ define([
             this.requestIE(newScript, events);
         } else {
             newScript.onload = function(){
-                events.onReady();
+                that.onReadyRequest();
             };
             newScript.onerror = function(){
-                events.onError();
+                that.onErrorRequest();
             };
         }
         document.getElementsByTagName("head")[0].appendChild(newScript);
@@ -40,56 +42,28 @@ define([
         src.onreadystatechange = function(){
             if(src.readyState=="loaded" || src.readyState=="complete"){
                 src.onreadystatechange=null;
-                events.onReady();
+                that.onReadyRequest();
             } else {
-                events.onError();
+                that.onErrorRequest();
             }
         };
     };
 
-    Dependency.prototype.dealCallbackEvents = function(options){
-        var that = this,
-            result = {
-                onRequest: function(){
-                    that.onRequest();
-                },
-                onReady: function(){
-                    that.onReadyRequest();
-                },
-                onError: function(){
-                    that.onErrorRequest();
-                }
-            };
-
-        if(typeof options !== "undefined"){
-            result = {
-                onRequest: function(){
-                    that.onRequest(options.onRequest);
-                },
-                onReady: function(){
-                    that.onReadyRequest(options.onReady);
-                },
-                onError: function(){
-                    that.onErrorRequest(options.onError);
-                }
-            };
-        };
-
-        return result;
+    Dependency.prototype.onRequest = function(){
+        var onRequestEvent = this.events.onRequest;
+        onRequestEvent && onRequestEvent.call(this);
     };
 
-    Dependency.prototype.onRequest = function(whenRequest){
-        whenRequest && whenRequest.call(this);
-    };
-
-    Dependency.prototype.onReadyRequest = function(whenReady){
+    Dependency.prototype.onReadyRequest = function(){
+        var onReadyEvent = this.events.onReady;
         this.setStatus("ready");
-        whenReady && whenReady.call(this);
+        onReadyEvent && onReadyEvent.call(this);
     };
 
-    Dependency.prototype.onErrorRequest = function(whenError){
+    Dependency.prototype.onErrorRequest = function(){
+        var onErrorEvent = this.events.onError;
         this.setStatus("error");
-        whenError && whenError.call(this);
+        onErrorEvent && onErrorEvent.call(this);
         //this.setErrorMessage("No pudo cargarse el script "+ this.url);
     };
 
