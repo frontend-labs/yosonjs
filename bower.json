@@ -1,0 +1,23 @@
+{
+  "name": "yosonjs",
+  "version": "0.0.1",
+  "homepage": "https://github.com/yosonjs/yosonjs",
+  "authors": [
+    "andru255@gmail.com"
+  ],
+  "description": "A lightweight sandbox library in JavaScript for manage modular scripts",
+  "main": "build/yoson-min.js",
+  "keywords": [
+    "yosonjs",
+    "modular"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
