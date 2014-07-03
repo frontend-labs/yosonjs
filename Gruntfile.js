@@ -5,6 +5,7 @@ module.exports = function(grunt){
     };
 
     grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
         connect: {
             test: {
                 port: 8000,
@@ -61,6 +62,19 @@ module.exports = function(grunt){
                     templateOptions: defaultOptsTmpl
                 }
             }
+        },
+        //for documentation
+        yuidoc:{
+            all: {
+                name: '<%= pkg.name %>',
+                description: '<%= pkg.description %>',
+                description: '<%= pkg.version %>',
+                url: '<%= pkg.homepage %>',
+                options:{
+                    paths: ['src'],
+                    outdir: './docs/'
+                }
+            }
         }
    });
 
@@ -76,6 +90,8 @@ module.exports = function(grunt){
    grunt.loadNpmTasks('grunt-exec');
    //Load the plugin that provides the jasmine test
    grunt.loadNpmTasks('grunt-contrib-jasmine');
+   //Load the plugin that provides the yuidoc
+   grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
    //Load the tasks
    grunt.loadTasks('tasks');
@@ -86,6 +102,7 @@ module.exports = function(grunt){
    grunt.registerTask('spec', ['connect', 'jasmine:requirejs']);
    grunt.registerTask('dist', ['exec:cleanDist', 'generateDist']);
    grunt.registerTask('build', ['exec:cleanBuild', 'uglify']);
-   grunt.registerTask('default', ['spec', 'dist', 'build']);
+   grunt.registerTask('doc', ['yuidoc']);
+   grunt.registerTask('default', ['spec', 'dist', 'build', 'doc']);
    //grunt.registerTask('default', ['spec']);
 };
