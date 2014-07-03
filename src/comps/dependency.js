@@ -6,12 +6,22 @@ define([
     'yoson'
 ], function(yOSON){
 
+
+    /**
+     * @class Dependency
+     * @constructor
+     */
     var Dependency = function(url){
         this.url = url;
         this.status = "request";
         this.message = "";
     };
-    //realiza el request
+
+    /**
+     * Call the request of the script
+     * @method request
+     * @param {Object} An Settings the callbacks
+     */
     Dependency.prototype.request = function(events){
 
         var that = this;
