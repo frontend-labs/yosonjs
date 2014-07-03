@@ -1,0 +1,51 @@
+{
+    "project": {
+        "name": "yosonjs",
+        "description": "0.0.1",
+        "url": ""
+    },
+    "files": {
+        "src/comps/dependency.js": {
+            "name": "src/comps/dependency.js",
+            "modules": {},
+            "classes": {
+                "Dependency": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Dependency": {
+            "name": "Dependency",
+            "shortname": "Dependency",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/comps/dependency.js",
+            "line": 10,
+            "is_constructor": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/comps/dependency.js",
+            "line": 20,
+            "description": "Call the request of the script",
+            "itemtype": "method",
+            "name": "request",
+            "params": [
+                {
+                    "name": "An",
+                    "description": "Settings the callbacks",
+                    "type": "Object"
+                }
+            ],
+            "class": "Dependency"
+        }
+    ],
+    "warnings": []
+}
