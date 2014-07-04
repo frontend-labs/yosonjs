@@ -16,10 +16,12 @@
     "grunt-contrib-uglify": "~0.2.2",
     "bower": "~1.2.8",
     "grunt-contrib-yuidoc": "~0.5.x",
-    "grunt-template-jasmine-requirejs": "0.1.8"
+    "grunt-template-jasmine-requirejs": "0.1.8",
+    "requirejs": "2.1.10"
   },
   "scripts": {
       "build": "npm install && grunt",
       "start":"grunt"
+      "test":"grunt"
   }
 }
