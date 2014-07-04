@@ -27,23 +27,97 @@
             "extension_for": [],
             "file": "src/comps/dependency.js",
             "line": 10,
-            "is_constructor": 1
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "url",
+                    "description": "Setting the url to request",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n     var url = \"http://misite.com/mylib.js\";\n     var objDependency = new yOSON.Dependency(url);\n     objDependency.request({\n         onRequest: function(){\n             //when request\n         },\n         onReady: function(){\n             //when ready\n         },\n         onError: function(){\n             //when occurs and error\n         },\n     });"
+            ]
         }
     },
     "classitems": [
         {
             "file": "src/comps/dependency.js",
-            "line": 20,
+            "line": 35,
             "description": "Call the request of the script",
             "itemtype": "method",
             "name": "request",
             "params": [
                 {
-                    "name": "An",
+                    "name": "events",
                     "description": "Settings the callbacks",
                     "type": "Object"
                 }
             ],
+            "class": "Dependency"
+        },
+        {
+            "file": "src/comps/dependency.js",
+            "line": 64,
+            "description": "Call the request of the script for IE browser",
+            "itemtype": "method",
+            "name": "requestIE",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "the newScript created in the method request",
+                    "type": "Object"
+                },
+                {
+                    "name": "events",
+                    "description": "Settings the callbacks",
+                    "type": "Object"
+                }
+            ],
+            "class": "Dependency"
+        },
+        {
+            "file": "src/comps/dependency.js",
+            "line": 82,
+            "description": "Trigger when the request its started",
+            "itemtype": "method",
+            "name": "onRequest",
+            "class": "Dependency"
+        },
+        {
+            "file": "src/comps/dependency.js",
+            "line": 91,
+            "description": "Trigger when the request its successfully",
+            "itemtype": "method",
+            "name": "onReadyRequest",
+            "class": "Dependency"
+        },
+        {
+            "file": "src/comps/dependency.js",
+            "line": 101,
+            "description": "Trigger when the request have an error in the load of the script",
+            "itemtype": "method",
+            "name": "onErrorRequest",
+            "class": "Dependency"
+        },
+        {
+            "file": "src/comps/dependency.js",
+            "line": 112,
+            "description": "Return the status of the request",
+            "itemtype": "method",
+            "name": "getStatus",
+            "return": {
+                "description": "status of the request \"request\" | \"ready\" | \"error\"",
+                "type": "String"
+            },
+            "class": "Dependency"
+        },
+        {
+            "file": "src/comps/dependency.js",
+            "line": 121,
+            "description": "Set the status of the request",
+            "itemtype": "method",
+            "name": "setStatus",
             "class": "Dependency"
         }
     ],

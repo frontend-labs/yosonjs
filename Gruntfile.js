@@ -103,6 +103,6 @@ module.exports = function(grunt){
    grunt.registerTask('dist', ['exec:cleanDist', 'generateDist']);
    grunt.registerTask('build', ['exec:cleanBuild', 'uglify']);
    grunt.registerTask('doc', ['yuidoc']);
-   grunt.registerTask('default', ['spec', 'dist', 'build', 'doc']);
+   grunt.registerTask('default', ['dist', 'build', 'doc']);
    //grunt.registerTask('default', ['spec']);
 };

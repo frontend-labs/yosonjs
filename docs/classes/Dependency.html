@@ -112,7 +112,17 @@
     <h3 class="name"><code>Dependency</code></h3>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>url</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
 
     
@@ -155,9 +165,54 @@
     </div>
 
     
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">url</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Setting the url to request</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
 
     
 
+    
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code> var url = &quot;http://misite.com/mylib.js&quot;;
+ var objDependency = new yOSON.Dependency(url);
+ objDependency.request({
+     onRequest: function(){
+         //when request
+     },
+     onReady: function(){
+         //when ready
+     },
+     onError: function(){
+         //when occurs and error
+     },
+ });</code></pre>
+
+            </div>
+        </div>
     
 </div>
 
@@ -187,7 +242,49 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
+                                <a href="#method_getStatus">getStatus</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_onErrorRequest">onErrorRequest</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_onReadyRequest">onReadyRequest</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_onRequest">onRequest</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_request">request</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_requestIE">requestIE</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_setStatus">setStatus</a>
 
                                 
                                 
@@ -209,6 +306,244 @@
                 <h2 class="off-left">Methods</h2>
 
                 
+                    <div id="method_getStatus" class="method item">
+    <h3 class="name"><code>getStatus</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_comps_dependency.js.html#l112"><code>src&#x2F;comps&#x2F;dependency.js:112</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Return the status of the request</p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">String</span>:
+                    
+                    <p>status of the request &quot;request&quot; | &quot;ready&quot; | &quot;error&quot;</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_onErrorRequest" class="method item">
+    <h3 class="name"><code>onErrorRequest</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_comps_dependency.js.html#l101"><code>src&#x2F;comps&#x2F;dependency.js:101</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Trigger when the request have an error in the load of the script</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_onReadyRequest" class="method item">
+    <h3 class="name"><code>onReadyRequest</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_comps_dependency.js.html#l91"><code>src&#x2F;comps&#x2F;dependency.js:91</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Trigger when the request its successfully</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_onRequest" class="method item">
+    <h3 class="name"><code>onRequest</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_comps_dependency.js.html#l82"><code>src&#x2F;comps&#x2F;dependency.js:82</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Trigger when the request its started</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_request" class="method item">
     <h3 class="name"><code>request</code></h3>
 
@@ -218,7 +553,7 @@
             
                 <li class="arg">
                     
-                        <code>An</code>
+                        <code>events</code>
                     
                 </li>
             
@@ -251,7 +586,7 @@
             
         
         
-        <a href="../files/src_comps_dependency.js.html#l20"><code>src&#x2F;comps&#x2F;dependency.js:20</code></a>
+        <a href="../files/src_comps_dependency.js.html#l35"><code>src&#x2F;comps&#x2F;dependency.js:35</code></a>
         
         </p>
 
@@ -274,7 +609,7 @@
             
                 <li class="param">
                     
-                        <code class="param-name">An</code>
+                        <code class="param-name">events</code>
                         <span class="type">Object</span>
                     
 
@@ -290,6 +625,172 @@
             
             </ul>
         </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_requestIE" class="method item">
+    <h3 class="name"><code>requestIE</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>src</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>events</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_comps_dependency.js.html#l64"><code>src&#x2F;comps&#x2F;dependency.js:64</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Call the request of the script for IE browser</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">src</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the newScript created in the method request</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">events</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Settings the callbacks</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_setStatus" class="method item">
+    <h3 class="name"><code>setStatus</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_comps_dependency.js.html#l121"><code>src&#x2F;comps&#x2F;dependency.js:121</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Set the status of the request</p>
+
+    </div>
+
     
 
     
