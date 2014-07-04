@@ -1,19 +1,16 @@
-//Creando el manejo de dependencias
-//Clase que trata con una url
-//Objeto que como objetivo invoca a la dependencia a travez de su url
-//y notifica el status del mismo
 define([
     'yoson'
 ], function(yOSON){
-
-
     /**
+     * Class dealer of an url and indicates if ready or not
      * @class Dependency
      * @constructor
      * @param {String} url Setting the url to request
      * @example
      *      var url = "http://misite.com/mylib.js";
+     *      //create and object setting the url to call
      *      var objDependency = new yOSON.Dependency(url);
+     *      //request the url
      *      objDependency.request({
      *          onRequest: function(){
      *              //when request
@@ -22,7 +19,7 @@ define([
      *              //when ready
      *          },
      *          onError: function(){
-     *              //when occurs and error
+     *              //when occurs an error
      *          },
      *      });
      */

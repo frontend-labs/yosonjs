@@ -6,20 +6,17 @@
     }
 
      (function(namespace){
-//Creando el manejo de dependencias
-//Clase que trata con una url
-//Objeto que como objetivo invoca a la dependencia a travez de su url
-//y notifica el status del mismo
-
-
 
     /**
+     * Class dealer of an url and indicates if ready or not
      * @class Dependency
      * @constructor
      * @param {String} url Setting the url to request
      * @example
      *      var url = "http://misite.com/mylib.js";
+     *      //create and object setting the url to call
      *      var objDependency = new yOSON.Dependency(url);
+     *      //request the url
      *      objDependency.request({
      *          onRequest: function(){
      *              //when request
@@ -28,7 +25,7 @@
      *              //when ready
      *          },
      *          onError: function(){
-     *              //when occurs and error
+     *              //when occurs an error
      *          },
      *      });
      */
@@ -135,8 +132,23 @@
     yOSON.Dependency = Dependency;
     
 
-    //clase manager de los objetos Dependency
-    //Administrador de dependencias
+    /**
+     * Class manager of one or many requests
+     * @class DependencyManager
+     * @requires Dependency
+     * @constructor
+     * @example
+     *      //create and object setting the class
+     *      var objDependencyManager = new yOSON.DependencyManager();
+     *      //example of setting the static host
+     *      objdependencymanager.setStaticHost("http://static.host/");
+     *      //example of setting the static host
+     *      objdependencymanager.setVersionUrl("?v=0.1");
+     *      //request the url
+     *      objDependency.ready(['url1'], function(){
+     *          //when ready execute here
+     *      });
+     */
     var DependencyManager = function(){
         this.data = {};
         this.loaded = {};
@@ -146,18 +158,49 @@
         };
     };
 
+    /**
+     * Setting the host of the static elements
+     * @method setStaticHost
+     * @param {String} hostName the host of the static elements,
+     * like a CDN url
+     * @example
+     *      objDependencyManager.setStaticHost("http://cdnjs.com");
+     */
     DependencyManager.prototype.setStaticHost = function(hostName){
         this.config.staticHost = hostName;
     };
 
+    /**
+     * Get the host saved
+     * @method getStaticHost
+     * @return {String} Get the host saved with the method setStaticHost
+     * @example
+     *      //if setting "http://cdnjs.com" return that
+     *      objDependencyManager.getStaticHost();
+     */
     DependencyManager.prototype.getStaticHost = function(){
         return this.config.staticHost;
     };
 
+    /**
+     * Setting the suffix for the url, ideally when working with elements versioned
+     * @method setVersionUrl
+     * @param {String} versionNumber the suffix or number for concatenate in the url
+     * @example
+     *      objDependencyManager.setVersionUrl("?v=0.1");
+     */
     DependencyManager.prototype.setVersionUrl = function(versionNumber){
         this.config.versionUrl = versionNumber;
     };
 
+    /**
+     * Get the suffix saved
+     * @method getVersionUrl
+     * @return {String} Get the suffix saved with the method setVersionUrl
+     * @example
+     *      //if setting "?v=0.1" return that
+     *      objDependencyManager.getVersionUrl();
+     */
     DependencyManager.prototype.getVersionUrl = function(){
         var result = "";
         if(this.config.versionUrl !== ""){
@@ -166,6 +209,12 @@
         return result;
     };
 
+    /**
+     * method what transform the url to request
+     * @method transformUrl
+     * @param {String} url the url self to transform and ready for request
+     * @return {String} the url transformed
+     */
     DependencyManager.prototype.transformUrl = function(url){
         var urlResult = "",
         regularExpresion = /((http?|https):\/\/)(www)?([\w-]+\.\w+)+(\/[\w-]+)+\.\w+/g;
@@ -177,12 +226,20 @@
         return urlResult;
     };
 
-    //método que crea el id segun la url ingresada
+    /**
+     * method what use the url and generateid the id for the manager
+     * @method generateId
+     * @param {String} url the url self to generate your id
+     */
     DependencyManager.prototype.generateId = function(url){
         return (url.indexOf('//')!=-1)?url.split('//')[1].split('?')[0].replace(/[/.:]/g,'_'):url.split('?')[0].replace(/[/.:]/g,'_');
     };
 
-    //Adiciona la dependencia a administrar con su url
+    /**
+     * method what receive an url to the manager
+     * @method addScript
+     * @param {String} url the url self to request in the manager
+     */
     DependencyManager.prototype.addScript = function(url){
         var id = this.generateId( url );
         if(this.alreadyInCollection(id)){
@@ -195,7 +252,12 @@
         }
     };
 
-    //Metodo que indica que está lista la dependencia
+    /**
+     * method what receive an list of urls to request and callbacks when the requests are ready
+     * @method ready
+     * @param {Array} urlList List of urls to request
+     * @param {Function} onReady Callback to execute when the all requests are ready
+     */
     DependencyManager.prototype.ready = function(urlList, onReady){
         var index = 0,
         that = this;
@@ -214,7 +276,13 @@
         queueQuering(urlList);
     };
 
-    //Método que verifica si está lista el script agregado
+    /**
+     * method what verify the avaliability of an Dependency
+     * @method avaliable
+     * @param {String} url the url to query if its avaliable or not
+     * @param {Function} onAvaliable Callback to execute when the url its avaliable
+     * @return {Boolean} if the dependency its avaliable return true
+     */
     DependencyManager.prototype.avaliable = function(url, onAvaliable){
         var that = this,
         id = that.generateId(url),
@@ -228,7 +296,6 @@
                 }
                 if(dependency.getStatus() == "error"){
                     onAvaliable = null;
-                    console.warn(dependency.getErrorMessage());
                     clearInterval(checkStatusDependency);
                 }
             }, 500);
@@ -236,16 +303,34 @@
             return true;
         }
     };
-    //retorna la dependencia en memoria
+
+    /**
+     * return the dependency saved in the manager
+     * @method getDependency
+     * @param {String} url the url to get in the manager
+     * @return {Object} the object Dependency created by the url
+     */
     DependencyManager.prototype.getDependency = function(url){
         var id = this.generateId(url);
         return this.data[id];
     };
-    //Consulta si está agregada en la data del administrador
+
+    /**
+     * Query if its appened in the collection of the manager
+     * @method alreadyInCollection
+     * @param {String} id the id generated by the url
+     * @return {Object} the object Dependency created by the url
+     */
     DependencyManager.prototype.alreadyInCollection = function(id){
         return this.data[id];
     };
-    //retorna si ya está cargado la dependencia completamente
+
+    /**
+     * Query if its loaded the dependency in the manager
+     * @method alreadyLoaded
+     * @param {String} id the id generated by the url
+     * @return {Object} the object Dependency created by the url
+     */
     DependencyManager.prototype.alreadyLoaded = function(id){
         return this.loaded[id];
     };
