@@ -2,6 +2,10 @@
   "name": "yosonjs",
   "description": "A lightweight sandbox library in JavaScript for manage modular scripts",
   "version": "0.0.1",
+  "repository":{
+      "type": "git",
+      "url": "https://github.com/yosonjs/yosonjs"
+  },
   "devDependencies": {
     "grunt-contrib-requirejs": "~0.4.0",
     "grunt": "0.4.x",
