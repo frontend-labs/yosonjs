@@ -3,6 +3,7 @@ yoson
 
 A Sandbox library in JavaScript for manage modular scripts
 
+[![Build Status](https://secure.travis-ci.org/yosonjs/yosonjs.png)](https://travis-ci.org/yosonjs/yosonjs)
 
 how to run
 =========
