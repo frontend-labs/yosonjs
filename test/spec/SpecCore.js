@@ -13,19 +13,29 @@ define([
                     }
                 }
             });
-
+            expect(true).toBeTruthy();
         });
 
-        it('should be remove a module', function(){
+        it('should be run a module', function(){
+            yOSON.AppCore.addModule('nuevo-modulo', function(){
+                return {
+                    init: function(){
 
+                    }
+                }
+            });
+            yOSON.AppCore.runModule('nuevo-modulo');
+            expect(true).toBeTruthy();
         });
 
         it('should be set the staticHost', function(){
-
+            yOSON.AppCore.setStaticHost('http://statichost.com/');
+            expect(true).toBeTruthy();
         });
 
         it('should be set the version of the url', function(){
-
+            yOSON.AppCore.setVersionUrl('?v=0.0.1');
+            expect(true).toBeTruthy();
         });
     });
 
