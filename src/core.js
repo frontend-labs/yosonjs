@@ -64,5 +64,5 @@ define([
         };
     })();
 
-    return yOSON.AppCore;
+    return yOSON;
 });
