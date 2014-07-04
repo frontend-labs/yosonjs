@@ -5,4 +5,4 @@ define(function(){
     }
 
     return yOSON;
-})
+});

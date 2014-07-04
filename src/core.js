@@ -18,8 +18,6 @@ define([
 
         objModular.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
             var eventsWaiting = {};
-
-            console.log('corriendo evento', eventName);
             objModular.allModulesRunning(function(){
                 eventsWaiting[eventName] = argumentsOfEvent;
             }, function(){
@@ -44,6 +42,14 @@ define([
         };
 
         return {
+            getComponents: function(){
+                var components = {
+                    'Modular': objModular,
+                    'Comunicator': objComunicator,
+                    'DependencyManager': dependencyManager
+                };
+                return components;
+            },
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
                 objModular.addModule(moduleName, moduleDefinition);

@@ -8,7 +8,7 @@ define([
         this.skeletonModule = {};
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = null;
-        this.debug = false;
+        this.debugSettings = {};
     };
 
     //receive one method for the entity comunicator on modules
@@ -18,6 +18,7 @@ define([
 
     //adding a module
     Modular.prototype.addModule = function(moduleName, moduleDefinition){
+        this.debugMethod("addModule");
         if(this.existsModule(moduleName)){
             //mensaje ya existe modulo
         } else {
@@ -77,6 +78,7 @@ define([
 
     //running the module
     Modular.prototype.runModule = function(moduleName, optionalParameters){
+        this.debugMethod("runModule");
         var parameters = "";
         if(this.existsModule(moduleName)){
             if(typeof optionalParameters === "undefined"){
@@ -132,6 +134,7 @@ define([
 
     Modular.prototype.allModulesRunning = function(onNotFinished, onFinished){
         var that = this;
+        this.debugMethod("allModulesRunning");
         if(this.alreadyAllModulesBeRunning){
             onFinished.call(that);
         } else {

@@ -11,7 +11,6 @@ define([
         var that = this;
         this.finderEvents(eventNames, function(){
         }, function(eventName){
-            console.log('register event', eventName);
             that.addEvent(eventName, functionSelfEvent, instanceOrigin);
         });
     };
