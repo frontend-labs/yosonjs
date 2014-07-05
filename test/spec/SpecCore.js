@@ -37,6 +37,11 @@ define([
             yOSON.AppCore.setVersionUrl('?v=0.0.1');
             expect(true).toBeTruthy();
         });
+
+        it('should be get all components of the core', function(){
+            var components = yOSON.AppCore.getComponents();
+            expect(true).toEqual();
+        });
     });
 
 });

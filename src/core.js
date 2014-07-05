@@ -43,12 +43,11 @@ define([
 
         return {
             getComponents: function(){
-                var components = {
+                return {
                     'Modular': objModular,
                     'Comunicator': objComunicator,
                     'DependencyManager': dependencyManager
                 };
-                return components;
             },
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
