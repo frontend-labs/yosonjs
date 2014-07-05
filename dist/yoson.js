@@ -345,7 +345,6 @@
         this.skeletonModule = {};
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = null;
-        this.debug = false;
     };
 
     //receive one method for the entity comunicator on modules
@@ -517,7 +516,6 @@
         var that = this;
         this.finderEvents(eventNames, function(){
         }, function(eventName){
-            console.log('register event', eventName);
             that.addEvent(eventName, functionSelfEvent, instanceOrigin);
         });
     };
@@ -734,8 +732,6 @@
 
         objModular.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
             var eventsWaiting = {};
-
-            console.log('corriendo evento', eventName);
             objModular.allModulesRunning(function(){
                 eventsWaiting[eventName] = argumentsOfEvent;
             }, function(){
@@ -760,6 +756,13 @@
         };
 
         return {
+            getComponents: function(){
+                return {
+                    'Modular': objModular,
+                    'Comunicator': objComunicator,
+                    'DependencyManager': dependencyManager
+                };
+            },
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
                 objModular.addModule(moduleName, moduleDefinition);

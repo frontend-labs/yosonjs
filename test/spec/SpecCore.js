@@ -40,7 +40,7 @@ define([
 
         it('should be get all components of the core', function(){
             var components = yOSON.AppCore.getComponents();
-            expect(true).toEqual();
+            expect(true).toBeTruthy();
         });
     });
 
