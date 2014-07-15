@@ -51,10 +51,6 @@ define(function(){
 
                     }
                 },
-                //the default controller if not exists an controller runs here
-                "byDefault": function(){
-
-                },
                 //this controller dont care what controller in the module its executing same runs
                 "allControllers": function(){
 
