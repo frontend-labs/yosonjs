@@ -68,7 +68,7 @@ module.exports = function(grunt){
             all: {
                 name: '<%= pkg.name %>',
                 description: '<%= pkg.description %>',
-                description: '<%= pkg.version %>',
+                version: '<%= pkg.version %>',
                 url: '<%= pkg.homepage %>',
                 options:{
                     paths: ['src'],
