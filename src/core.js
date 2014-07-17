@@ -5,11 +5,13 @@ define([
     "comps/comunicator",
     "comps/loader",
 ], function(yOSON){
+
+    var objModular = new yOSON.Modular(),
+        dependencyManager = new yOSON.DependencyManager(),
+        objComunicator = new yOSON.Comunicator(),
+        dependenceByModule = {};
+
     yOSON.AppCore = (function(){
-        var objModular = new yOSON.Modular(),
-            dependencyManager = new yOSON.DependencyManager(),
-            objComunicator = new yOSON.Comunicator(),
-            dependenceByModule = {};
 
         //setting the main methods in the bridge of an module
         objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){

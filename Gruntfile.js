@@ -40,7 +40,7 @@ module.exports = function(grunt){
             options: {
                 jshintrc: '.jshintrc'
             },
-            all: ['src/**/*.js', 'spec/**/*.js']
+            all: ['src/**/*.js', 'spec/**/*.js', '!src/yoson.js']
         },
         //for execute shell commands
         exec: {
@@ -75,6 +75,20 @@ module.exports = function(grunt){
                     outdir: './docs/'
                 }
             }
+        },
+        //for complexity
+        complexity: {
+            generic: {
+                src: ["src/**/*.js"],
+                options:{
+                    "jsLintXML": "report/jslint.xml",
+                    "checkstyleXML":"report/checkstyle.xml",
+                    "cyclomatic": 3,
+                    "halstead": 8,
+                    "maintainability": 100,
+                    "broadcast": false
+                }
+            }
         }
    });
 
@@ -82,6 +96,8 @@ module.exports = function(grunt){
    grunt.loadNpmTasks('grunt-contrib-requirejs');
    //load package for task of jshint
    grunt.loadNpmTasks('grunt-contrib-jshint');
+   //load package for task of jshint
+   grunt.loadNpmTasks('grunt-complexity');
    //módulo para emular la conexión por consola de los tests
    grunt.loadNpmTasks('grunt-contrib-connect');
    //load package for task of uglify compress
@@ -99,6 +115,7 @@ module.exports = function(grunt){
    //log the tasks
    grunt.log.write("running grunt for yoson");
    //enroll tasks
+   grunt.registerTask('hint', ['jshint', 'complexity']);
    grunt.registerTask('spec', ['connect', 'jasmine:requirejs']);
    grunt.registerTask('dist', ['exec:cleanDist', 'generateDist']);
    grunt.registerTask('build', ['exec:cleanBuild', 'uglify']);

@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: </em>
+            <em>API Docs for: 0.0.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -132,9 +132,7 @@ define([
         this.events = events || {};
 
         this.onRequest();
-        newScript = document.createElement(&quot;script&quot;);
-        newScript.type = &quot;text/javascript&quot;;
-        newScript.src = this.url;
+        var newScript = this.createNewScript(this.url);
 
         if( newScript.readyState ){
             this.requestIE(newScript, events);
@@ -147,6 +145,13 @@ define([
             };
         }
         document.getElementsByTagName(&quot;head&quot;)[0].appendChild(newScript);
+    };
+
+    Dependency.prototype.createNewScript = function(urlSource){
+        var script = document.createElement(&quot;script&quot;);
+        script.type = &quot;text/javascript&quot;;
+        script.src = urlSource;
+        return script;
     };
     /**
      * Call the request of the script for IE browser
@@ -172,7 +177,9 @@ define([
      */
     Dependency.prototype.onRequest = function(){
         var onRequestEvent = this.events.onRequest;
-        onRequestEvent &amp;&amp; onRequestEvent.call(this);
+        if( typeof onRequestEvent === &quot;function&quot;) {
+            onRequestEvent.call(this);
+        }
     };
 
     /**
@@ -182,7 +189,9 @@ define([
     Dependency.prototype.onReadyRequest = function(){
         var onReadyEvent = this.events.onReady;
         this.setStatus(&quot;ready&quot;);
-        onReadyEvent &amp;&amp; onReadyEvent.call(this);
+        if( typeof onReadyEvent === &quot;function&quot;) {
+            onReadyEvent.call(this);
+        }
     };
 
     /**
@@ -192,8 +201,9 @@ define([
     Dependency.prototype.onErrorRequest = function(){
         var onErrorEvent = this.events.onError;
         this.setStatus(&quot;error&quot;);
-        onErrorEvent &amp;&amp; onErrorEvent.call(this);
-        //this.setErrorMessage(&quot;No pudo cargarse el script &quot;+ this.url);
+        if( typeof onErrorEvent  === &quot;function&quot;) {
+            onErrorEvent.call(this);
+        }
     };
 
     /**

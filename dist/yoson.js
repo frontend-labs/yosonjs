@@ -48,9 +48,7 @@
         this.events = events || {};
 
         this.onRequest();
-        newScript = document.createElement("script");
-        newScript.type = "text/javascript";
-        newScript.src = this.url;
+        var newScript = this.createNewScript(this.url);
 
         if( newScript.readyState ){
             this.requestIE(newScript, events);
@@ -63,6 +61,13 @@
             };
         }
         document.getElementsByTagName("head")[0].appendChild(newScript);
+    };
+
+    Dependency.prototype.createNewScript = function(urlSource){
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = urlSource;
+        return script;
     };
     /**
      * Call the request of the script for IE browser
@@ -88,7 +93,9 @@
      */
     Dependency.prototype.onRequest = function(){
         var onRequestEvent = this.events.onRequest;
-        onRequestEvent && onRequestEvent.call(this);
+        if( typeof onRequestEvent === "function") {
+            onRequestEvent.call(this);
+        }
     };
 
     /**
@@ -98,7 +105,9 @@
     Dependency.prototype.onReadyRequest = function(){
         var onReadyEvent = this.events.onReady;
         this.setStatus("ready");
-        onReadyEvent && onReadyEvent.call(this);
+        if( typeof onReadyEvent === "function") {
+            onReadyEvent.call(this);
+        }
     };
 
     /**
@@ -108,8 +117,9 @@
     Dependency.prototype.onErrorRequest = function(){
         var onErrorEvent = this.events.onError;
         this.setStatus("error");
-        onErrorEvent && onErrorEvent.call(this);
-        //this.setErrorMessage("No pudo cargarse el script "+ this.url);
+        if( typeof onErrorEvent  === "function") {
+            onErrorEvent.call(this);
+        }
     };
 
     /**
@@ -719,11 +729,13 @@
 
     
 
+
+    var objModular = new yOSON.Modular(),
+        dependencyManager = new yOSON.DependencyManager(),
+        objComunicator = new yOSON.Comunicator(),
+        dependenceByModule = {};
+
     yOSON.AppCore = (function(){
-        var objModular = new yOSON.Modular(),
-            dependencyManager = new yOSON.DependencyManager(),
-            objComunicator = new yOSON.Comunicator(),
-            dependenceByModule = {};
 
         //setting the main methods in the bridge of an module
         objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<checkstyle>
+
+<file name="src/comps/modular.js">
+  
+  <error
+    line="3"
+    severity="warning"
+    message="Cyclomatic: 1,
+    Halstead: 8.7500
+    | Effort: 4947.6
+    | Volume: 565.45
+    | Vocabulary: 23"
+    source="&lt;anonymous&gt;"
+    />
+  
+  <error
+    line="28"
+    severity="warning"
+    message="Cyclomatic: 2,
+    Halstead: 10.125
+    | Effort: 2179.1
+    | Volume: 215.22
+    | Vocabulary: 21"
+    source="&lt;anonymous&gt;.getModuleDefinition"
+    />
+  
+  <error
+    line="78"
+    severity="warning"
+    message="Cyclomatic: 4,
+    Halstead: 10.038
+    | Effort: 2506.9
+    | Volume: 249.73
+    | Vocabulary: 22"
+    source="&lt;anonymous&gt;.runModule"
+    />
+  
+  <error
+    line="101"
+    severity="warning"
+    message="Cyclomatic: 4,
+    Halstead: 11.000
+    | Effort: 1932.6
+    | Volume: 175.69
+    | Vocabulary: 21"
+    source="&lt;anonymous&gt;.runModules"
+    />
+  
+  <error
+    line="137"
+    severity="warning"
+    message="Cyclomatic: 5,
+    Halstead: 11.471
+    | Effort: 3927.0
+    | Volume: 342.35
+    | Vocabulary: 27"
+    source="&lt;anonymous&gt;"
+    />
+  
+</file>
+
+
+
+<file name="src/comps/dependency-manager.js">
+  
+  <error
+    line="4"
+    severity="warning"
+    message="Cyclomatic: 1,
+    Halstead: 8.2353
+    | Effort: 4039.7
+    | Volume: 490.54
+    | Vocabulary: 22"
+    source="&lt;anonymous&gt;"
+    />
+  
+</file>
+
+
+
+<file name="src/comps/dependency.js">
+  
+  <error
+    line="3"
+    severity="warning"
+    message="Cyclomatic: 1,
+    Halstead: 8.1250
+    | Effort: 2557.2
+    | Volume: 314.73
+    | Vocabulary: 17"
+    source="&lt;anonymous&gt;"
+    />
+  
+  <error
+    line="37"
+    severity="warning"
+    message="Cyclomatic: 2,
+    Halstead: 8.4706
+    | Effort: 2428.7
+    | Volume: 286.73
+    | Vocabulary: 26"
+    source="&lt;anonymous&gt;.request"
+    />
+  
+</file>
+
+
+
+<file name="src/comps/loader.js">
+  
+</file>
+
+
+
+<file name="src/comps/comunicator.js">
+  
+  <error
+    line="3"
+    severity="warning"
+    message="Cyclomatic: 1,
+    Halstead: 8.2692
+    | Effort: 2931.0
+    | Volume: 354.44
+    | Vocabulary: 18"
+    source="&lt;anonymous&gt;"
+    />
+  
+  <error
+    line="67"
+    severity="warning"
+    message="Cyclomatic: 3,
+    Halstead: 10.385
+    | Effort: 2454.4
+    | Volume: 236.35
+    | Vocabulary: 22"
+    source="&lt;anonymous&gt;.finderEvents"
+    />
+  
+</file>
+
+
+
+<file name="src/core.js">
+  
+</file>
+
+
+
+<file name="src/yoson.js">
+  
+</file>
+
+
+
+</checkstyle>
