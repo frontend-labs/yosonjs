@@ -26,15 +26,13 @@ define([
 
     //return the complete definition of an module with the components
     Modular.prototype.getModuleDefinition = function(moduleName){
-        var module = this.getModule(moduleName),
-            moduleInstance = module.moduleDefinition(this.entityBridge),
-            that = this;
+        var that = this,
+            module = that.getModule(moduleName),
+            moduleInstance = module.moduleDefinition(that.entityBridge);
 
         for(var propertyName in moduleInstance){
             var method = moduleInstance[propertyName];
-            if(typeof method === "function"){
-                moduleInstance[propertyName] = that.addFunctionToDefinitionModule(moduleName, propertyName, method);
-            }
+            moduleInstance[propertyName] = that.addFunctionToDefinitionModule(moduleName, propertyName, method);
         }
 
         return moduleInstance;
@@ -42,13 +40,17 @@ define([
 
     //create a method taking a name and function self
     Modular.prototype.addFunctionToDefinitionModule = function(moduleName, functionName, functionSelf){
-        return function(){
-            try {
-                return functionSelf.apply(this, arguments);
-            } catch( ex ){
-                console.log("Modulo:"+ moduleName + "." + functionName + "(): " + ex.message);
-            }
-        };
+        if(typeof functionSelf === "function"){
+            return function(){
+                try {
+                    return functionSelf.apply(this, arguments);
+                } catch( ex ){
+                    console.log("Modulo:"+ moduleName + "." + functionName + "(): " + ex.message);
+                }
+            };
+        } else {
+            return functionSelf;
+        }
     };
 
     //verifying the existence of one module by name
@@ -76,38 +78,35 @@ define([
 
     //running the module
     Modular.prototype.runModule = function(moduleName, optionalParameters){
-        var parameters = "";
+        var parameters = this.dealParamaterOfModule(optionalParameters);
+        parameters.moduleName = moduleName;
         if(this.existsModule(moduleName)){
-            if(typeof optionalParameters === "undefined"){
-                parameters = {};
-            } else {
-                parameters = optionalParameters;
-            }
-
-            parameters.moduleName = moduleName;
-
-            var moduleDefinition = this.getModuleDefinition(moduleName);
-
-            if(typeof moduleDefinition.init === "function"){
-                this.runningModule(moduleName);
-                moduleDefinition.init(parameters);
-            } else {
-                //message modulo dont run
-            }
+            this.runInitMethodOfModule(moduleName, parameters);
         }
     };
 
+    Modular.prototype.dealParamaterOfModule = function(parametersOfModule){
+        var newParameters = {};
+        if(typeof parametersOfModule !== "undefined"){
+            newParameters = parametersOfModule;
+        }
+        return newParameters;
+    };
+
+    Modular.prototype.runInitMethodOfModule = function(moduleName, parameters){
+        var moduleDefinition = this.getModuleDefinition(moduleName);
+        if(typeof moduleDefinition.init === "function"){
+            this.runningModule(moduleName);
+            moduleDefinition.init(parameters);
+        }
+    };
     //running one list of modules
     Modular.prototype.runModules = function(moduleNames){
         var that = this;
         //its necesary the parameter moduleNames must be a type Array
-        if(!moduleNames instanceof Array){
-            return;
-        }
-
-        for(var index = 0; index < moduleNames.length; index++){
-            var moduleName = moduleNames[index];
-            if(that.existsModule(moduleName)){
+        if(moduleNames instanceof Array){
+            for(var index = 0; index < moduleNames.length; index++){
+                var moduleName = moduleNames[index];
                 that.runModule(moduleName);
             }
         }

@@ -7,48 +7,26 @@
     line="3"
     severity="warning"
     message="Cyclomatic: 1,
-    Halstead: 8.7500
-    | Effort: 4947.6
-    | Volume: 565.45
-    | Vocabulary: 23"
+    Halstead: 8.5714
+    | Effort: 5761.4
+    | Volume: 672.16
+    | Vocabulary: 26"
     source="&lt;anonymous&gt;"
     />
   
   <error
-    line="28"
+    line="104"
     severity="warning"
-    message="Cyclomatic: 2,
-    Halstead: 10.125
-    | Effort: 2179.1
-    | Volume: 215.22
-    | Vocabulary: 21"
-    source="&lt;anonymous&gt;.getModuleDefinition"
-    />
-  
-  <error
-    line="78"
-    severity="warning"
-    message="Cyclomatic: 4,
-    Halstead: 10.038
-    | Effort: 2506.9
-    | Volume: 249.73
-    | Vocabulary: 22"
-    source="&lt;anonymous&gt;.runModule"
-    />
-  
-  <error
-    line="101"
-    severity="warning"
-    message="Cyclomatic: 4,
-    Halstead: 11.000
-    | Effort: 1932.6
-    | Volume: 175.69
-    | Vocabulary: 21"
+    message="Cyclomatic: 3,
+    Halstead: 8.5000
+    | Effort: 1134.2
+    | Volume: 133.44
+    | Vocabulary: 18"
     source="&lt;anonymous&gt;.runModules"
     />
   
   <error
-    line="137"
+    line="136"
     severity="warning"
     message="Cyclomatic: 5,
     Halstead: 11.471
@@ -63,17 +41,6 @@
 
 
 <file name="src/comps/dependency-manager.js">
-  
-  <error
-    line="4"
-    severity="warning"
-    message="Cyclomatic: 1,
-    Halstead: 8.2353
-    | Effort: 4039.7
-    | Volume: 490.54
-    | Vocabulary: 22"
-    source="&lt;anonymous&gt;"
-    />
   
 </file>
 
@@ -91,10 +58,10 @@
     line="4"
     severity="warning"
     message="Cyclomatic: 1,
-    Halstead: 8.7500
-    | Effort: 4947.6
-    | Volume: 565.45
-    | Vocabulary: 23"
+    Halstead: 8.4211
+    | Effort: 4903.5
+    | Volume: 582.29
+    | Vocabulary: 24"
     source="&lt;anonymous&gt;"
     />
   
@@ -109,17 +76,6 @@
 
 
 <file name="src/comps/comunicator.js">
-  
-  <error
-    line="3"
-    severity="warning"
-    message="Cyclomatic: 1,
-    Halstead: 8.2692
-    | Effort: 2931.0
-    | Volume: 354.44
-    | Vocabulary: 18"
-    source="&lt;anonymous&gt;"
-    />
   
   <error
     line="67"
