@@ -117,33 +117,38 @@ define([
         this.url = url;
         this.status = &quot;request&quot;;
         this.message = &quot;&quot;;
+        this.events = {};
     };
-
+    /**
+     * Return the status of the request
+     * @method getStatus
+     * @return {String} status of the request &quot;request&quot; | &quot;ready&quot; | &quot;error&quot;
+     */
+    Dependency.prototype.getStatus = function(){
+        return this.status;
+    };
     /**
      * Call the request of the script
      * @method request
      * @param {Object} events Settings the callbacks
      */
     Dependency.prototype.request = function(events){
-
         var that = this;
-        //console.log(&#x27;solicitando url&#x27;, this.url);
 
-        this.events = events || {};
+        if(typeof events !== &quot;undefined&quot;){
+            that.events = events;
+        }
 
-        this.onRequest();
-        var newScript = this.createNewScript(this.url);
-
-        if( newScript.readyState ){
-            this.requestIE(newScript, events);
-        } else {
+        that.onRequest();
+        var newScript = that.createNewScript(that.url);
+        that.requestIE(newScript, function(){
             newScript.onload = function(){
                 that.onReadyRequest();
             };
             newScript.onerror = function(){
                 that.onErrorRequest();
             };
-        }
+        });
         document.getElementsByTagName(&quot;head&quot;)[0].appendChild(newScript);
     };
 
@@ -153,33 +158,13 @@ define([
         script.src = urlSource;
         return script;
     };
-    /**
-     * Call the request of the script for IE browser
-     * @method requestIE
-     * @param {Object} src the newScript created in the method request
-     * @param {Object} events Settings the callbacks
-     */
-    Dependency.prototype.requestIE = function(src, events){
-        var that = this;
-        src.onreadystatechange = function(){
-            if(src.readyState==&quot;loaded&quot; || src.readyState==&quot;complete&quot;){
-                src.onreadystatechange=null;
-                that.onReadyRequest();
-            } else {
-                that.onErrorRequest();
-            }
-        };
-    };
 
     /**
      * Trigger when the request its started
      * @method onRequest
      */
     Dependency.prototype.onRequest = function(){
-        var onRequestEvent = this.events.onRequest;
-        if( typeof onRequestEvent === &quot;function&quot;) {
-            onRequestEvent.call(this);
-        }
+        this.requestCallBackEvent(&#x27;onRequest&#x27;);
     };
 
     /**
@@ -187,43 +172,47 @@ define([
      * @method onReadyRequest
      */
     Dependency.prototype.onReadyRequest = function(){
-        var onReadyEvent = this.events.onReady;
-        this.setStatus(&quot;ready&quot;);
-        if( typeof onReadyEvent === &quot;function&quot;) {
-            onReadyEvent.call(this);
-        }
+        this.status = &quot;ready&quot;;
+        this.requestCallBackEvent(&#x27;onReady&#x27;);
     };
-
     /**
      * Trigger when the request have an error in the load of the script
      * @method onErrorRequest
      */
     Dependency.prototype.onErrorRequest = function(){
-        var onErrorEvent = this.events.onError;
-        this.setStatus(&quot;error&quot;);
-        if( typeof onErrorEvent  === &quot;function&quot;) {
-            onErrorEvent.call(this);
+        this.status = &quot;error&quot;;
+        this.requestCallBackEvent(&#x27;onError&#x27;);
+    };
+
+    Dependency.prototype.requestCallBackEvent = function(eventName){
+        var eventSelf = this.events[eventName];
+        if(typeof eventSelf === &quot;function&quot;){
+            eventSelf.call(this);
+        }
+    };
+    /**
+     * Call the request of the script for IE browser
+     * @method requestIE
+     * @param {Object} src the newScript created in the method request
+     * @param {Object} events Settings the callbacks
+     */
+    Dependency.prototype.requestIE = function(scriptElement, onNoIEBrowser){
+        var that = this;
+        if(scriptElement.readyState){
+            scriptElement.onreadystatechange = function(){
+                if(scriptElement.readyState==&quot;loaded&quot; || scriptElement.readyState==&quot;complete&quot;){
+                    scriptElement.onreadystatechange=null;
+                    that.onReadyRequest();
+                } else {
+                    that.onErrorRequest();
+                }
+            };
+        } else {
+            onNoIEBrowser.call(that);
         }
     };
 
-    /**
-     * Return the status of the request
-     * @method getStatus
-     * @return {String} status of the request &quot;request&quot; | &quot;ready&quot; | &quot;error&quot;
-     */
-    Dependency.prototype.getStatus = function(){
-        return this.status;
-    };
-
-    /**
-     * Set the status of the request
-     * @method setStatus
-     */
-    Dependency.prototype.setStatus = function(status){
-        this.status = status;
-    };
-
-    yOSON.Dependency = Dependency;
+    yOSON.Components.Dependency = Dependency;
     return Dependency;
 });
 

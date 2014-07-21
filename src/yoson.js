@@ -4,5 +4,7 @@ define(function(){
         var yOSON = {};
     }
 
+    yOSON.Components = {};
+
     return yOSON;
 });

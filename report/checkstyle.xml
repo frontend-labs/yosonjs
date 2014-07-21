@@ -79,35 +79,30 @@
 
 
 
-<file name="src/comps/dependency.js">
-  
-  <error
-    line="3"
-    severity="warning"
-    message="Cyclomatic: 1,
-    Halstead: 8.1250
-    | Effort: 2557.2
-    | Volume: 314.73
-    | Vocabulary: 17"
-    source="&lt;anonymous&gt;"
-    />
-  
-  <error
-    line="37"
-    severity="warning"
-    message="Cyclomatic: 2,
-    Halstead: 8.4706
-    | Effort: 2428.7
-    | Volume: 286.73
-    | Vocabulary: 26"
-    source="&lt;anonymous&gt;.request"
-    />
+<file name="src/yoson.js">
   
 </file>
 
 
 
 <file name="src/comps/loader.js">
+  
+  <error
+    line="4"
+    severity="warning"
+    message="Cyclomatic: 1,
+    Halstead: 8.7500
+    | Effort: 4947.6
+    | Volume: 565.45
+    | Vocabulary: 23"
+    source="&lt;anonymous&gt;"
+    />
+  
+</file>
+
+
+
+<file name="src/comps/dependency.js">
   
 </file>
 
@@ -142,12 +137,6 @@
 
 
 <file name="src/core.js">
-  
-</file>
-
-
-
-<file name="src/yoson.js">
   
 </file>
 

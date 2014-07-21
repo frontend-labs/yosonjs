@@ -6,10 +6,10 @@ define([
           var utils, array, status, dependencyObjTest, successDependenceUrl, failDependenceUrl;
 
           beforeEach(function(){
-           var status = "";
-           dependencyObjTest = null;
-           successDependenceUrl = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
-           failDependenceUrl = "http://holamundooo.com/demo.js";
+              var status = "";
+              dependencyObjTest = null;
+              successDependenceUrl = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
+              failDependenceUrl = "http://holamundooo.com/demo.js";
           });
 
           it('should be a success request', function(){

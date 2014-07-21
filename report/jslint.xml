@@ -66,30 +66,23 @@
     | Vocabulary: 22" />
   
 </file>
-<file name="src/comps/dependency.js">
-  
-  <issue
-    line="3"
-    char="&lt;anonymous&gt;"
-    evidence="&lt;anonymous&gt; is too complicated"
-    reason="Cyclomatic: 1,
-    Halstead: 8.1250
-    | Effort: 2557.2
-    | Volume: 314.73
-    | Vocabulary: 17" />
-  
-  <issue
-    line="37"
-    char="&lt;anonymous&gt;.request"
-    evidence="&lt;anonymous&gt;.request is too complicated"
-    reason="Cyclomatic: 2,
-    Halstead: 8.4706
-    | Effort: 2428.7
-    | Volume: 286.73
-    | Vocabulary: 26" />
+<file name="src/yoson.js">
   
 </file>
 <file name="src/comps/loader.js">
+  
+  <issue
+    line="4"
+    char="&lt;anonymous&gt;"
+    evidence="&lt;anonymous&gt; is too complicated"
+    reason="Cyclomatic: 1,
+    Halstead: 8.7500
+    | Effort: 4947.6
+    | Volume: 565.45
+    | Vocabulary: 23" />
+  
+</file>
+<file name="src/comps/dependency.js">
   
 </file>
 <file name="src/comps/comunicator.js">
@@ -116,9 +109,6 @@
   
 </file>
 <file name="src/core.js">
-  
-</file>
-<file name="src/yoson.js">
   
 </file>
 </jslint>

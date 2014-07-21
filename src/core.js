@@ -13,6 +13,7 @@ define([
 
     yOSON.AppCore = (function(){
 
+
         //setting the main methods in the bridge of an module
         objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
             objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
