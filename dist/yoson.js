@@ -336,7 +336,7 @@
         return this.loaded[id];
     };
 
-    yOSON.DependencyManager = DependencyManager;
+    yOSON.Components.DependencyManager = DependencyManager;
     
 
     //clase with pattern factory with the idea of create modules
@@ -503,7 +503,7 @@
         }
     };
 
-    yOSON.Modular = Modular;
+    yOSON.Components.Modular = Modular;
 
     
 
@@ -583,7 +583,7 @@
         }
     };
 
-    yOSON.Comunicator = Comunicator;
+    yOSON.Components.Comunicator = Comunicator;
     
 //Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
 
@@ -716,17 +716,18 @@
         }
     };
 
-    yOSON.Loader = Loader;
+    yOSON.Components.Loader = Loader;
 
     
 
 
+    var objModular = new yOSON.Components.Modular(),
+        dependencyManager = new yOSON.Components.DependencyManager(),
+        objComunicator = new yOSON.Components.Comunicator(),
+        dependenceByModule = {};
+
     yOSON.AppCore = (function(){
 
-        var objModular = new yOSON.Modular(),
-            dependencyManager = new yOSON.DependencyManager(),
-            objComunicator = new yOSON.Comunicator(),
-            dependenceByModule = {};
 
         //setting the main methods in the bridge of an module
         objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
