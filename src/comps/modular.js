@@ -165,7 +165,7 @@ define([
         }
     };
 
-    yOSON.Modular = Modular;
+    yOSON.Components.Modular = Modular;
 
     return Modular;
 });

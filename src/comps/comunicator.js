@@ -77,6 +77,6 @@ define([
         }
     };
 
-    yOSON.Comunicator = Comunicator;
+    yOSON.Components.Comunicator = Comunicator;
     return Comunicator;
 });

@@ -6,9 +6,9 @@ define([
     "comps/loader",
 ], function(yOSON){
 
-    var objModular = new yOSON.Modular(),
-        dependencyManager = new yOSON.DependencyManager(),
-        objComunicator = new yOSON.Comunicator(),
+    var objModular = new yOSON.Components.Modular(),
+        dependencyManager = new yOSON.Components.DependencyManager(),
+        objComunicator = new yOSON.Components.Comunicator(),
         dependenceByModule = {};
 
     yOSON.AppCore = (function(){

@@ -205,6 +205,6 @@ define([
         return this.loaded[id];
     };
 
-    yOSON.DependencyManager = DependencyManager;
+    yOSON.Components.DependencyManager = DependencyManager;
     return DependencyManager;
 });

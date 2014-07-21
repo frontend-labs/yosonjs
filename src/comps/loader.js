@@ -131,7 +131,7 @@ define(
         }
     };
 
-    yOSON.Loader = Loader;
+    yOSON.Components.Loader = Loader;
 
     return Loader;
 });
