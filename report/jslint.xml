@@ -13,7 +13,7 @@
     | Vocabulary: 26" />
   
   <issue
-    line="104"
+    line="102"
     char="&lt;anonymous&gt;.runModules"
     evidence="&lt;anonymous&gt;.runModules is too complicated"
     reason="Cyclomatic: 3,
@@ -23,7 +23,7 @@
     | Vocabulary: 18" />
   
   <issue
-    line="136"
+    line="134"
     char="&lt;anonymous&gt;"
     evidence="&lt;anonymous&gt; is too complicated"
     reason="Cyclomatic: 5,

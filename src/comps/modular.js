@@ -17,9 +17,7 @@ define([
 
     //adding a module
     Modular.prototype.addModule = function(moduleName, moduleDefinition){
-        if(this.existsModule(moduleName)){
-            //mensaje ya existe modulo
-        } else {
+        if(!this.existsModule(moduleName)){
             this.modules[moduleName] = this.createDefinitionModule(moduleName, moduleDefinition);
         }
     };

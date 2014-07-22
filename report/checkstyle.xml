@@ -15,7 +15,7 @@
     />
   
   <error
-    line="104"
+    line="102"
     severity="warning"
     message="Cyclomatic: 3,
     Halstead: 8.5000
@@ -26,7 +26,7 @@
     />
   
   <error
-    line="136"
+    line="134"
     severity="warning"
     message="Cyclomatic: 5,
     Halstead: 11.471
