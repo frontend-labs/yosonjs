@@ -67,13 +67,17 @@ define([
     Comunicator.prototype.finderEvents = function(eventNames, whichEventFound, whichEventNotFound){
         var that = this;
         for(var index = 0; index < eventNames.length;index++){
-            var eventName = eventNames[index];
-            if(that.eventAlreadyRegistered(eventName)){
-                var eventFound = that.getEvent(eventName);
-                whichEventFound.call(that, eventName, eventFound);
-            } else {
-                whichEventNotFound.call(that, eventName);
-            }
+            that.eachFindEvent(eventNames[index], whichEventFound, whichEventNotFound);
+        }
+    };
+
+    Comunicator.prototype.eachFindEvent = function(eventName, whichEventFound, whichEventNotFound){
+        var that = this;
+        if(that.eventAlreadyRegistered(eventName)){
+            var eventFound = that.getEvent(eventName);
+            whichEventFound.call(that, eventName, eventFound);
+        } else {
+            whichEventNotFound.call(that, eventName);
         }
     };
 

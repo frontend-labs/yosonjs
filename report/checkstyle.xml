@@ -77,17 +77,6 @@
 
 <file name="src/comps/comunicator.js">
   
-  <error
-    line="67"
-    severity="warning"
-    message="Cyclomatic: 3,
-    Halstead: 10.385
-    | Effort: 2454.4
-    | Volume: 236.35
-    | Vocabulary: 22"
-    source="&lt;anonymous&gt;.finderEvents"
-    />
-  
 </file>
 
 

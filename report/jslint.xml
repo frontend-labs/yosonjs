@@ -57,16 +57,6 @@
 </file>
 <file name="src/comps/comunicator.js">
   
-  <issue
-    line="67"
-    char="&lt;anonymous&gt;.finderEvents"
-    evidence="&lt;anonymous&gt;.finderEvents is too complicated"
-    reason="Cyclomatic: 3,
-    Halstead: 10.385
-    | Effort: 2454.4
-    | Volume: 236.35
-    | Vocabulary: 22" />
-  
 </file>
 <file name="src/core.js">
   
