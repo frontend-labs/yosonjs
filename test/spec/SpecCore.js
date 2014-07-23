@@ -38,10 +38,6 @@ define([
             expect(true).toBeTruthy();
         });
 
-        it('should be get all components of the core', function(){
-            var components = yOSON.AppCore.getComponents();
-            expect(true).toBeTruthy();
-        });
     });
 
 });

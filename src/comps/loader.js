@@ -33,9 +33,7 @@ define(
 
     Loader.prototype.checkLevelName = function(levelName){
         var result = "";
-        if(typeof levelName === "undefined"){
-
-        } else {
+        if(typeof levelName !== "undefined"){
             result = levelName;
         }
         return result;

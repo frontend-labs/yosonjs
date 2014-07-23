@@ -3,20 +3,13 @@
 <file name="src/comps/dependency-manager.js">
   
 </file>
-<file name="src/comps/modular.js">
-  
-  <issue
-    line="3"
-    char="&lt;anonymous&gt;"
-    evidence="&lt;anonymous&gt; is too complicated"
-    reason="Cyclomatic: 1,
-    Halstead: 8.6364
-    | Effort: 6200.8
-    | Volume: 717.99
-    | Vocabulary: 27" />
+<file name="src/comps/modular-manager.js">
   
 </file>
 <file name="src/yoson.js">
+  
+</file>
+<file name="src/comps/modular.js">
   
 </file>
 <file name="src/comps/loader.js">

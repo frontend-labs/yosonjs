@@ -339,49 +339,32 @@
     yOSON.Components.DependencyManager = DependencyManager;
     
 
+
     //clase with pattern factory with the idea of create modules
-    var Modular = function(){
-        this.modules = {};
-        this.runningModules = {};
-        this.skeletonModule = {};
-        this.entityBridge = {};
-        this.alreadyAllModulesBeRunning = null;
+    var Modular = function(entityBridge){
+        this.entityBridge = entityBridge;
+        this.moduleInstance = "";
+        this.status = "stop";
     };
 
-    //receive one method for the entity comunicator on modules
-    Modular.prototype.addMethodToBrigde = function(methodName, methodSelf){
-        this.entityBridge[methodName] = methodSelf;
-    };
-
-    //adding a module
-    Modular.prototype.addModule = function(moduleName, moduleDefinition){
-        if(!this.existsModule(moduleName)){
-            this.modules[moduleName] = this.createDefinitionModule(moduleName, moduleDefinition);
-        }
-    };
-
-    //return the complete definition of an module with the components
-    Modular.prototype.getModuleDefinition = function(moduleName){
-        var that = this,
-            module = that.getModule(moduleName),
-            moduleInstance = module.moduleDefinition(that.entityBridge);
-
+    //create a empty context of module
+    Modular.prototype.create = function(moduleDefinition){
+        var moduleInstance = moduleDefinition(this.entityBridge);
         for(var propertyName in moduleInstance){
             var method = moduleInstance[propertyName];
-            moduleInstance[propertyName] = that.addFunctionToDefinitionModule(moduleName, propertyName, method);
+            moduleInstance[propertyName] = this.generateModularDefinition(propertyName, method);
         }
-
-        return moduleInstance;
+        this.moduleInstance = moduleInstance;
     };
 
-    //create a method taking a name and function self
-    Modular.prototype.addFunctionToDefinitionModule = function(moduleName, functionName, functionSelf){
+    //create a definition of module self
+    Modular.prototype.generateModularDefinition = function(functionName, functionSelf){
         if(typeof functionSelf === "function"){
             return function(){
                 try {
                     return functionSelf.apply(this, arguments);
                 } catch( ex ){
-                    console.log("Modulo:"+ moduleName + "." + functionName + "(): " + ex.message);
+                    console.log(functionName + "(): " + ex.message);
                 }
             };
         } else {
@@ -389,36 +372,10 @@
         }
     };
 
-    //verifying the existence of one module by name
-    Modular.prototype.existsModule = function(moduleName){
-        var founded = false;
-        if(this.getModule(moduleName)){
-            founded = true;
-        }
-        return founded;
-    };
-
-    //return the module from the collection of modules
-    Modular.prototype.getModule = function(moduleName){
-        return this.modules[moduleName];
-    };
-
-    // return the skeleton for the creation of module
-    //creator of the definition ready for merge with the components
-    Modular.prototype.createDefinitionModule = function(moduleName, moduleDefinition){
-        this.skeletonModule[moduleName] = {
-            'moduleDefinition': moduleDefinition
-        };
-        return this.skeletonModule[moduleName];
-    };
-
-    //running the module
-    Modular.prototype.runModule = function(moduleName, optionalParameters){
-        var parameters = this.dealParamaterOfModule(optionalParameters);
-        parameters.moduleName = moduleName;
-        if(this.existsModule(moduleName)){
-            this.runInitMethodOfModule(moduleName, parameters);
-        }
+    //start a simple module
+    Modular.prototype.start = function(parameters){
+        var params = this.dealParamaterOfModule(parameters);
+        this.runInitMethodOfModule(params);
     };
 
     Modular.prototype.dealParamaterOfModule = function(parametersOfModule){
@@ -429,15 +386,71 @@
         return newParameters;
     };
 
-    Modular.prototype.runInitMethodOfModule = function(moduleName, parameters){
-        var moduleDefinition = this.getModuleDefinition(moduleName);
+    Modular.prototype.runInitMethodOfModule = function(parameters){
+        var moduleDefinition = this.moduleInstance;
         if(typeof moduleDefinition.init === "function"){
-            this.setStatusModule(moduleName, "run");
+            this.setStatusModule("run");
             moduleDefinition.init(parameters);
         }
     };
+
+    Modular.prototype.setStatusModule = function(statusName){
+        this.status = statusName;
+    };
+
+    Modular.prototype.getStatusModule = function(){
+        return this.status;
+    };
+
+    yOSON.Components.Modular = Modular;
+    
+
+
+    var ModularManager = function(){
+        this.modules = {};
+        this.runningModules = {};
+        this.entityBridge = {};
+        this.alreadyAllModulesBeRunning = null;
+    };
+
+    //receive one method for the entity comunicator on modules
+    ModularManager.prototype.addMethodToBrigde = function(methodName, methodSelf){
+        this.entityBridge[methodName] = methodSelf;
+    };
+
+    //adding a module
+    ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
+        var modules = this.modules;
+        if(!this.existsModule(moduleName)){
+            modules[moduleName] = new Modular(this.entityBridge);
+            modules[moduleName].create(moduleDefinition);
+        }
+    };
+
+    //verifying the existence of one module by name
+    ModularManager.prototype.existsModule = function(moduleName){
+        var founded = false;
+        if(this.getModule(moduleName)){
+            founded = true;
+        }
+        return founded;
+    };
+
+    //return the module from the collection of modules
+    ModularManager.prototype.getModule = function(moduleName){
+        return this.modules[moduleName];
+    };
+
+    //running the module
+    ModularManager.prototype.runModule = function(moduleName, optionalParameters){
+        var module = this.getModule(moduleName);
+        if(this.existsModule(moduleName)){
+            module.start(optionalParameters);
+        }
+    };
+
     //running one list of modules
-    Modular.prototype.runModules = function(moduleNames){
+    ModularManager.prototype.runModules = function(moduleNames){
         //its necesary the parameter moduleNames must be a type Array
         if(moduleNames instanceof Array){
             for(var moduleName in moduleNames){
@@ -446,41 +459,34 @@
         }
     };
 
-    Modular.prototype.setStatusModule = function(moduleName, statusName){
-        this.modules[moduleName].status = statusName;
-    };
-
-    Modular.prototype.getStatusModule = function(moduleName){
-        return this.modules[moduleName].status;
-    };
-
-    Modular.prototype.eachModules = function(eachModule){
+    ModularManager.prototype.eachModules = function(eachModule){
         for(var moduleName in this.modules){
             eachModule.call(this, moduleName);
         }
     };
 
-    Modular.prototype.getTotalModulesRunning = function(){
+
+    ModularManager.prototype.getTotalModulesRunning = function(){
         var total = 0;
         this.eachModules(function(moduleName){
-            if(this.getStatusModule(moduleName) === "run"){
+            if(moduleName.getStatus() === "run"){
                 total++;
             }
         });
         return total;
     };
 
-    Modular.prototype.getTotalModulesStarted = function(){
+    ModularManager.prototype.getTotalModulesStarted = function(){
         var total = 0;
         this.eachModules(function(moduleName){
-            if(this.getStatusModule(moduleName) === "start"){
+            if(moduleName.getStatus() === "start"){
                 total++;
             }
         });
         return total + this.getTotalModulesRunning();
     };
 
-    Modular.prototype.allModulesRunning = function(onNotFinished, onFinished){
+    ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){
         var that = this;
         if(this.alreadyAllModulesBeRunning){
             onFinished.call(that);
@@ -503,7 +509,7 @@
         }
     };
 
-    yOSON.Components.Modular = Modular;
+    yOSON.Components.ModularManager = ModularManager;
     
 
 
@@ -621,9 +627,7 @@
 
     Loader.prototype.checkLevelName = function(levelName){
         var result = "";
-        if(typeof levelName === "undefined"){
-
-        } else {
+        if(typeof levelName !== "undefined"){
             result = levelName;
         }
         return result;
@@ -724,8 +728,8 @@
     
 
 
-    var objModular = new yOSON.Components.Modular(),
-        dependencyManager = new yOSON.Components.DependencyManager(),
+    var objModularManager = new yOSON.Components.ModularManager(),
+        objDependencyManager = new yOSON.Components.DependencyManager(),
         objComunicator = new yOSON.Components.Comunicator(),
         dependenceByModule = {};
 
@@ -733,13 +737,13 @@
 
 
         //setting the main methods in the bridge of an module
-        objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
+        objModularManager.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
             objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
         });
 
-        objModular.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
+        objModularManager.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
             var eventsWaiting = {};
-            objModular.allModulesRunning(function(){
+            objModularManager.allModulesRunning(function(){
                 eventsWaiting[eventName] = argumentsOfEvent;
             }, function(){
                 //if have events waiting
@@ -763,29 +767,23 @@
         };
 
         return {
-            getComponents: function(){
-                return {
-                    'Modular': objModular,
-                    'Comunicator': objComunicator,
-                    'DependencyManager': dependencyManager
-                };
-            },
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
-                objModular.addModule(moduleName, moduleDefinition);
+                objModularManager.addModule(moduleName, moduleDefinition);
             },
             runModule: function(moduleName, optionalParameter){
                 var dependencesToLoad = getDependencesByModule(moduleName);
-                objModular.setStatusModule(moduleName, "start");
-                dependencyManager.ready(dependencesToLoad,function(){
-                    objModular.runModule(moduleName, optionalParameter);
+                var module = objModularManager.getModule(moduleName);
+                module.setStatusModule("start");
+                objDependencyManager.ready(dependencesToLoad,function(){
+                    objModularManager.runModule(moduleName, optionalParameter);
                 });
             },
             setStaticHost: function(hostName){
-                dependencyManager.setStaticHost(hostName);
+                objDependencyManager.setStaticHost(hostName);
             },
             setVersionUrl: function(versionCode){
-                dependencyManager.setVersionUrl(versionCode);
+                objDependencyManager.setVersionUrl(versionCode);
             }
         };
     })();

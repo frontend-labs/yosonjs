@@ -1,7 +1,7 @@
 //===========
-var objModular = new yOSON.modular();
-//define the modules
-objModular.addModule('moduleA', function(){
+var objModularA = new Modular();
+//create a module
+objModularA.create(function(){
     var init = function(){
         console.log("hello I'm moduleA!!");
     };
@@ -10,33 +10,52 @@ objModular.addModule('moduleA', function(){
     }
 });
 
-objModular.addModule('moduleB', function(Sb){
+var objModularB = new Modular({
+    methodInside: "ey!"
+});
+
+objModularB.create(function(Sb){
     var init = function(){
-        console.log("hello I'm moduleB!!");
+        console.log("hello I'm moduleB!!", Sb.methodInside);
     };
     return {
         init: init
     }
 });
 
-objModular.addModule('moduleC', function(Sb){
+objModularA.start();
+objModularB.start();
+
+var objModularManager = new ModularManager();
+
+objModularManager.addModule("moduleA", function(){
     var init = function(){
-        console.log("hello I'm moduleC!!");
+        console.log("hellooooooooooooo I'm in the module manager comp!!");
     };
     return {
         init: init
     }
 });
 
-objModular.addModule('moduleD', function(Sb){
-    var init = function(){
-        console.log("hello I'm moduleD!!");
-    };
-    return {
-        init: init
-    }
-});
-//run the module
-objModular.runModule('moduleA');
-objModular.runModule('moduleB');
-objModular.runModules([ 'moduleC', 'moduleD']);
+objModularManager.runModule("moduleA");
+//objModular.addModule('moduleC', function(Sb){
+    //var init = function(){
+        //console.log("hello I'm moduleC!!");
+    //};
+    //return {
+        //init: init
+    //}
+//});
+
+//objModular.addModule('moduleD', function(Sb){
+    //var init = function(){
+        //console.log("hello I'm moduleD!!");
+    //};
+    //return {
+        //init: init
+    //}
+//});
+//start a module
+//objModular.runModule('moduleA');
+//objModular.runModule('moduleB');
+//objModular.runModules([ 'moduleC', 'moduleD']);

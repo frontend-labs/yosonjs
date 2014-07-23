@@ -1,13 +1,13 @@
 define([
     "yoson",
     "comps/dependency-manager",
-    "comps/modular",
+    "comps/modular-manager",
     "comps/comunicator",
     "comps/loader",
 ], function(yOSON){
 
-    var objModular = new yOSON.Components.Modular(),
-        dependencyManager = new yOSON.Components.DependencyManager(),
+    var objModularManager = new yOSON.Components.ModularManager(),
+        objDependencyManager = new yOSON.Components.DependencyManager(),
         objComunicator = new yOSON.Components.Comunicator(),
         dependenceByModule = {};
 
@@ -15,13 +15,13 @@ define([
 
 
         //setting the main methods in the bridge of an module
-        objModular.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
+        objModularManager.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
             objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
         });
 
-        objModular.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
+        objModularManager.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
             var eventsWaiting = {};
-            objModular.allModulesRunning(function(){
+            objModularManager.allModulesRunning(function(){
                 eventsWaiting[eventName] = argumentsOfEvent;
             }, function(){
                 //if have events waiting
@@ -45,29 +45,23 @@ define([
         };
 
         return {
-            getComponents: function(){
-                return {
-                    'Modular': objModular,
-                    'Comunicator': objComunicator,
-                    'DependencyManager': dependencyManager
-                };
-            },
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
-                objModular.addModule(moduleName, moduleDefinition);
+                objModularManager.addModule(moduleName, moduleDefinition);
             },
             runModule: function(moduleName, optionalParameter){
                 var dependencesToLoad = getDependencesByModule(moduleName);
-                objModular.setStatusModule(moduleName, "start");
-                dependencyManager.ready(dependencesToLoad,function(){
-                    objModular.runModule(moduleName, optionalParameter);
+                var module = objModularManager.getModule(moduleName);
+                module.setStatusModule("start");
+                objDependencyManager.ready(dependencesToLoad,function(){
+                    objModularManager.runModule(moduleName, optionalParameter);
                 });
             },
             setStaticHost: function(hostName){
-                dependencyManager.setStaticHost(hostName);
+                objDependencyManager.setStaticHost(hostName);
             },
             setVersionUrl: function(versionCode){
-                dependencyManager.setVersionUrl(versionCode);
+                objDependencyManager.setVersionUrl(versionCode);
             }
         };
     })();
