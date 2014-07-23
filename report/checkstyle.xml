@@ -1,46 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <checkstyle>
 
+<file name="src/comps/dependency-manager.js">
+  
+</file>
+
+
+
 <file name="src/comps/modular.js">
   
   <error
     line="3"
     severity="warning"
     message="Cyclomatic: 1,
-    Halstead: 8.5714
-    | Effort: 5761.4
-    | Volume: 672.16
-    | Vocabulary: 26"
-    source="&lt;anonymous&gt;"
-    />
-  
-  <error
-    line="102"
-    severity="warning"
-    message="Cyclomatic: 3,
-    Halstead: 8.5000
-    | Effort: 1134.2
-    | Volume: 133.44
-    | Vocabulary: 18"
-    source="&lt;anonymous&gt;.runModules"
-    />
-  
-  <error
-    line="134"
-    severity="warning"
-    message="Cyclomatic: 5,
-    Halstead: 11.471
-    | Effort: 3927.0
-    | Volume: 342.35
+    Halstead: 8.6364
+    | Effort: 6200.8
+    | Volume: 717.99
     | Vocabulary: 27"
     source="&lt;anonymous&gt;"
     />
-  
-</file>
-
-
-
-<file name="src/comps/dependency-manager.js">
   
 </file>
 

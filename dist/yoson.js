@@ -355,9 +355,7 @@
 
     //adding a module
     Modular.prototype.addModule = function(moduleName, moduleDefinition){
-        if(this.existsModule(moduleName)){
-            //mensaje ya existe modulo
-        } else {
+        if(!this.existsModule(moduleName)){
             this.modules[moduleName] = this.createDefinitionModule(moduleName, moduleDefinition);
         }
     };
@@ -434,28 +432,18 @@
     Modular.prototype.runInitMethodOfModule = function(moduleName, parameters){
         var moduleDefinition = this.getModuleDefinition(moduleName);
         if(typeof moduleDefinition.init === "function"){
-            this.runningModule(moduleName);
+            this.setStatusModule(moduleName, "run");
             moduleDefinition.init(parameters);
         }
     };
     //running one list of modules
     Modular.prototype.runModules = function(moduleNames){
-        var that = this;
         //its necesary the parameter moduleNames must be a type Array
         if(moduleNames instanceof Array){
-            for(var index = 0; index < moduleNames.length; index++){
-                var moduleName = moduleNames[index];
-                that.runModule(moduleName);
+            for(var moduleName in moduleNames){
+                this.runModule(moduleNames[moduleNames]);
             }
         }
-    };
-
-    Modular.prototype.runningModule = function(moduleName){
-        this.modules[moduleName].running = true;
-    };
-
-    Modular.prototype.moduleIsRunning = function(moduleName){
-        return this.modules[moduleName].running;
     };
 
     Modular.prototype.setStatusModule = function(moduleName, statusName){
@@ -466,26 +454,40 @@
         return this.modules[moduleName].status;
     };
 
+    Modular.prototype.eachModules = function(eachModule){
+        for(var moduleName in this.modules){
+            eachModule.call(this, moduleName);
+        }
+    };
+
+    Modular.prototype.getTotalModulesRunning = function(){
+        var total = 0;
+        this.eachModules(function(moduleName){
+            if(this.getStatusModule(moduleName) === "run"){
+                total++;
+            }
+        });
+        return total;
+    };
+
+    Modular.prototype.getTotalModulesStarted = function(){
+        var total = 0;
+        this.eachModules(function(moduleName){
+            if(this.getStatusModule(moduleName) === "start"){
+                total++;
+            }
+        });
+        return total + this.getTotalModulesRunning();
+    };
+
     Modular.prototype.allModulesRunning = function(onNotFinished, onFinished){
         var that = this;
         if(this.alreadyAllModulesBeRunning){
             onFinished.call(that);
         } else {
             var checkModulesRunning = setInterval(function(){
-                var startedModules = 0,
-                    runningModules = 0;
-
-                for(var moduleName in that.modules){
-                    if(that.moduleIsRunning(moduleName)){
-                        runningModules++;
-                    }
-                    if(that.getStatusModule(moduleName) == "start"){
-                        startedModules++;
-                    }
-                }
-
-                if(startedModules > 0){
-                    if( startedModules == runningModules){
+                if(that.getTotalModulesStarted() > 0){
+                    if( that.getTotalModulesStarted() == that.getTotalModulesRunning()){
                         this.alreadyAllModulesBeRunning = true;
                         onFinished.call(that);
                         clearInterval(checkModulesRunning);
@@ -497,13 +499,11 @@
                     onFinished.call(that);
                     clearInterval(checkModulesRunning);
                 }
-
             }, 200);
         }
     };
 
     yOSON.Components.Modular = Modular;
-
     
 
 
@@ -572,13 +572,17 @@
     Comunicator.prototype.finderEvents = function(eventNames, whichEventFound, whichEventNotFound){
         var that = this;
         for(var index = 0; index < eventNames.length;index++){
-            var eventName = eventNames[index];
-            if(that.eventAlreadyRegistered(eventName)){
-                var eventFound = that.getEvent(eventName);
-                whichEventFound.call(that, eventName, eventFound);
-            } else {
-                whichEventNotFound.call(that, eventName);
-            }
+            that.eachFindEvent(eventNames[index], whichEventFound, whichEventNotFound);
+        }
+    };
+
+    Comunicator.prototype.eachFindEvent = function(eventName, whichEventFound, whichEventNotFound){
+        var that = this;
+        if(that.eventAlreadyRegistered(eventName)){
+            var eventFound = that.getEvent(eventName);
+            whichEventFound.call(that, eventName, eventFound);
+        } else {
+            whichEventNotFound.call(that, eventName);
         }
     };
 

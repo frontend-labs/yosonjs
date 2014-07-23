@@ -47,7 +47,7 @@ define([
       it("should be run the module", function(){
           objModular.addModule(moduleName, moduleSelf);
           objModular.runModule(moduleName);
-          expect(objModular.moduleIsRunning(moduleName)).toBeTruthy();
+          expect(objModular.getStatusModule(moduleName)).toEqual('run');
       });
 
       it("should be setting the module status", function(){

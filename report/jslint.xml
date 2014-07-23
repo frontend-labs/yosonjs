@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <jslint>
+<file name="src/comps/dependency-manager.js">
+  
+</file>
 <file name="src/comps/modular.js">
   
   <issue
@@ -7,33 +10,10 @@
     char="&lt;anonymous&gt;"
     evidence="&lt;anonymous&gt; is too complicated"
     reason="Cyclomatic: 1,
-    Halstead: 8.5714
-    | Effort: 5761.4
-    | Volume: 672.16
-    | Vocabulary: 26" />
-  
-  <issue
-    line="102"
-    char="&lt;anonymous&gt;.runModules"
-    evidence="&lt;anonymous&gt;.runModules is too complicated"
-    reason="Cyclomatic: 3,
-    Halstead: 8.5000
-    | Effort: 1134.2
-    | Volume: 133.44
-    | Vocabulary: 18" />
-  
-  <issue
-    line="134"
-    char="&lt;anonymous&gt;"
-    evidence="&lt;anonymous&gt; is too complicated"
-    reason="Cyclomatic: 5,
-    Halstead: 11.471
-    | Effort: 3927.0
-    | Volume: 342.35
+    Halstead: 8.6364
+    | Effort: 6200.8
+    | Volume: 717.99
     | Vocabulary: 27" />
-  
-</file>
-<file name="src/comps/dependency-manager.js">
   
 </file>
 <file name="src/yoson.js">
