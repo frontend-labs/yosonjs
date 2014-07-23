@@ -1,0 +1,6 @@
+Changelog v0.1
+
+Decouple Modular component with the own methods
+like a addModule, runModules, getTotalModules Running
+Create a ManagerModular like a ManagerDependences and same
+Modular with the paradigm of Dependency component
