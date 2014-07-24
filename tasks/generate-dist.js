@@ -12,7 +12,7 @@ module.exports = function(grunt){
             out:"dist/yoson.js",
             wrap: {
                 start: "",
-                end:"return yOSON;})(yOSON);"
+                end:"return yOSON;})();"
             }
         },
         requireDefineEnd = /return (.+;)(\n|\t| )+\}\);?(\n|\t| )*$/;
@@ -21,7 +21,7 @@ module.exports = function(grunt){
         console.log('name', name);
         contents = contents.replace( /define\([^{]*?{/, "").replace(requireDefineEnd, "");
         if(name == "yoson"){
-            contents = contents + " (function(namespace){";
+            contents = contents + " (function(){";
         }
         return contents;
     };
