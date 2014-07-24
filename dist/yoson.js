@@ -7,7 +7,7 @@
 
     yOSON.Components = {};
 
-     (function(namespace){
+     (function(){
 
     /**
      * Class dealer of an url and indicates if ready or not
@@ -788,4 +788,4 @@
         };
     })();
 
-    return yOSON;})(yOSON);
+    return yOSON;})();
