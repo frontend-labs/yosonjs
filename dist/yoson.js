@@ -131,7 +131,7 @@
     };
 
     yOSON.Components.Dependency = Dependency;
-    
+
 
     /**
      * Class manager of one or many requests
@@ -246,6 +246,7 @@
         if(this.alreadyInCollection(id)){
             return 'the dependence already appended';
         } else {
+            console.log('request url', url);
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
             this.data[id].request();
@@ -264,9 +265,11 @@
         that = this;
         var queueQuering = function(list){
             var urlToQuery = that.transformUrl(list[index]);
+            console.log('urlToQuery..', list[index]);
             if(index < list.length){
                 that.addScript(urlToQuery);
                 that.avaliable(urlToQuery, function(){
+                    console.log('querying..', urlToQuery);
                     index++;
                     queueQuering(urlList);
                 });
@@ -337,7 +340,7 @@
     };
 
     yOSON.Components.DependencyManager = DependencyManager;
-    
+
 
 
     //clase with pattern factory with the idea of create modules
@@ -403,7 +406,7 @@
     };
 
     yOSON.Components.Modular = Modular;
-    
+
 
 
     var ModularManager = function(){
@@ -510,7 +513,7 @@
     };
 
     yOSON.Components.ModularManager = ModularManager;
-    
+
 
 
     //Clase que se orienta al manejo de comunicacion entre modulos
@@ -593,7 +596,7 @@
     };
 
     yOSON.Components.Comunicator = Comunicator;
-    
+
 //Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
 
 
@@ -725,7 +728,7 @@
 
     yOSON.Components.Loader = Loader;
 
-    
+
 
 
     var objModularManager = new yOSON.Components.ModularManager(),
