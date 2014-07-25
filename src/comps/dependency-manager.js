@@ -132,8 +132,8 @@ define([
         var index = 0,
         that = this;
         var queueQuering = function(list){
-            var urlToQuery = that.transformUrl(list[index]);
             if(index < list.length){
+                var urlToQuery = that.transformUrl(list[index]);
                 that.addScript(urlToQuery);
                 that.avaliable(urlToQuery, function(){
                     index++;
@@ -202,7 +202,7 @@ define([
      * @return {Object} the object Dependency created by the url
      */
     DependencyManager.prototype.alreadyLoaded = function(id){
-        return this.loaded[id];
+        return ( typeof this.loaded[id] !== "undefined");
     };
 
     yOSON.Components.DependencyManager = DependencyManager;
