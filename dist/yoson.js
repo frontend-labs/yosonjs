@@ -131,7 +131,7 @@
     };
 
     yOSON.Components.Dependency = Dependency;
-
+    
 
     /**
      * Class manager of one or many requests
@@ -246,7 +246,6 @@
         if(this.alreadyInCollection(id)){
             return 'the dependence already appended';
         } else {
-            console.log('request url', url);
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
             this.data[id].request();
@@ -264,12 +263,10 @@
         var index = 0,
         that = this;
         var queueQuering = function(list){
-            var urlToQuery = that.transformUrl(list[index]);
-            console.log('urlToQuery..', list[index]);
             if(index < list.length){
+                var urlToQuery = that.transformUrl(list[index]);
                 that.addScript(urlToQuery);
                 that.avaliable(urlToQuery, function(){
-                    console.log('querying..', urlToQuery);
                     index++;
                     queueQuering(urlList);
                 });
@@ -336,11 +333,11 @@
      * @return {Object} the object Dependency created by the url
      */
     DependencyManager.prototype.alreadyLoaded = function(id){
-        return this.loaded[id];
+        return ( typeof this.loaded[id] !== "undefined");
     };
 
     yOSON.Components.DependencyManager = DependencyManager;
-
+    
 
 
     //clase with pattern factory with the idea of create modules
@@ -406,7 +403,7 @@
     };
 
     yOSON.Components.Modular = Modular;
-
+    
 
 
     var ModularManager = function(){
@@ -414,6 +411,7 @@
         this.runningModules = {};
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = null;
+        this.syncModules = [];
     };
 
     //receive one method for the entity comunicator on modules
@@ -448,18 +446,50 @@
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
         if(this.existsModule(moduleName)){
-            module.start(optionalParameters);
+            module.setStatusModule("start");
+            this.setDataModule(moduleName,optionalParameters);
+            this.runQueueModules();
         }
     };
 
-    //running one list of modules
-    ModularManager.prototype.runModules = function(moduleNames){
-        //its necesary the parameter moduleNames must be a type Array
-        if(moduleNames instanceof Array){
-            for(var moduleName in moduleNames){
-                this.runModule(moduleNames[moduleNames]);
-            }
-        }
+    ModularManager.prototype.syncModule = function(moduleName){
+        this.syncModules.push(moduleName);
+    };
+
+    ModularManager.prototype.getDataModule = function(moduleName){
+        return this.modules[moduleName].data;
+    };
+
+    ModularManager.prototype.setDataModule = function(moduleName, data){
+        this.modules[moduleName].data = data;
+    };
+
+    ModularManager.prototype.runQueueModules = function(){
+        var that = this,
+            index = 0,
+            runModules = function(list){
+                if(list.length > index){
+                    that.whenModuleHaveStatus(list[index], "start", function(moduleName, moduleSelf){
+                        var data = that.getDataModule(moduleName);
+                        moduleSelf.start(data);
+                    });
+                    that.whenModuleHaveStatus(list[index], "run", function(){
+                        index++;
+                        runModules(list);
+                    });
+                }
+            };
+        runModules(that.syncModules);
+    };
+
+    ModularManager.prototype.whenModuleHaveStatus = function(moduleName, statusName, whenHaveStatus){
+        var module = this.getModule(moduleName),
+            queryStatus = setInterval(function(){
+                if(module.getStatusModule() === statusName){
+                    whenHaveStatus.call(this, moduleName, module);
+                    clearInterval(queryStatus);
+                }
+            }, 20);
     };
 
     ModularManager.prototype.eachModules = function(eachModule){
@@ -468,25 +498,22 @@
         }
     };
 
-
-    ModularManager.prototype.getTotalModulesRunning = function(){
+    ModularManager.prototype.getTotalModulesByStatus = function(statusName){
         var total = 0;
         this.eachModules(function(moduleName){
-            if(moduleName.getStatus() === "run"){
+            if(moduleName.getStatusModule() === statusName){
                 total++;
             }
         });
         return total;
     };
 
+    ModularManager.prototype.getTotalModulesRunning = function(){
+        return this.getTotalModulesByStatus("run");
+    };
+
     ModularManager.prototype.getTotalModulesStarted = function(){
-        var total = 0;
-        this.eachModules(function(moduleName){
-            if(moduleName.getStatus() === "start"){
-                total++;
-            }
-        });
-        return total + this.getTotalModulesRunning();
+        return this.getTotalModulesByStatus("start") + this.getTotalModulesRunning();
     };
 
     ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){
@@ -513,7 +540,7 @@
     };
 
     yOSON.Components.ModularManager = ModularManager;
-
+    
 
 
     //Clase que se orienta al manejo de comunicacion entre modulos
@@ -596,7 +623,7 @@
     };
 
     yOSON.Components.Comunicator = Comunicator;
-
+    
 //Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
 
 
@@ -728,7 +755,7 @@
 
     yOSON.Components.Loader = Loader;
 
-
+    
 
 
     var objModularManager = new yOSON.Components.ModularManager(),
@@ -777,7 +804,7 @@
             runModule: function(moduleName, optionalParameter){
                 var dependencesToLoad = getDependencesByModule(moduleName);
                 var module = objModularManager.getModule(moduleName);
-                module.setStatusModule("start");
+                objModularManager.syncModule(moduleName);
                 objDependencyManager.ready(dependencesToLoad,function(){
                     objModularManager.runModule(moduleName, optionalParameter);
                 });

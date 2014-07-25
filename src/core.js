@@ -52,7 +52,7 @@ define([
             runModule: function(moduleName, optionalParameter){
                 var dependencesToLoad = getDependencesByModule(moduleName);
                 var module = objModularManager.getModule(moduleName);
-                module.setStatusModule("start");
+                objModularManager.syncModule(moduleName);
                 objDependencyManager.ready(dependencesToLoad,function(){
                     objModularManager.runModule(moduleName, optionalParameter);
                 });

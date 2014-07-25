@@ -8,6 +8,7 @@ define([
         this.runningModules = {};
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = null;
+        this.syncModules = [];
     };
 
     //receive one method for the entity comunicator on modules
@@ -42,18 +43,50 @@ define([
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
         if(this.existsModule(moduleName)){
-            module.start(optionalParameters);
+            module.setStatusModule("start");
+            this.setDataModule(moduleName,optionalParameters);
+            this.runQueueModules();
         }
     };
 
-    //running one list of modules
-    ModularManager.prototype.runModules = function(moduleNames){
-        //its necesary the parameter moduleNames must be a type Array
-        if(moduleNames instanceof Array){
-            for(var moduleName in moduleNames){
-                this.runModule(moduleNames[moduleNames]);
-            }
-        }
+    ModularManager.prototype.syncModule = function(moduleName){
+        this.syncModules.push(moduleName);
+    };
+
+    ModularManager.prototype.getDataModule = function(moduleName){
+        return this.modules[moduleName].data;
+    };
+
+    ModularManager.prototype.setDataModule = function(moduleName, data){
+        this.modules[moduleName].data = data;
+    };
+
+    ModularManager.prototype.runQueueModules = function(){
+        var that = this,
+            index = 0,
+            runModules = function(list){
+                if(list.length > index){
+                    that.whenModuleHaveStatus(list[index], "start", function(moduleName, moduleSelf){
+                        var data = that.getDataModule(moduleName);
+                        moduleSelf.start(data);
+                    });
+                    that.whenModuleHaveStatus(list[index], "run", function(){
+                        index++;
+                        runModules(list);
+                    });
+                }
+            };
+        runModules(that.syncModules);
+    };
+
+    ModularManager.prototype.whenModuleHaveStatus = function(moduleName, statusName, whenHaveStatus){
+        var module = this.getModule(moduleName),
+            queryStatus = setInterval(function(){
+                if(module.getStatusModule() === statusName){
+                    whenHaveStatus.call(this, moduleName, module);
+                    clearInterval(queryStatus);
+                }
+            }, 20);
     };
 
     ModularManager.prototype.eachModules = function(eachModule){
@@ -62,25 +95,22 @@ define([
         }
     };
 
-
-    ModularManager.prototype.getTotalModulesRunning = function(){
+    ModularManager.prototype.getTotalModulesByStatus = function(statusName){
         var total = 0;
         this.eachModules(function(moduleName){
-            if(moduleName.getStatus() === "run"){
+            if(moduleName.getStatusModule() === statusName){
                 total++;
             }
         });
         return total;
     };
 
+    ModularManager.prototype.getTotalModulesRunning = function(){
+        return this.getTotalModulesByStatus("run");
+    };
+
     ModularManager.prototype.getTotalModulesStarted = function(){
-        var total = 0;
-        this.eachModules(function(moduleName){
-            if(moduleName.getStatus() === "start"){
-                total++;
-            }
-        });
-        return total + this.getTotalModulesRunning();
+        return this.getTotalModulesByStatus("start") + this.getTotalModulesRunning();
     };
 
     ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){

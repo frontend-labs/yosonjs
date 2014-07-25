@@ -34,8 +34,9 @@ define([
       it("should be run the module", function(){
           objModularManager.addModule(moduleName, moduleSelf);
           objModularManager.runModule(moduleName);
-          var module = objModularManager.getModule(moduleName);
-          expect(module.getStatusModule()).toEqual('run');
+          objModularManager.whenModuleHaveStatus(moduleName, 'run', function(name, moduleSelf){
+              expect(moduleSelf.getStatusModule()).toEqual('run');
+          });
       });
 
       it("should be setting the module status", function(){
@@ -59,8 +60,9 @@ define([
 
           spyOn(objModularManager, 'runModule').andCallThrough();
           objModularManager.runModule('moduleA');
-          expect(methodToBridge).toHaveBeenCalled();
-
+          objModularManager.whenModuleHaveStatus('moduleA', 'run', function(name, moduleSelf){
+              expect(methodToBridge).toHaveBeenCalled();
+          });
       });
 
   });

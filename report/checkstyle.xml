@@ -7,12 +7,6 @@
 
 
 
-<file name="src/comps/modular-manager.js">
-  
-</file>
-
-
-
 <file name="src/yoson.js">
   
 </file>
@@ -35,6 +29,23 @@
     | Effort: 4903.5
     | Volume: 582.29
     | Vocabulary: 24"
+    source="&lt;anonymous&gt;"
+    />
+  
+</file>
+
+
+
+<file name="src/comps/modular-manager.js">
+  
+  <error
+    line="4"
+    severity="warning"
+    message="Cyclomatic: 1,
+    Halstead: 8.2143
+    | Effort: 5251.1
+    | Volume: 639.26
+    | Vocabulary: 26"
     source="&lt;anonymous&gt;"
     />
   
