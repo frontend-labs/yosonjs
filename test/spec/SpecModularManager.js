@@ -65,5 +65,47 @@ define([
           });
       });
 
+      describe("handling many modules", function(){
+          beforeEach(function(){
+
+              objModularManager.addModule('moduleA', function(objBridge){
+                  return {init: function(){}}
+              });
+              objModularManager.addModule('moduleB', function(objBridge){
+                  return {init: function(){}}
+              });
+              objModularManager.addModule('moduleC', function(objBridge){
+                  return {init: function(){}}
+              });
+
+              objModularManager.runModule('moduleA');
+              objModularManager.runModule('moduleB');
+              objModularManager.runModule('moduleC');
+
+              jasmine.Clock.useMock();
+          });
+
+          it("should be return all modules started", function(){
+              expect(objModularManager.getTotalModulesStarted()).toEqual(3);
+          });
+
+          xit("should be execute when not all modules running", function(){
+              var methodWhenNotFinishRunningAll = jasmine.createSpy();
+              objModularManager.allModulesRunning(methodWhenNotFinishRunningAll, function(){});
+              waits(3000);
+              runs(function(){
+                  expect(methodWhenNotFinishRunningAll).toHaveBeenCalled();
+              });
+          });
+
+          xit("should be execute when all modules running", function(){
+              var methodWhenFinishRunningAll = jasmine.createSpy();
+              objModularManager.allModulesRunning(function(){}, methodWhenFinishRunningAll);
+              waits(3000);
+              runs(function(){
+                  expect(methodWhenFinishRunningAll).toHaveBeenCalled();
+              });
+          });
+      });
   });
 });

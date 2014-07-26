@@ -12,8 +12,6 @@ define([
         dependenceByModule = {};
 
     yOSON.AppCore = (function(){
-
-
         //setting the main methods in the bridge of an module
         objModularManager.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
             objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
@@ -45,6 +43,15 @@ define([
         };
 
         return {
+            getStatusModule: function(moduleName){
+                var module = objModularManager.getModule(moduleName);
+                return  module.getStatusModule();
+            },
+            whenModule: function(moduleName, status, methodWhenRun){
+                objModularManager.whenModuleHaveStatus(moduleName, status, function(){
+                    methodWhenRun.call(this);
+                });
+            },
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
                 objModularManager.addModule(moduleName, moduleDefinition);

@@ -91,14 +91,15 @@ define([
 
     ModularManager.prototype.eachModules = function(eachModule){
         for(var moduleName in this.modules){
-            eachModule.call(this, moduleName);
+            var moduleSelf = this.getModule(moduleName);
+            eachModule.call(this, moduleName, moduleSelf);
         }
     };
 
     ModularManager.prototype.getTotalModulesByStatus = function(statusName){
         var total = 0;
-        this.eachModules(function(moduleName){
-            if(moduleName.getStatusModule() === statusName){
+        this.eachModules(function(moduleName, moduleSelf){
+            if(moduleSelf.getStatusModule() === statusName){
                 total++;
             }
         });
