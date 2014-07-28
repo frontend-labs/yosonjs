@@ -13,6 +13,12 @@
 
 
 
+<file name="src/comps/modular-manager.js">
+  
+</file>
+
+
+
 <file name="src/yoson.js">
   
 </file>
@@ -20,23 +26,6 @@
 
 
 <file name="src/comps/modular.js">
-  
-</file>
-
-
-
-<file name="src/comps/modular-manager.js">
-  
-  <error
-    line="4"
-    severity="warning"
-    message="Cyclomatic: 1,
-    Halstead: 8.2143
-    | Effort: 5251.1
-    | Volume: 639.26
-    | Vocabulary: 26"
-    source="&lt;anonymous&gt;"
-    />
   
 </file>
 
@@ -55,6 +44,12 @@
 
 
 <file name="src/core.js">
+  
+</file>
+
+
+
+<file name="src/comps/modular-monitor.js">
   
 </file>
 

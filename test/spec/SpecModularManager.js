@@ -23,12 +23,12 @@ define([
 
       it('should be add a module', function(){
           objModularManager.addModule(moduleName, moduleSelf);
-          expect(objModularManager.existsModule(moduleName)).toBeTruthy();
+          expect(objModularManager.getModule(moduleName)).toBeTruthy();
       });
 
       it("should be return true when the module exists", function(){
           objModularManager.addModule(moduleName, moduleSelf);
-          expect(objModularManager.existsModule(moduleName)).toBeTruthy();
+          expect(objModularManager.getModule(moduleName)).toBeTruthy();
       });
 
       it("should be run the module", function(){
@@ -85,27 +85,6 @@ define([
               jasmine.Clock.useMock();
           });
 
-          it("should be return all modules started", function(){
-              expect(objModularManager.getTotalModulesStarted()).toEqual(3);
-          });
-
-          xit("should be execute when not all modules running", function(){
-              var methodWhenNotFinishRunningAll = jasmine.createSpy();
-              objModularManager.allModulesRunning(methodWhenNotFinishRunningAll, function(){});
-              waits(3000);
-              runs(function(){
-                  expect(methodWhenNotFinishRunningAll).toHaveBeenCalled();
-              });
-          });
-
-          xit("should be execute when all modules running", function(){
-              var methodWhenFinishRunningAll = jasmine.createSpy();
-              objModularManager.allModulesRunning(function(){}, methodWhenFinishRunningAll);
-              waits(3000);
-              runs(function(){
-                  expect(methodWhenFinishRunningAll).toHaveBeenCalled();
-              });
-          });
       });
   });
 });

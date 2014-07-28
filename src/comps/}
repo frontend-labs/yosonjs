@@ -1,0 +1,27 @@
+define(function(){
+    var ModularMonitor = function(){
+        this.modules = {};
+    };
+
+    ModularMonitor.prototype.updateStatus = function(moduleName, statusName){
+        this.modules[moduleName] = statusName;
+    };
+
+    ModularMonitor.prototype.eachModules = function(eachModule){
+        for(var moduleName in this.modules){
+            var status = modules[moduleName];
+            eachModule.call(this, moduleName, moduleSelf);
+        }
+    };
+
+    ModularMonitor.prototype.getTotalModulesByStatus = function(statusName){
+        var total = 0;
+        this.eachModules(function(moduleName, moduleSelf){
+            if(moduleSelf.getStatusModule() === statusName){
+                total++;
+            }
+        });
+        return total;
+    }
+
+});

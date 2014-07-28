@@ -405,6 +405,41 @@
     yOSON.Components.Modular = Modular;
     
 
+    var ModularMonitor = function(){
+        this.modules = {};
+    };
+
+    ModularMonitor.prototype.updateStatus = function(moduleName, statusName){
+        this.modules[moduleName] = statusName;
+    };
+
+    ModularMonitor.prototype.eachModules = function(eachModule){
+        for(var moduleName in this.modules){
+            var status = this.modules[moduleName];
+            eachModule.call(this, status);
+        }
+    };
+
+    ModularMonitor.prototype.getTotalModulesByStatus = function(statusName){
+        var total = 0;
+        this.eachModules(function(status){
+            if(status === statusName){
+                total++;
+            }
+        });
+        return total;
+    };
+
+    ModularMonitor.prototype.getTotalModulesRunning = function(){
+        return this.getTotalModulesByStatus('run');
+    };
+
+    ModularMonitor.prototype.getTotalModulesStarted = function(){
+        return this.getTotalModulesByStatus('start') + this.getTotalModulesRunning();
+    };
+
+    
+
 
     var ModularManager = function(){
         this.modules = {};
@@ -412,6 +447,7 @@
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = null;
         this.syncModules = [];
+        this.objMonitor = new ModularMonitor();
     };
 
     //receive one method for the entity comunicator on modules
@@ -422,19 +458,10 @@
     //adding a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
-        if(!this.existsModule(moduleName)){
+        if(!this.getModule(moduleName)){
             modules[moduleName] = new Modular(this.entityBridge);
             modules[moduleName].create(moduleDefinition);
         }
-    };
-
-    //verifying the existence of one module by name
-    ModularManager.prototype.existsModule = function(moduleName){
-        var founded = false;
-        if(this.getModule(moduleName)){
-            founded = true;
-        }
-        return founded;
     };
 
     //return the module from the collection of modules
@@ -445,9 +472,10 @@
     //running the module
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
-        if(this.existsModule(moduleName)){
+        if(this.getModule(moduleName)){
             module.setStatusModule("start");
-            this.setDataModule(moduleName,optionalParameters);
+            this.objMonitor.updateStatus(moduleName, "start");
+            this.dataModule(moduleName,optionalParameters);
             this.runQueueModules();
         }
     };
@@ -456,12 +484,11 @@
         this.syncModules.push(moduleName);
     };
 
-    ModularManager.prototype.getDataModule = function(moduleName){
+    ModularManager.prototype.dataModule = function(moduleName, data){
+        if(typeof data !== "undefined"){
+            this.modules[moduleName].data = data;
+        }
         return this.modules[moduleName].data;
-    };
-
-    ModularManager.prototype.setDataModule = function(moduleName, data){
-        this.modules[moduleName].data = data;
     };
 
     ModularManager.prototype.runQueueModules = function(){
@@ -469,11 +496,13 @@
             index = 0,
             runModules = function(list){
                 if(list.length > index){
-                    that.whenModuleHaveStatus(list[index], "start", function(moduleName, moduleSelf){
-                        var data = that.getDataModule(moduleName);
+                    var module = list[index];
+                    that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
+                        that.objMonitor.updateStatus(moduleName, "run");
+                        var data = that.dataModule(moduleName);
                         moduleSelf.start(data);
                     });
-                    that.whenModuleHaveStatus(list[index], "run", function(){
+                    that.whenModuleHaveStatus(module, "run", function(){
                         index++;
                         runModules(list);
                     });
@@ -492,39 +521,15 @@
             }, 20);
     };
 
-    ModularManager.prototype.eachModules = function(eachModule){
-        for(var moduleName in this.modules){
-            var moduleSelf = this.getModule(moduleName);
-            eachModule.call(this, moduleName, moduleSelf);
-        }
-    };
-
-    ModularManager.prototype.getTotalModulesByStatus = function(statusName){
-        var total = 0;
-        this.eachModules(function(moduleName, moduleSelf){
-            if(moduleSelf.getStatusModule() === statusName){
-                total++;
-            }
-        });
-        return total;
-    };
-
-    ModularManager.prototype.getTotalModulesRunning = function(){
-        return this.getTotalModulesByStatus("run");
-    };
-
-    ModularManager.prototype.getTotalModulesStarted = function(){
-        return this.getTotalModulesByStatus("start") + this.getTotalModulesRunning();
-    };
-
     ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){
-        var that = this;
+        var that = this,
+            objMonitor = this.objMonitor;
         if(this.alreadyAllModulesBeRunning){
             onFinished.call(that);
         } else {
             var checkModulesRunning = setInterval(function(){
-                if(that.getTotalModulesStarted() > 0){
-                    if( that.getTotalModulesStarted() == that.getTotalModulesRunning()){
+                if(objMonitor.getTotalModulesStarted() > 0){
+                    if( objMonitor.getTotalModulesStarted() == objMonitor.getTotalModulesRunning()){
                         this.alreadyAllModulesBeRunning = true;
                         onFinished.call(that);
                         clearInterval(checkModulesRunning);
@@ -625,14 +630,67 @@
 
     yOSON.Components.Comunicator = Comunicator;
     
+
+    var LoaderSchema = function(schema){
+        this.modules = schema.modules;
+        this.modules.allModules = function(){};
+        this.modules.byDefault = function(){};
+
+        this.controllers = {
+            byDefault: function(){
+
+            }
+        };
+        this.actions = {
+            byDefault: function(){
+
+            }
+        };
+    };
+
+    LoaderSchema.prototype.appendMethod = function(nodeObject, methodName, methodSelf){
+        if(typeof nodeObject[methodName] !== "function"){
+            nodeObject[methodName] = methodSelf;
+        }
+    };
+
+    LoaderSchema.prototype.overrideModuleLevel = function(moduleName, moduleNode){
+        this.appendMethod(moduleNode, 'allControllers', function(){});
+        this.modules[moduleName] = moduleNode;
+        this.modules = this.modules;
+    };
+
+    LoaderSchema.prototype.setControllers = function(moduleName){
+        this.controllers = this.modules[moduleName].controllers;
+    };
+
+    LoaderSchema.prototype.overrideControllerLevel = function(controllerName, controllerNode){
+        this.appendMethod(controllerNode, 'allActions', function(){});
+        this.controllers[controllerName] = controllerNode;
+    };
+
+    LoaderSchema.prototype.setActions = function(controllerName){
+        this.actions = this.controllers[controllerName].actions;
+    };
+
+    LoaderSchema.prototype.getLevel =function(levelName){
+        return this[levelName];
+    };
+
+    LoaderSchema.prototype.getNodeByLevel =function(levelName, nodeName){
+        return this[levelName][nodeName];
+    };
+
+    LoaderSchema.prototype.getDefaultMethodInLevel = function(levelName){
+        this[levelName].byDefault();
+    };
+
+    
 //Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
 
 
     var Loader = function(schema){
-        this.schema = schema;
-        this.modules = this.schema.modules;
-        this.controllers = {};
-        this.actions = {};
+        this.objSchema = new LoaderSchema(schema);
     };
 
     Loader.prototype.init = function(moduleName, controllerName, actionName){
@@ -640,19 +698,16 @@
         var moduleNameToQuery = this.checkLevelName(moduleName);
         var controllerNameToQuery = this.checkLevelName(controllerName);
         var actionNameToQuery = this.checkLevelName(actionName);
+        var objSchema = this.objSchema;
 
         this.runModuleLevel(moduleNameToQuery, function(moduleFound){
-            this.runControllerLevel(moduleFound, controllerNameToQuery , function(controllerFound){
-                this.runActionLevel(controllerFound, actionNameToQuery, function(actionFound){
+            moduleFound.allControllers();
+            this.runControllerLevel(controllerNameToQuery, function(controllerFound){
+                controllerFound.allActions();
+                this.runActionLevel(actionNameToQuery, function(actionFound){
                     actionFound();
-                }, function(controllerSelf){
-                    this.getByDefaultInActionLevel(controllerSelf);
                 });
-            }, function(moduleSelf){
-                this.getByDefaultInControllerLevel(moduleSelf);
             });
-        }, function(){
-            this.getByDefaultInModuleLevel();
         });
     };
 
@@ -664,93 +719,46 @@
         return result;
     };
 
-    Loader.prototype.getModuleByName = function(moduleName){
-        return this.modules[moduleName];
-    };
+    Loader.prototype.runModuleLevel = function(moduleName, onModuleFound){
+        var objSchema = this.objSchema;
+        var moduleLevel = objSchema.getLevel('modules');
+        moduleLevel.allModules();
 
-    Loader.prototype.existsModuleByName = function(moduleName){
-        var result = false;
-        if(this.getModuleByName(moduleName)){
-            result = true;
-        }
-        return result;
-    };
+        if(moduleLevel[moduleName]){
+            var module = moduleLevel[moduleName];
 
-    Loader.prototype.getByDefaultInModuleLevel = function(){
-        if(typeof this.modules.byDefault === "function"){
-            this.modules.byDefault();
-        } else {
-            throw new Error("The level module dont have the default module or not is a function");
-        }
-    };
+            objSchema.overrideModuleLevel(moduleName, module);
+            objSchema.setControllers(moduleName);
 
-    Loader.prototype.runModuleLevel = function(moduleName, onModuleFound, onModuleNotFound){
-        this.schema.modules.allModules();
-        if(this.existsModuleByName(moduleName)){
-            var module = this.getModuleByName(moduleName);
             onModuleFound.call(this, module);
         } else {
-            onModuleNotFound.call(this);
+            objSchema.getDefaultMethodInLevel('modules');
         }
     };
 
-    Loader.prototype.getControllerByNameInModule = function(controllerName, moduleSelf){
-        return moduleSelf.controllers[controllerName];
-    };
+    Loader.prototype.runControllerLevel = function(controllerName, onControllerFound){
+        var objSchema = this.objSchema,
+            controllerLevel = objSchema.getLevel('controllers');
 
-    Loader.prototype.existsControllerByName = function(module, controllerName){
-        var result = false;
-        if(this.getControllerByNameInModule(controllerName, module)){
-            result = true;
-        }
-        return result;
-    };
+        if(controllerLevel[controllerName]){
+            var controller = controllerLevel[controllerName];
+            objSchema.setActions(controllerName);
 
-    Loader.prototype.getByDefaultInControllerLevel = function(moduleSelf){
-        if(typeof moduleSelf.controllers.byDefault === "function"){
-            moduleSelf.controllers.byDefault();
-        } else {
-            throw new Error("The level controller don't have the default controller or not is a function");
-        }
-    };
-
-    Loader.prototype.runControllerLevel = function(moduleSelf, controllerName, onControllerFound, onControllerNotFound){
-        moduleSelf.allControllers();
-        if(this.existsControllerByName(moduleSelf, controllerName)){
-            var controller = this.getControllerByNameInModule(controllerName, moduleSelf);
             onControllerFound.call(this, controller);
         } else {
-            onControllerNotFound.call(this, moduleSelf);
+            objSchema.getDefaultMethodInLevel('controllers');
         }
     };
 
-    Loader.prototype.getActionByNameInController = function(actionName, controller){
-        return controller.actions[actionName];
-    };
+    Loader.prototype.runActionLevel = function(actionName, onActionFound){
+        var objSchema = this.objSchema,
+            actionLevel = objSchema.getLevel('actions');
 
-    Loader.prototype.existsActionInController = function(controller, actionName){
-        var result = false;
-        if(this.getActionByNameInController(actionName, controller)){
-            result = true;
-        }
-        return result;
-    };
-
-    Loader.prototype.getByDefaultInActionLevel = function(controllerSelf){
-        if(typeof controllerSelf.actions.byDefault === "function"){
-            controllerSelf.actions.byDefault();
-        } else {
-            throw new Error("The level action don't have the default controller or not is a function");
-        }
-    };
-
-    Loader.prototype.runActionLevel = function(controllerSelf, actionName, onActionFound, onActionNotFound){
-        controllerSelf.allActions();
-        if(this.existsActionInController(controllerSelf, actionName)){
-            var action = this.getActionByNameInController(actionName, controllerSelf);
+        if(actionLevel[actionName]){
+            var action = actionLevel[actionName];
             onActionFound.call(this, action);
         } else {
-            onActionNotFound.call(this, controllerSelf);
+            objSchema.getDefaultMethodInLevel('actions');
         }
     };
 

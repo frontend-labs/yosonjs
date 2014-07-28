@@ -1,7 +1,8 @@
 define([
     "yoson",
-    "../../src/comps/modular.js"
-], function(yOSON, Modular){
+    "../../src/comps/modular.js",
+    "../../src/comps/modular-monitor.js"
+], function(yOSON, Modular, ModularMonitor){
 
     var ModularManager = function(){
         this.modules = {};
@@ -9,6 +10,7 @@ define([
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = null;
         this.syncModules = [];
+        this.objMonitor = new ModularMonitor();
     };
 
     //receive one method for the entity comunicator on modules
@@ -19,19 +21,10 @@ define([
     //adding a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
-        if(!this.existsModule(moduleName)){
+        if(!this.getModule(moduleName)){
             modules[moduleName] = new Modular(this.entityBridge);
             modules[moduleName].create(moduleDefinition);
         }
-    };
-
-    //verifying the existence of one module by name
-    ModularManager.prototype.existsModule = function(moduleName){
-        var founded = false;
-        if(this.getModule(moduleName)){
-            founded = true;
-        }
-        return founded;
     };
 
     //return the module from the collection of modules
@@ -42,9 +35,10 @@ define([
     //running the module
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
-        if(this.existsModule(moduleName)){
+        if(this.getModule(moduleName)){
             module.setStatusModule("start");
-            this.setDataModule(moduleName,optionalParameters);
+            this.objMonitor.updateStatus(moduleName, "start");
+            this.dataModule(moduleName,optionalParameters);
             this.runQueueModules();
         }
     };
@@ -53,12 +47,11 @@ define([
         this.syncModules.push(moduleName);
     };
 
-    ModularManager.prototype.getDataModule = function(moduleName){
+    ModularManager.prototype.dataModule = function(moduleName, data){
+        if(typeof data !== "undefined"){
+            this.modules[moduleName].data = data;
+        }
         return this.modules[moduleName].data;
-    };
-
-    ModularManager.prototype.setDataModule = function(moduleName, data){
-        this.modules[moduleName].data = data;
     };
 
     ModularManager.prototype.runQueueModules = function(){
@@ -66,11 +59,13 @@ define([
             index = 0,
             runModules = function(list){
                 if(list.length > index){
-                    that.whenModuleHaveStatus(list[index], "start", function(moduleName, moduleSelf){
-                        var data = that.getDataModule(moduleName);
+                    var module = list[index];
+                    that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
+                        that.objMonitor.updateStatus(moduleName, "run");
+                        var data = that.dataModule(moduleName);
                         moduleSelf.start(data);
                     });
-                    that.whenModuleHaveStatus(list[index], "run", function(){
+                    that.whenModuleHaveStatus(module, "run", function(){
                         index++;
                         runModules(list);
                     });
@@ -89,39 +84,15 @@ define([
             }, 20);
     };
 
-    ModularManager.prototype.eachModules = function(eachModule){
-        for(var moduleName in this.modules){
-            var moduleSelf = this.getModule(moduleName);
-            eachModule.call(this, moduleName, moduleSelf);
-        }
-    };
-
-    ModularManager.prototype.getTotalModulesByStatus = function(statusName){
-        var total = 0;
-        this.eachModules(function(moduleName, moduleSelf){
-            if(moduleSelf.getStatusModule() === statusName){
-                total++;
-            }
-        });
-        return total;
-    };
-
-    ModularManager.prototype.getTotalModulesRunning = function(){
-        return this.getTotalModulesByStatus("run");
-    };
-
-    ModularManager.prototype.getTotalModulesStarted = function(){
-        return this.getTotalModulesByStatus("start") + this.getTotalModulesRunning();
-    };
-
     ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){
-        var that = this;
+        var that = this,
+            objMonitor = this.objMonitor;
         if(this.alreadyAllModulesBeRunning){
             onFinished.call(that);
         } else {
             var checkModulesRunning = setInterval(function(){
-                if(that.getTotalModulesStarted() > 0){
-                    if( that.getTotalModulesStarted() == that.getTotalModulesRunning()){
+                if(objMonitor.getTotalModulesStarted() > 0){
+                    if( objMonitor.getTotalModulesStarted() == objMonitor.getTotalModulesRunning()){
                         this.alreadyAllModulesBeRunning = true;
                         onFinished.call(that);
                         clearInterval(checkModulesRunning);
