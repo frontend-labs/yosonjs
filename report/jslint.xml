@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <jslint>
+<file name="src/comps/loader.js">
+  
+</file>
 <file name="src/comps/dependency-manager.js">
   
 </file>
@@ -7,19 +10,6 @@
   
 </file>
 <file name="src/comps/modular.js">
-  
-</file>
-<file name="src/comps/loader.js">
-  
-  <issue
-    line="4"
-    char="&lt;anonymous&gt;"
-    evidence="&lt;anonymous&gt; is too complicated"
-    reason="Cyclomatic: 1,
-    Halstead: 8.4211
-    | Effort: 4903.5
-    | Volume: 582.29
-    | Vocabulary: 24" />
   
 </file>
 <file name="src/comps/modular-manager.js">
@@ -42,6 +32,9 @@
   
 </file>
 <file name="src/core.js">
+  
+</file>
+<file name="src/comps/loader-schema.js">
   
 </file>
 </jslint>

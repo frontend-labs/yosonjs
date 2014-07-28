@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <checkstyle>
 
+<file name="src/comps/loader.js">
+  
+</file>
+
+
+
 <file name="src/comps/dependency-manager.js">
   
 </file>
@@ -14,23 +20,6 @@
 
 
 <file name="src/comps/modular.js">
-  
-</file>
-
-
-
-<file name="src/comps/loader.js">
-  
-  <error
-    line="4"
-    severity="warning"
-    message="Cyclomatic: 1,
-    Halstead: 8.4211
-    | Effort: 4903.5
-    | Volume: 582.29
-    | Vocabulary: 24"
-    source="&lt;anonymous&gt;"
-    />
   
 </file>
 
@@ -66,6 +55,12 @@
 
 
 <file name="src/core.js">
+  
+</file>
+
+
+
+<file name="src/comps/loader-schema.js">
   
 </file>
 
