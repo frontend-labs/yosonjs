@@ -110,5 +110,103 @@ define([
           });
       });
 
+      describe("Executing a synchronous mode", function(){
+          var runModule, syncModule, runSequence, moduleNames;
+          beforeEach(function(){
+              moduleNames = ["module-1st", "module-2nd", "module-3rd"];
+              runSequence = [];
+              syncModule = objModularManager.syncModule;
+
+              objModularManager.addModule(moduleNames[0], function(){
+                  return {
+                      init: function(){
+                          runSequence.push("a");
+                      }
+                  }
+              });
+
+              objModularManager.addModule(moduleNames[2], function(){
+                  return {
+                      init: function(){
+                          runSequence.push("c");
+                      }
+                  }
+              });
+
+              objModularManager.addModule(moduleNames[1], function(){
+                  return {
+                      init: function(){
+                          runSequence.push("b");
+                      }
+                  }
+              });
+
+          });
+
+          it("Must be execute in order", function(){
+              objModularManager.syncModule(moduleNames[0]);
+              objModularManager.runModule(moduleNames[0]);
+
+              objModularManager.syncModule(moduleNames[1]);
+              objModularManager.runModule(moduleNames[1]);
+
+              objModularManager.syncModule(moduleNames[2]);
+              objModularManager.runModule(moduleNames[2]);
+
+              waits(200);
+
+              runs(function(){
+                  expect(runSequence).toEqual(['a','b', 'c']);
+              });
+
+          });
+      });
+
+      describe("Modules Running Observer", function(){
+          beforeEach(function(){
+              objModularManager.addModule("moduleA", function(){
+                  return {init:function(){}}
+              });
+              objModularManager.addModule("moduleB", function(){
+                  return {init:function(){}}
+              });
+              objModularManager.addModule("moduleC", function(){
+                  return {init:function(){}}
+              });
+          });
+
+          it("Must be execute when all modules not running", function(){
+              var methodToNotRunning = jasmine.createSpy();
+
+              objModularManager.runModule("moduleA");
+              objModularManager.runModule("moduleB");
+              objModularManager.runModule("moduleC");
+
+              objModularManager.allModulesRunning(methodToNotRunning, function(){});
+              waits(200);
+
+              runs(function(){
+                  expect(methodToNotRunning).toHaveBeenCalled();
+              });
+          });
+
+          it("Must be execute when all modules its running", function(){
+              var methodToRunning = jasmine.createSpy();
+
+              objModularManager.syncModule("moduleA");
+              objModularManager.runModule("moduleA");
+              objModularManager.syncModule("moduleB");
+              objModularManager.runModule("moduleB");
+              objModularManager.syncModule("moduleC");
+              objModularManager.runModule("moduleC");
+
+              objModularManager.allModulesRunning(function(){},methodToRunning);
+              waits(200);
+
+              runs(function(){
+                  expect(methodToRunning).toHaveBeenCalled();
+              });
+          });
+      })
   });
 });
