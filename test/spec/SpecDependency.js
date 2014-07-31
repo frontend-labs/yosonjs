@@ -13,31 +13,35 @@ define([
           });
 
           it('should be a success request', function(){
+              var successCallback = jasmine.createSpy();
               dependencyObjTest = new Dependency(successDependenceUrl);
               dependencyObjTest.request({
-                  onReady: function(){
-                      status = "ready";
-                  }
+                  onReady: successCallback
               });
 
               waitsFor(function(){
-                  return status;
+                  return successCallback.callCount > 0;
               }, 2000);
 
               runs(function(){
-                  expect(status).toEqual("ready");
+                  expect(successCallback).toHaveBeenCalled();
               });
 
           });
 
           it('should be a fail request', function(){
+              var failCallBack = jasmine.createSpy();
               dependencyObjTest = new Dependency(failDependenceUrl);
-              dependencyObjTest.request();
+              dependencyObjTest.request({
+                  onError: failCallBack
+              });
 
-              waits(4000);
+              waitsFor(function(){
+                  return failCallBack.callCount > 0;
+              }, 2000);
 
               runs(function(){
-                  expect(dependencyObjTest.getStatus()).toEqual("error");
+                  expect(failCallBack).toHaveBeenCalled();
               });
 
           });

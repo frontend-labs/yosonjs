@@ -65,26 +65,50 @@ define([
           });
       });
 
-      describe("handling many modules", function(){
-          beforeEach(function(){
+      describe("Handler callbacks by status of module", function(){
+          var moduleName;
+          it("must be execute when it start", function(){
+              var callbackStatusStart = jasmine.createSpy();
+              moduleName = "moduleDemoHandler";
 
-              objModularManager.addModule('moduleA', function(objBridge){
+              objModularManager.addModule(moduleName, function(){
                   return {init: function(){}}
               });
-              objModularManager.addModule('moduleB', function(objBridge){
-                  return {init: function(){}}
+              objModularManager.runModule(moduleName);
+
+              objModularManager.whenModuleHaveStatus(moduleName, "start", callbackStatusStart);
+
+              waitsFor(function(){
+                  return callbackStatusStart.callCount > 0;
               });
-              objModularManager.addModule('moduleC', function(objBridge){
-                  return {init: function(){}}
+              runs(function(){
+                  expect(callbackStatusStart).toHaveBeenCalled();
               });
 
-              objModularManager.runModule('moduleA');
-              objModularManager.runModule('moduleB');
-              objModularManager.runModule('moduleC');
-
-              jasmine.Clock.useMock();
           });
 
+          it("must be execute when its run", function(){
+              var callbackStatusRun = jasmine.createSpy();
+                  moduleName = "moduleDemoHandler2";
+
+              objModularManager.addModule(moduleName, function(){
+                  return {init: function(){}}
+              });
+
+              objModularManager.syncModule(moduleName);
+              objModularManager.runModule(moduleName);
+              objModularManager.whenModuleHaveStatus(moduleName, "run", callbackStatusRun);
+
+              waitsFor(function(){
+                  return callbackStatusRun.callCount > 0;
+              });
+
+              runs(function(){
+                  expect(callbackStatusRun).toHaveBeenCalled();
+              });
+
+          });
       });
+
   });
 });
