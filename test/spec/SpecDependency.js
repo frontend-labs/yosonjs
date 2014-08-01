@@ -38,7 +38,7 @@ define([
 
               waitsFor(function(){
                   return failCallBack.callCount > 0;
-              }, 2000);
+              });
 
               runs(function(){
                   expect(failCallBack).toHaveBeenCalled();

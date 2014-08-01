@@ -46,8 +46,6 @@ define([
                 getStatusModule = yOSON.AppCore.getStatusModule;
                 whenModuleRun = yOSON.AppCore.whenModule;
                 dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
-
-                jasmine.Clock.useMock();
             });
 
             it("should load first moduleA then moduleB", function(){
@@ -70,34 +68,42 @@ define([
                 runModule('moduleA');
                 runModule('moduleB');
 
-                jasmine.Clock.tick(41);
-                expect(getStatusModule('moduleA')).toEqual('run');
+                waits(200);
+                runs(function(){
+                    expect(getStatusModule('moduleA')).toEqual('run');
+                });
             });
 
             xit("should execute the method of moduleB in moduleA", function(){
-                var methodToTrigger = jasmine.createSpy();
-                addModule('moduleA', function(Sb){
+                var functionToBridge = jasmine.createSpy();
+                var e = false;
+                yOSON.AppCore.addModule('moduleA', function(Sb){
                     return {
                         init: function(){
-                            Sb.trigger("methoInB");
+                            functionToBridge();
                         }
                     }
                 });
 
-                addModule('moduleB', function(Sb){
-                    var methodToBridge = methodToTrigger;
-                    return {
-                        init: function(){
-                            Sb.events(["methoInB"], methodToBridge, this);
-                        }
-                    }
-                },[dependence]);
+                //addModule('moduleB', function(Sb){
+                    //var methodToTrigger = function(){
+                        //functionCalled = true;
+                    //};
+                    //return {
+                        //init: function(){
+                            //Sb.events(["methodInB"], functionToBridge , this);
+                        //}
+                    //}
+                //},[dependence]);
 
-                runModule('moduleA');
-                runModule('moduleB');
+                spyOn(yOSON.AppCore, 'runModule').andCallThrough();
+                yOSON.AppCore.runModule('moduleA');
+                //runModule('moduleB');
+
                 waits(5000);
                 runs(function(){
-                    expect(methodToTrigger).toHaveBeenCalled();
+                    //expect(e).toBeTruthy();
+                    expect(functionToBridge).toHaveBeenCalled();
                 });
             });
 

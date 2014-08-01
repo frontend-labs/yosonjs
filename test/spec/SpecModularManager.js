@@ -59,8 +59,10 @@ define([
           });
 
           spyOn(objModularManager, 'runModule').andCallThrough();
+          objModularManager.syncModule('moduleA');
           objModularManager.runModule('moduleA');
-          objModularManager.whenModuleHaveStatus('moduleA', 'run', function(name, moduleSelf){
+          waits(500);
+          runs(function(){
               expect(methodToBridge).toHaveBeenCalled();
           });
       });
@@ -74,9 +76,9 @@ define([
               objModularManager.addModule(moduleName, function(){
                   return {init: function(){}}
               });
-              objModularManager.runModule(moduleName);
-
+              objModularManager.syncModule(moduleName);
               objModularManager.whenModuleHaveStatus(moduleName, "start", callbackStatusStart);
+              objModularManager.runModule(moduleName);
 
               waitsFor(function(){
                   return callbackStatusStart.callCount > 0;
@@ -177,20 +179,23 @@ define([
 
           it("Must be execute when all modules not running", function(){
               var methodToNotRunning = jasmine.createSpy();
+              var methodToRunning = jasmine.createSpy();
 
               objModularManager.runModule("moduleA");
               objModularManager.runModule("moduleB");
               objModularManager.runModule("moduleC");
 
-              objModularManager.allModulesRunning(methodToNotRunning, function(){});
+              objModularManager.allModulesRunning(methodToNotRunning, methodToRunning);
               waits(200);
 
               runs(function(){
                   expect(methodToNotRunning).toHaveBeenCalled();
+                  expect(methodToRunning).not.toHaveBeenCalled();
               });
           });
 
           it("Must be execute when all modules its running", function(){
+              var methodToNotRunning = jasmine.createSpy();
               var methodToRunning = jasmine.createSpy();
 
               objModularManager.syncModule("moduleA");
@@ -200,10 +205,11 @@ define([
               objModularManager.syncModule("moduleC");
               objModularManager.runModule("moduleC");
 
-              objModularManager.allModulesRunning(function(){},methodToRunning);
+              objModularManager.allModulesRunning(methodToNotRunning, methodToRunning);
               waits(200);
 
               runs(function(){
+                  expect(methodToNotRunning).not.toHaveBeenCalled();
                   expect(methodToRunning).toHaveBeenCalled();
               });
           });

@@ -36,7 +36,6 @@ define([
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
         if(this.getModule(moduleName)){
-            module.setStatusModule("start");
             this.objMonitor.updateStatus(moduleName, "start");
             this.dataModule(moduleName,optionalParameters);
             this.runQueueModules();
@@ -44,6 +43,8 @@ define([
     };
 
     ModularManager.prototype.syncModule = function(moduleName){
+        var module = this.getModule(moduleName);
+        module.setStatusModule("start");
         this.syncModules.push(moduleName);
     };
 

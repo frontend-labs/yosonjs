@@ -14,18 +14,23 @@ var dependencesApt = [
 
 var empty = [];
 //1st executing modular with dependencyManager
-yOSON.AppCore.addModule('o1', function(){
+yOSON.AppCore.addModule('o1', function(Sb){
     return {
         init: function(){
             console.log('o1');
+            Sb.trigger('po2');
         }
     }
 }, empty);
 
 
-yOSON.AppCore.addModule('o2', function(){
+yOSON.AppCore.addModule('o2', function(Sb){
+    var publicMethodOfAModule = function(){
+        console.log("desde o2");
+    };
     return {
         init: function(){
+            Sb.events(['po2'], publicMethodOfAModule, this);
             console.log('o2');
         }
     }
@@ -99,8 +104,11 @@ yOSON.AppCore.addModule('mall1', function(){
 //});
 
 
+yOSON.AppCore.whenModule('o1', 'start', function(){
+    console.log('only before run');
+});
+yOSON.AppCore.runModule('o2');
 yOSON.AppCore.runModule('o1');
-//yOSON.AppCore.runModule('o2');
 //yOSON.AppCore.runModule('o3');
 //yOSON.AppCore.runModule('o4');
 //yOSON.AppCore.runModule('o5');
@@ -111,7 +119,7 @@ yOSON.AppCore.runModule('o1');
 //yOSON.AppCore.runModule('m3');
 
 yOSON.AppCore.whenModule('o1', 'run', function(){
-    console.log('rrr');
+    console.log('only when its run');
 });
 //yOSON.AppCore.runModule('demoA');
 //yOSON.AppCore.runModule('demoB');
