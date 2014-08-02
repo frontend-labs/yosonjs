@@ -131,7 +131,7 @@
     };
 
     yOSON.Components.Dependency = Dependency;
-
+    
 
     /**
      * Class manager of one or many requests
@@ -337,7 +337,7 @@
     };
 
     yOSON.Components.DependencyManager = DependencyManager;
-
+    
 
 
     //clase with pattern factory with the idea of create modules
@@ -403,7 +403,7 @@
     };
 
     yOSON.Components.Modular = Modular;
-
+    
 
     var ModularMonitor = function(){
         this.modules = {};
@@ -438,7 +438,7 @@
         return this.getTotalModulesByStatus('start') + this.getTotalModulesRunning();
     };
 
-
+    
 
 
     var ModularManager = function(){
@@ -533,25 +533,21 @@
                     if( objMonitor.getTotalModulesStarted() == objMonitor.getTotalModulesRunning()){
                         this.alreadyAllModulesBeRunning = true;
                         onFinished.call(that);
-                        console.log('onFinished!!');
                         clearInterval(checkModulesRunning);
                     } else {
-                        console.log('NOOOOOOOO');
                         onNotFinished.call(that);
                     }
                 } else {
                     this.alreadyAllModulesBeRunning = true;
                     onFinished.call(that);
-                    console.log('onFinished');
                     clearInterval(checkModulesRunning);
                 }
-                console.log('preguntando..');
             }, 200);
         }
     };
 
     yOSON.Components.ModularManager = ModularManager;
-
+    
 
 
     //Clase que se orienta al manejo de comunicacion entre modulos
@@ -634,7 +630,7 @@
     };
 
     yOSON.Components.Comunicator = Comunicator;
-
+    
 
     var LoaderSchema = function(schema){
         this.modules = schema.modules;
@@ -690,7 +686,7 @@
         this[levelName].byDefault();
     };
 
-
+    
 //Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
 
 
@@ -769,7 +765,7 @@
 
     yOSON.Components.Loader = Loader;
 
-
+    
 
 
     var objModularManager = new yOSON.Components.ModularManager(),
@@ -787,7 +783,6 @@
             var eventsWaiting = {};
             objModularManager.allModulesRunning(function(){
                 eventsWaiting[eventName] = argumentsOfEvent;
-                console.log('eventsWaiting', eventsWaiting);
             }, function(){
                 //if have events waiting
                 for(var eventsForTrigger in eventsWaiting){
@@ -810,6 +805,9 @@
         };
 
         return {
+            getModularManager: function(){
+                return objModularManager;
+            },
             getStatusModule: function(moduleName){
                 var module = objModularManager.getModule(moduleName);
                 return  module.getStatusModule();

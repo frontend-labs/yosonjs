@@ -55,7 +55,7 @@ define([
 
                         }
                     }
-                });
+                },[]);
 
                 addModule('moduleB', function(){
                     return {
@@ -75,35 +75,36 @@ define([
             });
 
             xit("should execute the method of moduleB in moduleA", function(){
-                var functionToBridge = jasmine.createSpy();
-                var e = false;
+                var publicMethods = function(){};
+                publicMethods.prototype.functionToBridge = jasmine.createSpy();
+
+
+                var objPublicMethods = new publicMethods();
                 yOSON.AppCore.addModule('moduleA', function(Sb){
                     return {
                         init: function(){
-                            functionToBridge();
+                            Sb.trigger("publicMethodInB");
                         }
                     }
                 });
 
-                //addModule('moduleB', function(Sb){
-                    //var methodToTrigger = function(){
-                        //functionCalled = true;
-                    //};
-                    //return {
-                        //init: function(){
-                            //Sb.events(["methodInB"], functionToBridge , this);
-                        //}
-                    //}
-                //},[dependence]);
+                yOSON.AppCore.addModule('moduleB', function(Sb){
+                    var privateMethod = function(){
+                        objPublicMethods.functionToBridge();
+                    };
+                    return {
+                        init: function(){
+                            Sb.events(["publicMethodInB"], privateMethod, this);
+                        }
+                    }
+                });
 
-                spyOn(yOSON.AppCore, 'runModule').andCallThrough();
+                yOSON.AppCore.runModule('moduleB');
                 yOSON.AppCore.runModule('moduleA');
-                //runModule('moduleB');
 
-                waits(5000);
+                waits(7000);
                 runs(function(){
-                    //expect(e).toBeTruthy();
-                    expect(functionToBridge).toHaveBeenCalled();
+                    expect(objPublicMethods.functionToBridge).toHaveBeenCalled();
                 });
             });
 

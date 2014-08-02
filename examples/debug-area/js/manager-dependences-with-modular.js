@@ -13,20 +13,25 @@ var dependencesApt = [
 ];
 
 var empty = [];
+window.flag = false;
+var escribir = function(){
+    document.body.innerHTML = "echo";
+}
 //1st executing modular with dependencyManager
 yOSON.AppCore.addModule('o1', function(Sb){
     return {
         init: function(){
             console.log('o1');
             Sb.trigger('po2');
+            window.flag = true;
         }
     }
 }, empty);
 
-
+console.log('outside', window.flag);
 yOSON.AppCore.addModule('o2', function(Sb){
     var publicMethodOfAModule = function(){
-        console.log("desde o2");
+        escribir();
     };
     return {
         init: function(){
