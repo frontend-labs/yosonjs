@@ -74,45 +74,40 @@ define([
             expect(objDependencyManager.addScript(dependence)).toBe("the dependence already appended");
           });
 
-          it('should be run the callback when the dependences are ready', function(){
+          it('should be run the callback when the dependences are ready', function(done){
             var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js",
-                onReady = jasmine.createSpy("onReady");
+                onReady = jasmine.createSpy();
 
-            objDependencyManager.ready([dependence], onReady);
-
-            waits(1200);
-
-            runs(function(){
+            objDependencyManager.ready([dependence], function(){
+                onReady();
                 expect(onReady).toHaveBeenCalled();
+                done();
             });
 
           });
 
-          it('should be run the callback when the dependence its avaliable', function(){
+          it('should be run the callback when the dependence its avaliable', function(done){
             var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js",
-                onAvaliable = jasmine.createSpy("onAvaliable");
+                onAvaliable = jasmine.createSpy();
 
             objDependencyManager.addScript(dependence);
-            objDependencyManager.avaliable(dependence, onAvaliable);
-            waits(500);
-
-            runs(function(){
+            objDependencyManager.avaliable(dependence, function(){
+                onAvaliable();
                 expect(onAvaliable).toHaveBeenCalled();
+                done();
             });
           });
 
-          it('should be dont run the callback when the dependence return an error', function(){
+          it('should be dont run the callback when the dependence return an error', function(done){
             var dependence = "http://helloworld.cc/js/wrongscript.js",
                 onAvaliable = jasmine.createSpy("onAvaliable");
 
             objDependencyManager.addScript(dependence);
             objDependencyManager.avaliable(dependence, onAvaliable);
-            waits(500);
-
-            runs(function(){
+            setTimeout(function(){
                 expect(onAvaliable).not.toHaveBeenCalled();
-            });
-
+                done();
+            }, 500);
           });
 
           it('should be get the dependence self', function(){
@@ -132,16 +127,15 @@ define([
             expect(resultDependence instanceof Dependency).toBeTruthy();
           });
 
-          it('should be return the dependence its already loaded in the dependence manager', function(){
+          it('should be return the dependence its already loaded in the dependence manager', function(done){
             var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
             objDependencyManager.addScript(dependence);
             objDependencyManager.avaliable(dependence, function(){});
-            waits(500);
-
-            runs(function(){
+            setTimeout(function(){
                 var idOfDependence = objDependencyManager.generateId(dependence);
                 expect(objDependencyManager.alreadyLoaded(idOfDependence)).toBeTruthy();
-            });
+                done();
+            }, 500);
           });
 
       });

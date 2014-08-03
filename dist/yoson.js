@@ -805,9 +805,6 @@
         };
 
         return {
-            getModularManager: function(){
-                return objModularManager;
-            },
             getStatusModule: function(moduleName){
                 var module = objModularManager.getModule(moduleName);
                 return  module.getStatusModule();

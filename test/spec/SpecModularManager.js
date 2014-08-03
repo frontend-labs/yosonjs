@@ -2,6 +2,7 @@ define([
    '../../src/comps/modular-manager.js'
   ],
   function(ModularManager){
+
   describe('specModularManager', function(){
       var objModularManager, moduleName, moduleSelf;
 
@@ -46,7 +47,7 @@ define([
           expect(module.getStatusModule(moduleName)).toEqual('ready');
       });
 
-      it("should be append a method to bridge object", function(){
+      it("should be append a method to bridge object", function(done){
           var methodToBridge = jasmine.createSpy();
           objModularManager.addMethodToBrigde("dummy", methodToBridge);
 
@@ -58,38 +59,35 @@ define([
               }
           });
 
-          spyOn(objModularManager, 'runModule').andCallThrough();
+          spyOn(objModularManager, 'runModule').and.callThrough();
           objModularManager.syncModule('moduleA');
           objModularManager.runModule('moduleA');
-          waits(500);
-          runs(function(){
+          setTimeout(function(){
               expect(methodToBridge).toHaveBeenCalled();
-          });
+              done();
+          }, 500);
       });
 
       describe("Handler callbacks by status of module", function(){
           var moduleName;
-          it("must be execute when it start", function(){
+
+          it("must be execute when it start", function(done){
               var callbackStatusStart = jasmine.createSpy();
               moduleName = "moduleDemoHandler";
 
-              objModularManager.addModule(moduleName, function(){
+              objModularManager.addModule(moduleName, function(done){
                   return {init: function(){}}
               });
               objModularManager.syncModule(moduleName);
-              objModularManager.whenModuleHaveStatus(moduleName, "start", callbackStatusStart);
+              objModularManager.whenModuleHaveStatus(moduleName, "start", function(){
+                callbackStatusStart();
+                expect(callbackStatusStart).toHaveBeenCalled();
+                done();
+              });
               objModularManager.runModule(moduleName);
-
-              waitsFor(function(){
-                  return callbackStatusStart.callCount > 0;
-              });
-              runs(function(){
-                  expect(callbackStatusStart).toHaveBeenCalled();
-              });
-
           });
 
-          it("must be execute when its run", function(){
+          it("must be execute when its run", function(done){
               var callbackStatusRun = jasmine.createSpy();
                   moduleName = "moduleDemoHandler2";
 
@@ -99,16 +97,11 @@ define([
 
               objModularManager.syncModule(moduleName);
               objModularManager.runModule(moduleName);
-              objModularManager.whenModuleHaveStatus(moduleName, "run", callbackStatusRun);
-
-              waitsFor(function(){
-                  return callbackStatusRun.callCount > 0;
+              objModularManager.whenModuleHaveStatus(moduleName, "run", function(){
+                callbackStatusRun();
+                expect(callbackStatusRun).toHaveBeenCalled();
+                done();
               });
-
-              runs(function(){
-                  expect(callbackStatusRun).toHaveBeenCalled();
-              });
-
           });
       });
 
@@ -145,7 +138,7 @@ define([
 
           });
 
-          it("Must be execute in order", function(){
+          it("Must be execute in order", function(done){
               objModularManager.syncModule(moduleNames[0]);
               objModularManager.runModule(moduleNames[0]);
 
@@ -155,12 +148,10 @@ define([
               objModularManager.syncModule(moduleNames[2]);
               objModularManager.runModule(moduleNames[2]);
 
-              waits(200);
-
-              runs(function(){
+              setTimeout(function(){
                   expect(runSequence).toEqual(['a','b', 'c']);
-              });
-
+                  done();
+              }, 200);
           });
       });
 
@@ -177,7 +168,7 @@ define([
               });
           });
 
-          it("Must be execute when all modules not running", function(){
+          it("Must be execute when all modules not running", function(done){
               var methodToNotRunning = jasmine.createSpy();
               var methodToRunning = jasmine.createSpy();
 
@@ -186,15 +177,15 @@ define([
               objModularManager.runModule("moduleC");
 
               objModularManager.allModulesRunning(methodToNotRunning, methodToRunning);
-              waits(200);
 
-              runs(function(){
+              setTimeout(function(){
                   expect(methodToNotRunning).toHaveBeenCalled();
                   expect(methodToRunning).not.toHaveBeenCalled();
-              });
+                  done();
+              }, 200);
           });
 
-          it("Must be execute when all modules its running", function(){
+          it("Must be execute when all modules its running", function(done){
               var methodToNotRunning = jasmine.createSpy();
               var methodToRunning = jasmine.createSpy();
 
@@ -206,12 +197,12 @@ define([
               objModularManager.runModule("moduleC");
 
               objModularManager.allModulesRunning(methodToNotRunning, methodToRunning);
-              waits(200);
 
-              runs(function(){
+              setTimeout(function(){
                   expect(methodToNotRunning).not.toHaveBeenCalled();
                   expect(methodToRunning).toHaveBeenCalled();
-              });
+                  done();
+              }, 200);
           });
       })
   });

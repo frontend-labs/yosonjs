@@ -47,10 +47,9 @@ define([
               }
           });
 
-          spyOn(objModular, 'start').andCallThrough();
+          spyOn(objModular, 'start').and.callThrough();
           objModular.start();
           expect(methodToBridge).toHaveBeenCalled();
-
       });
 
   });

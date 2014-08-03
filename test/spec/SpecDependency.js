@@ -12,38 +12,28 @@ define([
               failDependenceUrl = "http://holamundooo.com/demo.js";
           });
 
-          it('should be a success request', function(){
+          it('should be a success request', function(done){
               var successCallback = jasmine.createSpy();
               dependencyObjTest = new Dependency(successDependenceUrl);
               dependencyObjTest.request({
-                  onReady: successCallback
+                  onReady: function(){
+                      successCallback();
+                      expect(successCallback).toHaveBeenCalled();
+                      done();
+                  }
               });
-
-              waitsFor(function(){
-                  return successCallback.callCount > 0;
-              }, 2000);
-
-              runs(function(){
-                  expect(successCallback).toHaveBeenCalled();
-              });
-
           });
 
-          it('should be a fail request', function(){
+          it('should be a fail request', function(done){
               var failCallBack = jasmine.createSpy();
               dependencyObjTest = new Dependency(failDependenceUrl);
               dependencyObjTest.request({
-                  onError: failCallBack
+                  onError: function(){
+                      failCallBack();
+                      expect(failCallBack).toHaveBeenCalled();
+                      done();
+                  }
               });
-
-              waitsFor(function(){
-                  return failCallBack.callCount > 0;
-              });
-
-              runs(function(){
-                  expect(failCallBack).toHaveBeenCalled();
-              });
-
           });
 
           describe('Callbacks', function(){
@@ -57,52 +47,38 @@ define([
                   };
               });
 
-              it('should be execute when the state is on request', function(){
+              it('should be execute when the state is on request', function(done){
                   dependencyObjTest = new Dependency(successDependenceUrl);
-                  spyOn(dependencyObjTest, 'request').andCallThrough();
-
                   dependencyObjTest.request({
-                      onRequest: callbacks.onRequest
+                      onRequest: function(){
+                          callbacks.onRequest();
+                          expect(callbacks.onRequest).toHaveBeenCalled();
+                          done();
+                      }
                   });
-
-                  expect(callbacks.onRequest).toHaveBeenCalled();
               });
 
-              it('should be execute when the state is on ready', function(){
+              it('should be execute when the state is on ready', function(done){
                   dependencyObjTest = new Dependency(successDependenceUrl);
-
-                  spyOn(dependencyObjTest, 'request').andCallThrough();
-
                   dependencyObjTest.request({
-                      onReady: callbacks.onReady
+                      onReady: function(){
+                          callbacks.onReady();
+                          expect(callbacks.onReady).toHaveBeenCalled();
+                          done();
+                      }
                   });
-
-                  waits(3000);
-
-                  runs(function(){
-                      expect(callbacks.onReady).toHaveBeenCalled();
-                  });
-
               });
 
-              it('should be execute when the state is on ready', function(){
+              it('should be execute when the state is on ready', function(done){
                   dependencyObjTest = new Dependency(failDependenceUrl);
-
-                  spyOn(dependencyObjTest, 'request').andCallThrough();
-
                   dependencyObjTest.request({
-                      onError: callbacks.onError
+                      onError: function(){
+                          callbacks.onError();
+                          expect(callbacks.onError).toHaveBeenCalled();
+                          done();
+                      }
                   });
-
-                  waits(3000);
-
-                  runs(function(){
-                      expect(callbacks.onError).toHaveBeenCalled();
-                  });
-
               });
-
           });
-
       });
 });
