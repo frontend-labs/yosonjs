@@ -19,8 +19,10 @@ the library have the next structure:
 
 ### Running Specs
 The Specs of yOSON by now running only in the terminal
+
 1. Run grunt in terminal(`grunt`)
 
 ### Generate the minified version
 Needs pass the hint validation and all specs
+
 1. Run grunt in terminal(`grunt`)
