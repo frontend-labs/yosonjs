@@ -4,8 +4,6 @@ define([
   function(yOSON){
 
     describe('Core', function(){
-        var addModule, runModule, dependence;
-
         it('should be set the staticHost', function(){
             yOSON.AppCore.setStaticHost('http://statichost.com/');
             expect(true).toBeTruthy();
@@ -17,7 +15,7 @@ define([
         });
 
         it('should be create a module', function(){
-            yOSON.AppCore.addModule('nuevo-modulo', function(){
+            yOSON.AppCore.addModule('nombreModulo', function(){
                 return {
                     init: function(){
 
@@ -27,16 +25,43 @@ define([
             expect(true).toBeTruthy();
         });
 
-        xit('should be run a module', function(done){
-            yOSON.AppCore.addModule('nuevo-modulo', function(){
+        it('should be run a module', function(done){
+            var functionMustRun = jasmine.createSpy();
+            yOSON.AppCore.addModule('moduleA', function(){
                 return {
                     init: function(){
-                        expect(true).toBeTruthy();
+                        functionMustRun();
+                        expect(functionMustRun).toHaveBeenCalled();
                         done();
                     }
                 }
             });
-            yOSON.AppCore.runModule('nuevo-modulo');
+            yOSON.AppCore.runModule('moduleA');
+        });
+
+        it('should be execute method from moduleA1 to moduleB1', function(done){
+            var functionToBridge = jasmine.createSpy();
+            yOSON.AppCore.addModule('moduleA1', function(Sb){
+                var privateMethodA1 = function(){
+                    functionToBridge();
+                    expect(functionToBridge).toHaveBeenCalled();
+                    done();
+                };
+                return {
+                    init: function(){
+                        Sb.events(['publicMethodInModuleA1'], privateMethodA1, this);
+                    }
+                }
+            });
+            yOSON.AppCore.addModule('moduleB1', function(Sb){
+                return {
+                    init: function(){
+                        Sb.trigger('publicMethodInModuleA1');
+                    }
+                }
+            });
+            yOSON.AppCore.runModule('moduleA1');
+            yOSON.AppCore.runModule('moduleB1');
         });
     });
 });
