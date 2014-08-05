@@ -32,11 +32,13 @@ define([
           expect(objModularManager.getModule(moduleName)).toBeTruthy();
       });
 
-      it("should be run the module", function(){
+      it("should be run the module", function(done){
           objModularManager.addModule(moduleName, moduleSelf);
+          objModularManager.syncModule(moduleName);
           objModularManager.runModule(moduleName);
           objModularManager.whenModuleHaveStatus(moduleName, 'run', function(name, moduleSelf){
               expect(moduleSelf.getStatusModule()).toEqual('run');
+              done();
           });
       });
 
