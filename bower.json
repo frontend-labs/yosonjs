@@ -14,8 +14,25 @@
   "license": "MIT",
   "ignore": [
     "node_modules",
-    "bower_components",
+    "config",
+    "docs",
+    "examples",
+    "report",
+    "src",
+    "tasks",
     "test",
-    "tests"
+    "bower_components",
+    ".gitignore",
+    ".travis.yml",
+    "DEVELOPMENT.md",
+    "Gruntfile.js",
+    "LICENSE.md",
+    "README.md",
+    "RequireConfig.js",
+    "bower.json",
+    "changelog",
+    "files.md",
+    "package.json",
+    ".jshintrc"
   ]
 }
