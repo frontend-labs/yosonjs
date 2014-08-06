@@ -87,7 +87,7 @@ define([
                         Sb.events(['publicMethodInModuleB2'], privateMethodB2 , this);
                     }
                 }
-            },[dependence]);
+            });
 
             yOSON.AppCore.runModule('moduleA2');
             yOSON.AppCore.runModule('moduleB2');

@@ -434,8 +434,8 @@
         return this.getTotalModulesByStatus('run');
     };
 
-    ModularMonitor.prototype.getTotalModulesStarted = function(){
-        return this.getTotalModulesByStatus('start') + this.getTotalModulesRunning();
+    ModularMonitor.prototype.getTotalModulesToStart = function(){
+        return this.getTotalModulesByStatus('toStart') + this.getTotalModulesRunning();
     };
 
     
@@ -445,7 +445,7 @@
         this.modules = {};
         this.runningModules = {};
         this.entityBridge = {};
-        this.alreadyAllModulesBeRunning = null;
+        this.alreadyAllModulesBeRunning = false;
         this.syncModules = [];
         this.objMonitor = new ModularMonitor();
     };
@@ -473,16 +473,17 @@
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
         if(this.getModule(moduleName)){
-            this.objMonitor.updateStatus(moduleName, "start");
+            module.setStatusModule("start");
             this.dataModule(moduleName,optionalParameters);
             this.runQueueModules();
         }
     };
 
     ModularManager.prototype.syncModule = function(moduleName){
-        var module = this.getModule(moduleName);
-        module.setStatusModule("start");
-        this.syncModules.push(moduleName);
+        var that = this;
+        var module = that.getModule(moduleName);
+        that.objMonitor.updateStatus(moduleName, "toStart");
+        that.syncModules.push(moduleName);
     };
 
     ModularManager.prototype.dataModule = function(moduleName, data){
@@ -524,22 +525,22 @@
 
     ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){
         var that = this,
-            objMonitor = this.objMonitor;
+            objMonitor = that.objMonitor;
         if(this.alreadyAllModulesBeRunning){
             onFinished.call(that);
         } else {
             var checkModulesRunning = setInterval(function(){
-                if(objMonitor.getTotalModulesStarted() > 0){
-                    if( objMonitor.getTotalModulesStarted() == objMonitor.getTotalModulesRunning()){
-                        this.alreadyAllModulesBeRunning = true;
+                if(objMonitor.getTotalModulesToStart() > 0){
+                    if( objMonitor.getTotalModulesToStart() === objMonitor.getTotalModulesRunning()){
                         onFinished.call(that);
+                        this.alreadyAllModulesBeRunning = true;
                         clearInterval(checkModulesRunning);
                     } else {
                         onNotFinished.call(that);
                     }
                 } else {
-                    this.alreadyAllModulesBeRunning = true;
                     onFinished.call(that);
+                    this.alreadyAllModulesBeRunning = true;
                     clearInterval(checkModulesRunning);
                 }
             }, 200);

@@ -9,7 +9,7 @@ var dependences = [
 var dependencesApt = [
     'src/libs/yoson/data/rulesValidate.js',
     'src/libs/underscore.js',
-    'src/libs/jquery/jqFancybox.js'
+    'http://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js'
 ];
 
 var empty = [];
@@ -39,7 +39,7 @@ yOSON.AppCore.addModule('o2', function(Sb){
             console.log('o2');
         }
     }
-}, [dependencesApt[2]]);
+}, dependences);
 
 yOSON.AppCore.addModule('o3', function(){
     return {

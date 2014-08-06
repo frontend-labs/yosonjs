@@ -174,17 +174,26 @@ define([
               var methodToNotRunning = jasmine.createSpy();
               var methodToRunning = jasmine.createSpy();
 
+              objModularManager.syncModule("moduleA");
               objModularManager.runModule("moduleA");
-              objModularManager.runModule("moduleB");
+              objModularManager.syncModule("moduleB");
+              objModularManager.syncModule("moduleC");
               objModularManager.runModule("moduleC");
 
-              objModularManager.allModulesRunning(methodToNotRunning, methodToRunning);
-
-              setTimeout(function(){
+              objModularManager.allModulesRunning(function(){
+                  methodToNotRunning();
                   expect(methodToNotRunning).toHaveBeenCalled();
-                  expect(methodToRunning).not.toHaveBeenCalled();
                   done();
-              }, 200);
+              }, function(){});
+
+              //setTimeout(function(){
+                  //expect(objModularManager.getTotalToStarted()).toEqual(0);
+                  //expect(objModularManager.getTotalRunning()).toEqual(0);
+                  //objModularManager.allModulesRunning(methodToNotRunning, methodToRunning);
+                  //expect(methodToRunning).not.toHaveBeenCalled();
+                  //done();
+              //}, 500);
+
           });
 
           it("Must be execute when all modules its running", function(done){

@@ -28,8 +28,8 @@ define(function(){
         return this.getTotalModulesByStatus('run');
     };
 
-    ModularMonitor.prototype.getTotalModulesStarted = function(){
-        return this.getTotalModulesByStatus('start') + this.getTotalModulesRunning();
+    ModularMonitor.prototype.getTotalModulesToStart = function(){
+        return this.getTotalModulesByStatus('toStart') + this.getTotalModulesRunning();
     };
 
     return ModularMonitor;
