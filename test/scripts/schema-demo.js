@@ -56,6 +56,42 @@ define(function(){
 
                 }
             },
+            "user":{
+                "controllers":{
+                    "home":{
+                        "actions":{
+                            "index": function(){
+
+                            },
+                            "byDefault":function(){
+
+                            }
+                        },
+                        "allActions": function(){
+
+                        }
+                    },
+                    "profile":{
+                        "actions": {
+                            "index": function(){
+
+                            },
+                            "byDefault": function(){
+
+                            }
+                        },
+                        "allActions": function(){
+
+                        }
+                    },
+                    "byDefault": function(){
+
+                    }
+                },
+                "allControllers": function(){
+
+                }
+            },
             //the default module if not exists an module runs here
             "byDefault": function(){
 

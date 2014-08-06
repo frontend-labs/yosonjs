@@ -28,41 +28,41 @@ define([
 
           it('should run the allControllers node', function(){
               var allControllers = jasmine.createSpy("allControllers");
-              SchemaDemo.modules.application.allControllers = allControllers;
+              SchemaDemo.modules.user.allControllers = allControllers;
 
-              objLoader.init('application');
+              objLoader.init('user');
               expect(allControllers).toHaveBeenCalled();
           });
 
           it('should run the default controller by module application', function(){
               var defaultController = jasmine.createSpy("defaultController");
-              SchemaDemo.modules.application.controllers.byDefault = defaultController;
+              SchemaDemo.modules.user.controllers.byDefault = defaultController;
 
-              objLoader.init('application');
+              objLoader.init('user');
               expect(defaultController).toHaveBeenCalled();
           });
 
           it('should run the allActions of index controller by module application', function(){
 
               var allActions = jasmine.createSpy("allActions");
-              SchemaDemo.modules.application.controllers.index.allActions = allActions;
-              objLoader.init('application', 'index');
+              SchemaDemo.modules.user.controllers.home.allActions = allActions;
+              objLoader.init('user', 'home');
               expect(allActions).toHaveBeenCalled();
           });
 
           it('should run the default action of index controller by module application', function(){
 
               var defaultAction = jasmine.createSpy("defaultAction");
-              SchemaDemo.modules.application.controllers.index.actions.byDefault = defaultAction;
-              objLoader.init('application', 'index');
+              SchemaDemo.modules.user.controllers.home.actions.byDefault = defaultAction;
+              objLoader.init('user', 'home');
               expect(defaultAction).toHaveBeenCalled();
           });
 
           it('should run the index action of index controller by module application', function(){
 
               var indexAction = jasmine.createSpy("indexAction");
-              SchemaDemo.modules.application.controllers.index.actions.index = indexAction;
-              objLoader.init('application', 'index', 'index');
+              SchemaDemo.modules.user.controllers.home.actions.index = indexAction;
+              objLoader.init('user', 'home', 'index');
               expect(indexAction).toHaveBeenCalled();
           });
 
