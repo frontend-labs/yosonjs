@@ -3,10 +3,10 @@
 <file name="src/comps/loader.js">
   
 </file>
-<file name="src/comps/dependency-manager.js">
+<file name="src/comps/modular-manager.js">
   
 </file>
-<file name="src/comps/modular-manager.js">
+<file name="src/comps/dependency-manager.js">
   
 </file>
 <file name="src/yoson.js">

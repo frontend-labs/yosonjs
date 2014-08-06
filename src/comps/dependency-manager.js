@@ -22,9 +22,10 @@ define([
     var DependencyManager = function(){
         this.data = {};
         this.loaded = {};
+
         this.config = {
-            staticHost: "",
-            versionUrl: ""
+            staticHost: yOSON.statHost || "",
+            versionUrl: yOSON.statVers || ""
         };
     };
 

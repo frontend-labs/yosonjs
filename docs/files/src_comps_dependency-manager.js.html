@@ -112,9 +112,10 @@ define([
     var DependencyManager = function(){
         this.data = {};
         this.loaded = {};
+
         this.config = {
-            staticHost: &quot;&quot;,
-            versionUrl: &quot;&quot;
+            staticHost: yOSON.statHost || &quot;&quot;,
+            versionUrl: yOSON.statVers || &quot;&quot;
         };
     };
 

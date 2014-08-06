@@ -73,5 +73,13 @@ define([
         };
     })();
 
+    //if(yOSON.statHost){
+        //yOSON.AppCore.setStaticHost(yOSON.statHost);
+    //}
+
+    //if(yOSON.statVers){
+        //yOSON.AppCore.setVersionUrl(yOSON.statVers);
+    //}
+
     return yOSON;
 });

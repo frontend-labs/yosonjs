@@ -23,6 +23,15 @@ objModularB.create(function(Sb){
     }
 });
 
+var objDontValidate = new Modular();
+objDontValidate.create(function(){
+    return {
+        init: function(){
+            log(tmp);
+        }
+    }
+});
+
 objModularA.start();
 objModularB.start();
 

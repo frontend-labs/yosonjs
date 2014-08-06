@@ -11,12 +11,7 @@ define([
 
     //create a empty context of module
     Modular.prototype.create = function(moduleDefinition){
-        var moduleInstance = moduleDefinition(this.entityBridge);
-        for(var propertyName in moduleInstance){
-            var method = moduleInstance[propertyName];
-            moduleInstance[propertyName] = this.generateModularDefinition(propertyName, method);
-        }
-        this.moduleInstance = moduleInstance;
+        this.moduleDefinition = moduleDefinition;
     };
 
     //create a definition of module self
@@ -37,6 +32,12 @@ define([
     //start a simple module
     Modular.prototype.start = function(parameters){
         var params = this.dealParamaterOfModule(parameters);
+        var moduleInstance = this.moduleDefinition(this.entityBridge);
+        for(var propertyName in moduleInstance){
+            var method = moduleInstance[propertyName];
+            moduleInstance[propertyName] = this.generateModularDefinition(propertyName, method);
+        }
+        this.moduleInstance = moduleInstance;
         this.runInitMethodOfModule(params);
     };
 
