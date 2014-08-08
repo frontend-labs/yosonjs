@@ -135,7 +135,7 @@
     };
 
     yOSON.Components.Dependency = Dependency;
-
+    
 
     /**
      * Class manager of one or many requests
@@ -277,7 +277,6 @@
                         queueQuering(urlList);
                     }, onError);
                 }catch(err){
-                    document.write('ERROR:' + err);
                 }
             } else {
                 onReady.apply(that);
@@ -307,8 +306,7 @@
                 if(dependency.getStatus() == "error"){
                     onAvaliable = null;
                     clearInterval(checkStatusDependency);
-                    onError.call(that);
-                    throw "DependencyManager cant be loaded Dependency " + url;
+                    throw "" + onError.call(this);
                 }
             }, 500);
         } else {
@@ -348,7 +346,7 @@
     };
 
     yOSON.Components.DependencyManager = DependencyManager;
-
+    
 
 
     //clase with pattern factory with the idea of create modules
@@ -415,7 +413,7 @@
     };
 
     yOSON.Components.Modular = Modular;
-
+    
 
     var ModularMonitor = function(){
         this.modules = {};
@@ -450,7 +448,7 @@
         return this.getTotalModulesByStatus('toStart') + this.getTotalModulesRunning();
     };
 
-
+    
 
 
     var ModularManager = function(){
@@ -560,7 +558,7 @@
     };
 
     yOSON.Components.ModularManager = ModularManager;
-
+    
 
 
     //Clase que se orienta al manejo de comunicacion entre modulos
@@ -643,7 +641,7 @@
     };
 
     yOSON.Components.Comunicator = Comunicator;
-
+    
 
     var LoaderSchema = function(schema){
         this.modules = schema.modules;
@@ -699,7 +697,7 @@
         this[levelName].byDefault();
     };
 
-
+    
 //Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
 
 
@@ -778,7 +776,7 @@
 
     yOSON.Components.Loader = Loader;
 
-
+    
 
 
     var objModularManager = new yOSON.Components.ModularManager(),
@@ -838,7 +836,7 @@
                 objDependencyManager.ready(dependencesToLoad,function(){
                     objModularManager.runModule(moduleName, optionalParameter);
                 }, function(){
-                    console.log('Error in Load Module' + moduleName);
+                    console.log('Error in Load Module ' + moduleName);
                 });
             },
             setStaticHost: function(hostName){

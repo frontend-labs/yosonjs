@@ -261,7 +261,7 @@ define([
                 if(dependency.getStatus() == &quot;error&quot;){
                     onAvaliable = null;
                     clearInterval(checkStatusDependency);
-                    throw onError.call(this);
+                    throw &quot;&quot; + onError.call(this);
                 }
             }, 500);
         } else {
