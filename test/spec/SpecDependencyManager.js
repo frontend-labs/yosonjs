@@ -64,12 +64,12 @@ define([
           });
 
           it('should be append a dependency ', function(){
-            var dependence = "http://demo/demo.js";
+            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
             expect( objDependencyManager.addScript(dependence) ).toBe(true);
           });
 
           it('should be validate when append a dependency already registered', function(){
-            var dependence = "http://demo/same.js";
+            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
             objDependencyManager.addScript(dependence);
             expect(objDependencyManager.addScript(dependence)).toBe("the dependence already appended");
           });

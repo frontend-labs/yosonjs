@@ -27,7 +27,11 @@ define([
         this.url = url;
         this.status = "request";
         this.message = "";
-        this.events = {};
+        this.events = {
+            onError: function(){
+                throw "Cant be loaded " + this.url;
+            }
+        };
     };
     /**
      * Return the status of the request

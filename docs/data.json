@@ -289,7 +289,7 @@
         },
         {
             "file": "src/comps/dependency.js",
-            "line": 32,
+            "line": 36,
             "description": "Return the status of the request",
             "itemtype": "method",
             "name": "getStatus",
@@ -301,7 +301,7 @@
         },
         {
             "file": "src/comps/dependency.js",
-            "line": 40,
+            "line": 44,
             "description": "Call the request of the script",
             "itemtype": "method",
             "name": "request",
@@ -316,7 +316,7 @@
         },
         {
             "file": "src/comps/dependency.js",
-            "line": 72,
+            "line": 76,
             "description": "Trigger when the request its started",
             "itemtype": "method",
             "name": "onRequest",
@@ -324,7 +324,7 @@
         },
         {
             "file": "src/comps/dependency.js",
-            "line": 80,
+            "line": 84,
             "description": "Trigger when the request its successfully",
             "itemtype": "method",
             "name": "onReadyRequest",
@@ -332,7 +332,7 @@
         },
         {
             "file": "src/comps/dependency.js",
-            "line": 88,
+            "line": 92,
             "description": "Trigger when the request have an error in the load of the script",
             "itemtype": "method",
             "name": "onErrorRequest",
@@ -340,7 +340,7 @@
         },
         {
             "file": "src/comps/dependency.js",
-            "line": 103,
+            "line": 107,
             "description": "Call the request of the script for IE browser",
             "itemtype": "method",
             "name": "requestIE",

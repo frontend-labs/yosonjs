@@ -1,29 +1,9 @@
-//define the modules
-yOSON.AppCore.addModule('moduleA', function(Sb){
-    var init = function(){
-        log("hello I'm moduleA!!");
-        log("hello!! I'm a dependence in A", $);
-    },
-    suscribeFn = function(){
-        log("Hello Im a suscribeFn from moduleA");
-    };
-    return {
-        init: init
-    }
-}, ['http://code.jquery.com/jquery-1.11.0.min.js']);
-yOSON.AppCore.addModule('moduleB', function(Sb){
-    var init = function(){
-        log("hello I'm moduleB!!");
-        //log("hello!! I'm a dependence in B", $);
-        publishFn();
-    },
-    publishFn = function(){
-        Sb.trigger('suscribeFn');
-    };
-    return {
-        init: init
-    }
-}, ['http://code.jquery.com/jquery-1.11.0.min.js']);
-//run the module
-yOSON.AppCore.runModule('moduleA');
-yOSON.AppCore.runModule('moduleB');
+var objDependency = new yOSON.Components.Dependency('http://code.jquery.com/jquery-1.11.0.min.js');
+var objDependency2 = new yOSON.Components.Dependency('http://code.jquery.com/j1.11.0.min.js');
+try{
+    //objDependency.request();
+    objDependency2.request();
+}catch(e){
+    window.eee = e;
+    //console.log(e.message);
+}
