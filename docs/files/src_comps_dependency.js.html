@@ -117,11 +117,7 @@ define([
         this.url = url;
         this.status = &quot;request&quot;;
         this.message = &quot;&quot;;
-        this.events = {
-            onError: function(){
-                throw &quot;Cant be loaded &quot; + this.url;
-            }
-        };
+        this.events = {};
     };
     /**
      * Return the status of the request

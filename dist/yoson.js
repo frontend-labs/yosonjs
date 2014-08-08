@@ -35,11 +35,7 @@
         this.url = url;
         this.status = "request";
         this.message = "";
-        this.events = {
-            onError: function(){
-                throw "Cant be loaded " + this.url;
-            }
-        };
+        this.events = {};
     };
     /**
      * Return the status of the request
@@ -306,7 +302,7 @@
                 if(dependency.getStatus() == "error"){
                     onAvaliable = null;
                     clearInterval(checkStatusDependency);
-                    throw "" + onError.call(this);
+                    onError.call(this);
                 }
             }, 500);
         } else {

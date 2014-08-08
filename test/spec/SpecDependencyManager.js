@@ -98,16 +98,17 @@ define([
             });
           });
 
-          it('should be dont run the callback when the dependence return an error', function(done){
+          it('should be dont run the callback error when the dependence return an error', function(done){
             var dependence = "http://helloworld.cc/js/wrongscript.js",
-                onAvaliable = jasmine.createSpy("onAvaliable");
+                onNotAvaliable = jasmine.createSpy();
 
             objDependencyManager.addScript(dependence);
-            objDependencyManager.avaliable(dependence, onAvaliable);
-            setTimeout(function(){
-                expect(onAvaliable).not.toHaveBeenCalled();
+            objDependencyManager.avaliable(dependence, function(){}, function(){
+                onNotAvaliable();
+                expect(onNotAvaliable).toHaveBeenCalled();
                 done();
-            }, 500);
+            });
+
           });
 
           it('should be get the dependence self', function(){
