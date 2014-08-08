@@ -129,17 +129,20 @@ define([
      * @param {Array} urlList List of urls to request
      * @param {Function} onReady Callback to execute when the all requests are ready
      */
-    DependencyManager.prototype.ready = function(urlList, onReady){
+    DependencyManager.prototype.ready = function(urlList, onReady, onError){
         var index = 0,
         that = this;
         var queueQuering = function(list){
             if(index < list.length){
-                var urlToQuery = that.transformUrl(list[index]);
-                that.addScript(urlToQuery);
-                that.avaliable(urlToQuery, function(){
-                    index++;
-                    queueQuering(urlList);
-                });
+                try{
+                    var urlToQuery = that.transformUrl(list[index]);
+                    that.addScript(urlToQuery);
+                    that.avaliable(urlToQuery, function(){
+                        index++;
+                        queueQuering(urlList);
+                    }, onError);
+                }catch(err){
+                }
             } else {
                 onReady.apply(that);
             }
@@ -154,7 +157,7 @@ define([
      * @param {Function} onAvaliable Callback to execute when the url its avaliable
      * @return {Boolean} if the dependency its avaliable return true
      */
-    DependencyManager.prototype.avaliable = function(url, onAvaliable){
+    DependencyManager.prototype.avaliable = function(url, onAvaliable, onError){
         var that = this,
         id = that.generateId(url),
         dependency = that.getDependency(url);
@@ -168,6 +171,7 @@ define([
                 if(dependency.getStatus() == "error"){
                     onAvaliable = null;
                     clearInterval(checkStatusDependency);
+                    throw "" + onError.call(this);
                 }
             }, 500);
         } else {

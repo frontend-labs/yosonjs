@@ -62,6 +62,8 @@ define([
                 objModularManager.syncModule(moduleName);
                 objDependencyManager.ready(dependencesToLoad,function(){
                     objModularManager.runModule(moduleName, optionalParameter);
+                }, function(){
+                    console.log('Error in Load Module ' + moduleName);
                 });
             },
             setStaticHost: function(hostName){

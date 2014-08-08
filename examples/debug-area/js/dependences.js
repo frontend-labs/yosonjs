@@ -4,6 +4,4 @@ try{
     //objDependency.request();
     objDependency2.request();
 }catch(e){
-    window.eee = e;
-    //console.log(e.message);
 }

@@ -3,6 +3,7 @@ yOSON.AppCore.setStaticHost("http://cdn.aptitus.e3.pe/js/");
 var dependences = [
     'http://code.jquery.com/jquery-1.11.0.min.js',
     'http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js',
+    'faked.js',
     'http://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js'
 ];
 

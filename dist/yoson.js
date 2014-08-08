@@ -135,7 +135,7 @@
     };
 
     yOSON.Components.Dependency = Dependency;
-    
+
 
     /**
      * Class manager of one or many requests
@@ -264,17 +264,21 @@
      * @param {Array} urlList List of urls to request
      * @param {Function} onReady Callback to execute when the all requests are ready
      */
-    DependencyManager.prototype.ready = function(urlList, onReady){
+    DependencyManager.prototype.ready = function(urlList, onReady, onError){
         var index = 0,
         that = this;
         var queueQuering = function(list){
             if(index < list.length){
-                var urlToQuery = that.transformUrl(list[index]);
-                that.addScript(urlToQuery);
-                that.avaliable(urlToQuery, function(){
-                    index++;
-                    queueQuering(urlList);
-                });
+                try{
+                    var urlToQuery = that.transformUrl(list[index]);
+                    that.addScript(urlToQuery);
+                    that.avaliable(urlToQuery, function(){
+                        index++;
+                        queueQuering(urlList);
+                    }, onError);
+                }catch(err){
+                    document.write('ERROR:' + err);
+                }
             } else {
                 onReady.apply(that);
             }
@@ -289,7 +293,7 @@
      * @param {Function} onAvaliable Callback to execute when the url its avaliable
      * @return {Boolean} if the dependency its avaliable return true
      */
-    DependencyManager.prototype.avaliable = function(url, onAvaliable){
+    DependencyManager.prototype.avaliable = function(url, onAvaliable, onError){
         var that = this,
         id = that.generateId(url),
         dependency = that.getDependency(url);
@@ -303,6 +307,8 @@
                 if(dependency.getStatus() == "error"){
                     onAvaliable = null;
                     clearInterval(checkStatusDependency);
+                    onError.call(that);
+                    throw "DependencyManager cant be loaded Dependency " + url;
                 }
             }, 500);
         } else {
@@ -342,7 +348,7 @@
     };
 
     yOSON.Components.DependencyManager = DependencyManager;
-    
+
 
 
     //clase with pattern factory with the idea of create modules
@@ -409,7 +415,7 @@
     };
 
     yOSON.Components.Modular = Modular;
-    
+
 
     var ModularMonitor = function(){
         this.modules = {};
@@ -444,7 +450,7 @@
         return this.getTotalModulesByStatus('toStart') + this.getTotalModulesRunning();
     };
 
-    
+
 
 
     var ModularManager = function(){
@@ -554,7 +560,7 @@
     };
 
     yOSON.Components.ModularManager = ModularManager;
-    
+
 
 
     //Clase que se orienta al manejo de comunicacion entre modulos
@@ -637,7 +643,7 @@
     };
 
     yOSON.Components.Comunicator = Comunicator;
-    
+
 
     var LoaderSchema = function(schema){
         this.modules = schema.modules;
@@ -693,7 +699,7 @@
         this[levelName].byDefault();
     };
 
-    
+
 //Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
 
 
@@ -772,7 +778,7 @@
 
     yOSON.Components.Loader = Loader;
 
-    
+
 
 
     var objModularManager = new yOSON.Components.ModularManager(),
@@ -831,6 +837,8 @@
                 objModularManager.syncModule(moduleName);
                 objDependencyManager.ready(dependencesToLoad,function(){
                     objModularManager.runModule(moduleName, optionalParameter);
+                }, function(){
+                    console.log('Error in Load Module' + moduleName);
                 });
             },
             setStaticHost: function(hostName){

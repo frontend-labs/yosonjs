@@ -208,7 +208,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 150,
+            "line": 153,
             "description": "method what verify the avaliability of an Dependency",
             "itemtype": "method",
             "name": "avaliable",
@@ -232,7 +232,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 178,
+            "line": 182,
             "description": "return the dependency saved in the manager",
             "itemtype": "method",
             "name": "getDependency",
@@ -251,7 +251,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 189,
+            "line": 193,
             "description": "Query if its appened in the collection of the manager",
             "itemtype": "method",
             "name": "alreadyInCollection",
@@ -270,7 +270,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 199,
+            "line": 203,
             "description": "Query if its loaded the dependency in the manager",
             "itemtype": "method",
             "name": "alreadyLoaded",
