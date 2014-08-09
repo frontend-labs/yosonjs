@@ -778,7 +778,9 @@
     var objModularManager = new yOSON.Components.ModularManager(),
         objDependencyManager = new yOSON.Components.DependencyManager(),
         objComunicator = new yOSON.Components.Comunicator(),
-        dependenceByModule = {};
+        dependenceByModule = {},
+        paramsTaked = [],
+        triggerArgs = [];
 
     yOSON.AppCore = (function(){
         //setting the main methods in the bridge of an module
@@ -786,16 +788,23 @@
             objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
         });
 
-        objModularManager.addMethodToBrigde('trigger', function(eventName, argumentsOfEvent){
+        objModularManager.addMethodToBrigde('trigger', function(){
             var eventsWaiting = {};
+
+            paramsTaked = paramsTaked.splice.call(arguments, 0);
+            var eventNameArg = paramsTaked[0];
+            if(paramsTaked.length > 1){
+                triggerArgs = paramsTaked.splice(1);
+            }
+
             objModularManager.allModulesRunning(function(){
-                eventsWaiting[eventName] = argumentsOfEvent;
+                eventsWaiting[eventNameArg] = triggerArgs;
             }, function(){
                 //if have events waiting
                 for(var eventsForTrigger in eventsWaiting){
                     objComunicator.publish(eventsForTrigger , eventsWaiting[eventsForTrigger]);
                 }
-                objComunicator.publish(eventName, argumentsOfEvent);
+                objComunicator.publish(eventNameArg, triggerArgs);
             });
         });
 

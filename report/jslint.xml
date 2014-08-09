@@ -18,10 +18,10 @@
 <file name="src/comps/dependency.js">
   
 </file>
-<file name="src/comps/comunicator.js">
+<file name="src/core.js">
   
 </file>
-<file name="src/core.js">
+<file name="src/comps/comunicator.js">
   
 </file>
 <file name="src/comps/modular-monitor.js">
