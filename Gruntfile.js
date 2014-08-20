@@ -26,7 +26,7 @@ module.exports = function(grunt){
                     beautify:{
                         ascii_only: true
                     },
-                    banner: "/*! FrontendLabs comunity | yOSONJS v<%=pkg.version%>-alpha | " +
+                    banner: "/*! FrontendLabs comunity | yOSONJS v<%=pkg.version%> | " +
                             "(c) 2014, <%=grunt.template.today('yyyy')%> FrontendLabs comunity */",
                     compress: {
                         hoist_funs: false,
