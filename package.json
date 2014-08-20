@@ -1,7 +1,7 @@
 {
   "name": "yosonjs",
   "description": "A lightweight sandbox library in JavaScript for manage modular scripts",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "repository":{
       "type": "git",
       "url": "https://github.com/yosonjs/yosonjs"
