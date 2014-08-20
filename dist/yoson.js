@@ -837,12 +837,16 @@
             runModule: function(moduleName, optionalParameter){
                 var dependencesToLoad = getDependencesByModule(moduleName);
                 var module = objModularManager.getModule(moduleName);
-                objModularManager.syncModule(moduleName);
-                objDependencyManager.ready(dependencesToLoad,function(){
-                    objModularManager.runModule(moduleName, optionalParameter);
-                }, function(){
-                    console.log('Error in Load Module ' + moduleName);
-                });
+                if(module){
+                    objModularManager.syncModule(moduleName);
+                    objDependencyManager.ready(dependencesToLoad,function(){
+                        objModularManager.runModule(moduleName, optionalParameter);
+                    }, function(){
+                        console.log('Error in Load Module ' + moduleName);
+                    });
+                } else {
+                    console.log('Error: the module ' + moduleName + ' don\'t exists');
+                }
             },
             setStaticHost: function(hostName){
                 objDependencyManager.setStaticHost(hostName);
