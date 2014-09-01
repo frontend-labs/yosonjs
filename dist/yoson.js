@@ -14,7 +14,7 @@
         this.callbacks = {
             succeededs:[],
             faileds:[]
-        }
+        };
     };
 
     SinglePromise.prototype.eachCallBackList = function(callbackList, onEveryCallback){
@@ -27,7 +27,7 @@
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
         });
-    }
+    };
 
     //when all tasks its success
     SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
@@ -45,7 +45,7 @@
         });
     };
 
-    yOSON.SinglePromise = SinglePromise;
+    yOSON.Components.SinglePromise = SinglePromise;
     
 
     /**
