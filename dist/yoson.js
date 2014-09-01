@@ -9,6 +9,45 @@
 
      (function(){
 
+
+    var SinglePromise = function(){
+        this.callbacks = {
+            succeededs:[],
+            faileds:[]
+        }
+    };
+
+    SinglePromise.prototype.eachCallBackList = function(callbackList, onEveryCallback){
+        for(var indexCallback = 0; indexCallback < callbackList.length; indexCallback++){
+            onEveryCallback.call(this, callbackList[indexCallback]);
+        }
+    };
+
+    SinglePromise.prototype.done = function(){
+        this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
+            callbackRegistered.call(this);
+        });
+    }
+
+    //when all tasks its success
+    SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
+        this.callbacks.succeededs.push(whenItsDone);
+        if(typeof whenIsFailed === "function"){
+            this.callbacks.faileds.push(whenIsFailed);
+        }
+        return this;
+    };
+
+    //when the promise is broken
+    SinglePromise.prototype.fail = function(objError){
+        this.eachCallBackList(this.callbacks.faileds, function(callbackRegistered){
+            callbackRegistered.call(this, objError);
+        });
+    };
+
+    yOSON.SinglePromise = SinglePromise;
+    
+
     /**
      * Class dealer of an url and indicates if ready or not
      * @class Dependency
@@ -244,14 +283,23 @@
      */
     DependencyManager.prototype.addScript = function(url){
         var id = this.generateId( url );
+        var promiseEntity = new SinglePromise();
         if(this.alreadyInCollection(id)){
+            promiseEntity.done();
             return 'the dependence already appended';
         } else {
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
-            this.data[id].request();
-            return true;
+            this.data[id].request({
+                onReady: function(){
+                    promiseEntity.done();
+                },
+                onError: function(){
+                    promiseEntity.fail();
+                }
+            });
         }
+        return promiseEntity;
     };
 
     /**
@@ -265,15 +313,13 @@
         that = this;
         var queueQuering = function(list){
             if(index < list.length){
-                try{
-                    var urlToQuery = that.transformUrl(list[index]);
-                    that.addScript(urlToQuery);
-                    that.avaliable(urlToQuery, function(){
-                        index++;
-                        queueQuering(urlList);
-                    }, onError);
-                }catch(err){
-                }
+                var urlToQuery = that.transformUrl(list[index]);
+                that.addScript(urlToQuery).then(function(){
+                    index++;
+                    queueQuering(urlList);
+                }, function(){
+                    onError.call(this);
+                });
             } else {
                 onReady.apply(that);
             }
@@ -464,9 +510,16 @@
     //adding a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
+        var entityPromise = new SinglePromise();
         if(!this.getModule(moduleName)){
             modules[moduleName] = new Modular(this.entityBridge);
             modules[moduleName].create(moduleDefinition);
+            var referenceStart = modules[moduleName].start;
+            modules[moduleName].start = function(){
+                referenceStart(arguments);
+                entityPromise.done();
+                return entityPromise;
+            }
         }
     };
 
@@ -493,6 +546,8 @@
     };
 
     ModularManager.prototype.dataModule = function(moduleName, data){
+        console.log('moduleName', moduleName);
+        //this.modules[moduleName].data = "";
         if(typeof data !== "undefined"){
             this.modules[moduleName].data = data;
         }
@@ -504,18 +559,27 @@
             index = 0,
             runModules = function(list){
                 if(list.length > index){
-                    var module = list[index];
-                    that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
-                        that.objMonitor.updateStatus(moduleName, "run");
-                        var data = that.dataModule(moduleName);
-                        moduleSelf.start(data);
-                    });
-                    that.whenModuleHaveStatus(module, "run", function(){
+                    var moduleName = list[index];
+                    var moduleSelf = that.getModule(moduleName);
+                    var data = that.dataModule(moduleName);
+                    console.log('module', moduleSelf);
+                    //console.log('data', data);
+                    moduleSelf.start(data).then(function(){
                         index++;
                         runModules(list);
                     });
+                    //that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
+                        //that.objMonitor.updateStatus(moduleName, "run");
+                        //var data = that.dataModule(moduleName);
+                        //moduleSelf.start(data);
+                    //});
+                    //that.whenModuleHaveStatus(module, "run", function(){
+                        //index++;
+                        //runModules(list);
+                    //});
                 }
             };
+        console.log('syncModules', that.syncModules);
         runModules(that.syncModules);
     };
 

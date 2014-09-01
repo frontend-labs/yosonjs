@@ -1,7 +1,8 @@
 define([
     "yoson",
+    "../../src/comps/single-promise.js",
     "../../src/comps/dependency.js"
-], function(yOSON, Dependency){
+], function(yOSON, SinglePromise, Dependency){
     /**
      * Class manager of one or many requests
      * @class DependencyManager
@@ -113,14 +114,23 @@ define([
      */
     DependencyManager.prototype.addScript = function(url){
         var id = this.generateId( url );
+        var promiseEntity = new SinglePromise();
         if(this.alreadyInCollection(id)){
+            promiseEntity.done();
             return 'the dependence already appended';
         } else {
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
-            this.data[id].request();
-            return true;
+            this.data[id].request({
+                onReady: function(){
+                    promiseEntity.done();
+                },
+                onError: function(){
+                    promiseEntity.fail();
+                }
+            });
         }
+        return promiseEntity;
     };
 
     /**
@@ -134,15 +144,13 @@ define([
         that = this;
         var queueQuering = function(list){
             if(index < list.length){
-                try{
-                    var urlToQuery = that.transformUrl(list[index]);
-                    that.addScript(urlToQuery);
-                    that.avaliable(urlToQuery, function(){
-                        index++;
-                        queueQuering(urlList);
-                    }, onError);
-                }catch(err){
-                }
+                var urlToQuery = that.transformUrl(list[index]);
+                that.addScript(urlToQuery).then(function(){
+                    index++;
+                    queueQuering(urlList);
+                }, function(){
+                    onError.call(this);
+                });
             } else {
                 onReady.apply(that);
             }

@@ -1,8 +1,9 @@
 define([
+   '../../src/comps/single-promise.js',
    '../../src/comps/dependency.js',
    '../../src/comps/dependency-manager.js'
   ],
-  function(Dependency, DependencyManager){
+  function(SinglePromise, Dependency, DependencyManager){
       describe("DependencyManager Component", function(){
           var versionUrl,
               staticHost,
@@ -63,9 +64,12 @@ define([
 
           });
 
-          it('should be append a dependency ', function(){
+          it('should be append a dependency ', function(done){
             var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
-            expect( objDependencyManager.addScript(dependence) ).toBe(true);
+            objDependencyManager.addScript(dependence).then(function(){
+                expect(true).toBe(true);
+                done();
+            });
           });
 
           it('should be validate when append a dependency already registered', function(){

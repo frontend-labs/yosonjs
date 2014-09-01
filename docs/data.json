@@ -36,7 +36,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/comps/dependency-manager.js",
-            "line": 5,
+            "line": 6,
             "description": "Class manager of one or many requests",
             "requires": [
                 "Dependency"
@@ -73,7 +73,7 @@
     "classitems": [
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 32,
+            "line": 33,
             "description": "Setting the host of the static elements",
             "itemtype": "method",
             "name": "setStaticHost",
@@ -91,7 +91,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 44,
+            "line": 45,
             "description": "Get the host saved",
             "itemtype": "method",
             "name": "getStaticHost",
@@ -106,7 +106,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 56,
+            "line": 57,
             "description": "Setting the suffix for the url, ideally when working with elements versioned",
             "itemtype": "method",
             "name": "setVersionUrl",
@@ -124,7 +124,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 67,
+            "line": 68,
             "description": "Get the suffix saved",
             "itemtype": "method",
             "name": "getVersionUrl",
@@ -139,7 +139,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 83,
+            "line": 84,
             "description": "method what transform the url to request",
             "itemtype": "method",
             "name": "transformUrl",
@@ -158,7 +158,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 100,
+            "line": 101,
             "description": "method what use the url and generateid the id for the manager",
             "itemtype": "method",
             "name": "generateId",
@@ -173,7 +173,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 109,
+            "line": 110,
             "description": "method what receive an url to the manager",
             "itemtype": "method",
             "name": "addScript",
@@ -188,7 +188,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 126,
+            "line": 136,
             "description": "method what receive an list of urls to request and callbacks when the requests are ready",
             "itemtype": "method",
             "name": "ready",
@@ -208,7 +208,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 153,
+            "line": 161,
             "description": "method what verify the avaliability of an Dependency",
             "itemtype": "method",
             "name": "avaliable",
@@ -232,7 +232,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 182,
+            "line": 190,
             "description": "return the dependency saved in the manager",
             "itemtype": "method",
             "name": "getDependency",
@@ -251,7 +251,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 193,
+            "line": 201,
             "description": "Query if its appened in the collection of the manager",
             "itemtype": "method",
             "name": "alreadyInCollection",
@@ -270,7 +270,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 203,
+            "line": 211,
             "description": "Query if its loaded the dependency in the manager",
             "itemtype": "method",
             "name": "alreadyLoaded",

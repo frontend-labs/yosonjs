@@ -69,7 +69,7 @@ define([
                   });
               });
 
-              it('should be execute when the state is on ready', function(done){
+              it('should be execute when the state is on Error', function(done){
                   dependencyObjTest = new Dependency(failDependenceUrl);
                   dependencyObjTest.request({
                       onError: function(){

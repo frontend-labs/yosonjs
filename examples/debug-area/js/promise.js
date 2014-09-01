@@ -1,6 +1,6 @@
 var methodTest = function(){
     console.log('start methodTest');
-    var objPromise = new Promise();
+    var objPromise = new yOSON.SinglePromise();
     setTimeout(function() {
         objPromise.done();
     }, 1000);
@@ -8,7 +8,7 @@ var methodTest = function(){
 };
 
 var whenDone = function(){
-    var objPromise = new Promise();
+    var objPromise = new yOSON.SinglePromise();
     setTimeout(function() {
         objPromise.done();
         console.log('start 2nd method');
@@ -21,3 +21,4 @@ methodTest().then(function(){
 }).then(whenDone).then(function(){
     console.log('echo 2');
 });
+
