@@ -510,16 +510,9 @@
     //adding a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
-        var entityPromise = new SinglePromise();
         if(!this.getModule(moduleName)){
             modules[moduleName] = new Modular(this.entityBridge);
             modules[moduleName].create(moduleDefinition);
-            var referenceStart = modules[moduleName].start;
-            modules[moduleName].start = function(){
-                referenceStart(arguments);
-                entityPromise.done();
-                return entityPromise;
-            }
         }
     };
 
@@ -546,8 +539,6 @@
     };
 
     ModularManager.prototype.dataModule = function(moduleName, data){
-        console.log('moduleName', moduleName);
-        //this.modules[moduleName].data = "";
         if(typeof data !== "undefined"){
             this.modules[moduleName].data = data;
         }
@@ -559,27 +550,18 @@
             index = 0,
             runModules = function(list){
                 if(list.length > index){
-                    var moduleName = list[index];
-                    var moduleSelf = that.getModule(moduleName);
-                    var data = that.dataModule(moduleName);
-                    console.log('module', moduleSelf);
-                    //console.log('data', data);
-                    moduleSelf.start(data).then(function(){
+                    var module = list[index];
+                    that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
+                        that.objMonitor.updateStatus(moduleName, "run");
+                        var data = that.dataModule(moduleName);
+                        moduleSelf.start(data);
+                    });
+                    that.whenModuleHaveStatus(module, "run", function(){
                         index++;
                         runModules(list);
                     });
-                    //that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
-                        //that.objMonitor.updateStatus(moduleName, "run");
-                        //var data = that.dataModule(moduleName);
-                        //moduleSelf.start(data);
-                    //});
-                    //that.whenModuleHaveStatus(module, "run", function(){
-                        //index++;
-                        //runModules(list);
-                    //});
                 }
             };
-        console.log('syncModules', that.syncModules);
         runModules(that.syncModules);
     };
 
