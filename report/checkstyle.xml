@@ -13,6 +13,23 @@
 
 
 
+<file name="src/comps/dependency-manager.js">
+  
+  <error
+    line="115"
+    severity="warning"
+    message="Cyclomatic: 2,
+    Halstead: 14.385
+    | Effort: 4418.8
+    | Volume: 307.19
+    | Vocabulary: 24"
+    source="&lt;anonymous&gt;.addScript"
+    />
+  
+</file>
+
+
+
 <file name="src/yoson.js">
   
 </file>
@@ -20,23 +37,6 @@
 
 
 <file name="src/comps/modular.js">
-  
-</file>
-
-
-
-<file name="src/comps/dependency-manager.js">
-  
-  <error
-    line="115"
-    severity="warning"
-    message="Cyclomatic: 2,
-    Halstead: 10.267
-    | Effort: 2702.4
-    | Volume: 263.22
-    | Vocabulary: 26"
-    source="&lt;anonymous&gt;.addScript"
-    />
   
 </file>
 

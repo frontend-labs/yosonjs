@@ -6,12 +6,6 @@
 <file name="src/comps/modular-manager.js">
   
 </file>
-<file name="src/yoson.js">
-  
-</file>
-<file name="src/comps/modular.js">
-  
-</file>
 <file name="src/comps/dependency-manager.js">
   
   <issue
@@ -19,10 +13,16 @@
     char="&lt;anonymous&gt;.addScript"
     evidence="&lt;anonymous&gt;.addScript is too complicated"
     reason="Cyclomatic: 2,
-    Halstead: 10.267
-    | Effort: 2702.4
-    | Volume: 263.22
-    | Vocabulary: 26" />
+    Halstead: 14.385
+    | Effort: 4418.8
+    | Volume: 307.19
+    | Vocabulary: 24" />
+  
+</file>
+<file name="src/yoson.js">
+  
+</file>
+<file name="src/comps/modular.js">
   
 </file>
 <file name="src/comps/dependency.js">
