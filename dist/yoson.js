@@ -285,8 +285,8 @@
         var id = this.generateId( url );
         var promiseEntity = new SinglePromise();
         if(this.alreadyInCollection(id)){
-            promiseEntity.done();
-            return 'the dependence already appended';
+            return this.data[id].promiseEntity;
+            //return 'the dependence already appended';
         } else {
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
@@ -298,6 +298,7 @@
                     promiseEntity.fail();
                 }
             });
+            this.data[id].promiseEntity = promiseEntity;
         }
         return promiseEntity;
     };
@@ -312,14 +313,13 @@
         var index = 0,
         that = this;
         var queueQuering = function(list){
+            console.log('list', list);
             if(index < list.length){
                 var urlToQuery = that.transformUrl(list[index]);
                 that.addScript(urlToQuery).then(function(){
                     index++;
                     queueQuering(urlList);
-                }, function(){
-                    onError.call(this);
-                });
+                }, onError);
             } else {
                 onReady.apply(that);
             }

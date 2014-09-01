@@ -1,5 +1,6 @@
 //define the modules
-var dependencyManager = new yOSON.DependencyManager();
+//var dependencyManager = new yOSON.DependencyManager();
+var dependencyManager = new yOSON.Components.DependencyManager();
 //append the demo urls
 var dependences = [
     'http://code.jquery.com/jquery-1.11.0.min.js',
@@ -9,7 +10,7 @@ var dependences = [
 
 var dependencesWithFake = [
     'http://code.jquery.com/jquery-1.11.0.min.js',
-    'http://demo.com/demo.js'
+    'http://demououou.com/demoOOOOOOOO.js'
 ];
 //when is ready
 dependencyManager.ready([dependences[0]], function(){
@@ -19,9 +20,11 @@ dependencyManager.ready([dependences[0]], function(){
 //when error
 dependencyManager.ready(dependencesWithFake, function(){
     console.log('bla bla bla');
+}, function(){
+    console.log('no pudo ejecutarse el "bla, bla, bla"');
 });
 
-dependencyManager.ready(dependences, function(){
+dependencyManager.ready([ dependences[2], dependences[0], dependences[1] ], function(){
     console.log('se debe ejecutar desde la cache del manager!', $.ui);
 });
 
