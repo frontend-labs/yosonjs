@@ -24,7 +24,7 @@ dependencyManager.ready(dependencesWithFake, function(){
     console.log('no pudo ejecutarse el "bla, bla, bla"');
 });
 
-dependencyManager.ready([ dependences[2], dependences[0], dependences[1] ], function(){
+dependencyManager.ready([ dependences[0], dependences[1] ], function(){
     console.log('se debe ejecutar desde la cache del manager!', $.ui);
 });
 

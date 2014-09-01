@@ -144,7 +144,6 @@ define([
         var index = 0,
         that = this;
         var queueQuering = function(list){
-            console.log('list', list);
             if(index < list.length){
                 var urlToQuery = that.transformUrl(list[index]);
                 that.addScript(urlToQuery).then(function(){

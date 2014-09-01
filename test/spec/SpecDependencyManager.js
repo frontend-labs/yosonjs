@@ -72,7 +72,7 @@ define([
             });
           });
 
-          it('should be validate when append a dependency already registered', function(){
+          xit('should be validate when append a dependency already registered', function(){
             var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
             objDependencyManager.addScript(dependence);
             expect(objDependencyManager.addScript(dependence)).toBe("the dependence already appended");

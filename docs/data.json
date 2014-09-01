@@ -188,7 +188,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 136,
+            "line": 137,
             "description": "method what receive an list of urls to request and callbacks when the requests are ready",
             "itemtype": "method",
             "name": "ready",
@@ -208,7 +208,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 161,
+            "line": 160,
             "description": "method what verify the avaliability of an Dependency",
             "itemtype": "method",
             "name": "avaliable",
@@ -232,7 +232,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 190,
+            "line": 189,
             "description": "return the dependency saved in the manager",
             "itemtype": "method",
             "name": "getDependency",
@@ -251,7 +251,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 201,
+            "line": 200,
             "description": "Query if its appened in the collection of the manager",
             "itemtype": "method",
             "name": "alreadyInCollection",
@@ -270,7 +270,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 211,
+            "line": 210,
             "description": "Query if its loaded the dependency in the manager",
             "itemtype": "method",
             "name": "alreadyLoaded",

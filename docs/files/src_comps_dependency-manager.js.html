@@ -206,8 +206,8 @@ define([
         var id = this.generateId( url );
         var promiseEntity = new SinglePromise();
         if(this.alreadyInCollection(id)){
-            promiseEntity.done();
-            return &#x27;the dependence already appended&#x27;;
+            return this.data[id].promiseEntity;
+            //return &#x27;the dependence already appended&#x27;;
         } else {
             this.data[id] = new Dependency(url);
             //Hago la consulta del script
@@ -219,6 +219,7 @@ define([
                     promiseEntity.fail();
                 }
             });
+            this.data[id].promiseEntity = promiseEntity;
         }
         return promiseEntity;
     };
@@ -238,9 +239,7 @@ define([
                 that.addScript(urlToQuery).then(function(){
                     index++;
                     queueQuering(urlList);
-                }, function(){
-                    onError.call(this);
-                });
+                }, onError);
             } else {
                 onReady.apply(that);
             }
