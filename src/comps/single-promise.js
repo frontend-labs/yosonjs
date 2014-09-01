@@ -37,6 +37,6 @@ define([
         });
     };
 
-    yOSON.SinglePromise = SinglePromise;
+    yOSON.Components.SinglePromise = SinglePromise;
     return SinglePromise;
 });
