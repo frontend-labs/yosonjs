@@ -3,9 +3,6 @@
 <file name="src/comps/loader.js">
   
 </file>
-<file name="src/comps/dependency-manager.js">
-  
-</file>
 <file name="src/comps/modular-manager.js">
   
 </file>
@@ -15,6 +12,19 @@
 <file name="src/comps/modular.js">
   
 </file>
+<file name="src/comps/dependency-manager.js">
+  
+  <issue
+    line="115"
+    char="&lt;anonymous&gt;.addScript"
+    evidence="&lt;anonymous&gt;.addScript is too complicated"
+    reason="Cyclomatic: 2,
+    Halstead: 10.267
+    | Effort: 2702.4
+    | Volume: 263.22
+    | Vocabulary: 26" />
+  
+</file>
 <file name="src/comps/dependency.js">
   
 </file>
@@ -22,6 +32,9 @@
   
 </file>
 <file name="src/comps/comunicator.js">
+  
+</file>
+<file name="src/comps/single-promise.js">
   
 </file>
 <file name="src/comps/modular-monitor.js">

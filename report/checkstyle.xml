@@ -7,12 +7,6 @@
 
 
 
-<file name="src/comps/dependency-manager.js">
-  
-</file>
-
-
-
 <file name="src/comps/modular-manager.js">
   
 </file>
@@ -31,6 +25,23 @@
 
 
 
+<file name="src/comps/dependency-manager.js">
+  
+  <error
+    line="115"
+    severity="warning"
+    message="Cyclomatic: 2,
+    Halstead: 10.267
+    | Effort: 2702.4
+    | Volume: 263.22
+    | Vocabulary: 26"
+    source="&lt;anonymous&gt;.addScript"
+    />
+  
+</file>
+
+
+
 <file name="src/comps/dependency.js">
   
 </file>
@@ -44,6 +55,12 @@
 
 
 <file name="src/comps/comunicator.js">
+  
+</file>
+
+
+
+<file name="src/comps/single-promise.js">
   
 </file>
 
