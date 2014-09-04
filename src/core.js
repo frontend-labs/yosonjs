@@ -22,10 +22,10 @@ define([
         objModularManager.addMethodToBrigde('trigger', function(){
             var eventsWaiting = {};
 
-            paramsTaked = paramsTaked.splice.call(arguments, 0);
+            paramsTaked = paramsTaked.slice.call(arguments, 0);
             var eventNameArg = paramsTaked[0];
             if(paramsTaked.length > 1){
-                triggerArgs = paramsTaked.splice(1);
+                triggerArgs = paramsTaked.slice(1);
             }
 
             objModularManager.allModulesRunning(function(){

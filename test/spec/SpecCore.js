@@ -92,5 +92,34 @@ define([
             yOSON.AppCore.runModule('moduleA2');
             yOSON.AppCore.runModule('moduleB2');
         });
+
+        it('should be execute method with params from moduleB3 to moduleA3', function(done){
+            var functionToBridge3 = jasmine.createSpy();
+            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
+
+            yOSON.AppCore.addModule('moduleA3', function(Sb){
+                return {
+                    init: function(){
+                        Sb.trigger('publicMethodInModuleB3', "hello", "world");
+                    }
+                }
+            });
+
+            yOSON.AppCore.addModule('moduleB3', function(Sb){
+                var privateMethodB3 = function(paramA, paramB){
+                    functionToBridge3(paramA, paramB);
+                    expect(functionToBridge3).toHaveBeenCalledWith(paramA, paramB);
+                    done();
+                };
+                return {
+                    init: function(){
+                        Sb.events(['publicMethodInModuleB3'], privateMethodB3 , this);
+                    }
+                }
+            });
+
+            yOSON.AppCore.runModule('moduleA3');
+            yOSON.AppCore.runModule('moduleB3');
+        });
     });
 });

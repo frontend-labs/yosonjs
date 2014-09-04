@@ -106,8 +106,7 @@ define([
             var dependence = "http://helloworld.cc/js/wrongscript.js",
                 onNotAvaliable = jasmine.createSpy();
 
-            objDependencyManager.addScript(dependence);
-            objDependencyManager.avaliable(dependence, function(){}, function(){
+            objDependencyManager.addScript(dependence).then(function(){}, function(){
                 onNotAvaliable();
                 expect(onNotAvaliable).toHaveBeenCalled();
                 done();
