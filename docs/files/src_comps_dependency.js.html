@@ -201,10 +201,10 @@ define([
         if(scriptElement.readyState){
             scriptElement.onreadystatechange = function(){
                 if(scriptElement.readyState==&quot;loaded&quot; || scriptElement.readyState==&quot;complete&quot;){
-                    scriptElement.onreadystatechange=null;
                     that.onReadyRequest();
                 } else {
                     that.onErrorRequest();
+                    scriptElement.onreadystatechange=null;
                 }
             };
         } else {
