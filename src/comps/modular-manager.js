@@ -1,8 +1,9 @@
 define([
     "yoson",
+    "../../src/comps/single-promise.js",
     "../../src/comps/modular.js",
     "../../src/comps/modular-monitor.js"
-], function(yOSON, Modular, ModularMonitor){
+], function(yOSON, SinglePromise, Modular, ModularMonitor){
 
     var ModularManager = function(){
         this.modules = {};
@@ -35,11 +36,14 @@ define([
     //running the module
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
-        if(this.getModule(moduleName)){
-            module.setStatusModule("start");
-            this.dataModule(moduleName,optionalParameters);
-            this.runQueueModules();
+        var objPromise = new SinglePromise();
+        if(module){
+            module.start(optionalParameters);
+            objPromise.done();
+        } else {
+            objPromise.fail();
         }
+        return objPromise;
     };
 
     ModularManager.prototype.syncModule = function(moduleName){
@@ -65,7 +69,6 @@ define([
                     that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
                         that.objMonitor.updateStatus(moduleName, "run");
                         var data = that.dataModule(moduleName);
-                        moduleSelf.start(data);
                     });
                     that.whenModuleHaveStatus(module, "run", function(){
                         index++;

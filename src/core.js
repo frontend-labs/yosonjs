@@ -69,11 +69,13 @@ define([
                 var dependencesToLoad = getDependencesByModule(moduleName);
                 var module = objModularManager.getModule(moduleName);
                 if(module){
-                    objModularManager.syncModule(moduleName);
-                    objDependencyManager.ready(dependencesToLoad,function(){
-                        objModularManager.runModule(moduleName, optionalParameter);
-                    }, function(){
-                        console.log('Error in Load Module ' + moduleName);
+                    objModularManager.saveToQueue(moduleName);
+                    objPromise.pipe(objModularManager.getQueueModules()).then(function(){
+                        objDependencyManager.ready(dependencesToLoad,function(){
+                            objModularManager.runModule(moduleName, optionalParameter);
+                        }, function(){
+                            console.log('Error in Load Module ' + moduleName);
+                        });
                     });
                 } else {
                     console.log('Error: the module ' + moduleName + ' don\'t exists');

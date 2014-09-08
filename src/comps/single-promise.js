@@ -7,6 +7,7 @@ define([
             succeededs:[],
             faileds:[]
         };
+        this.status = "pending";
     };
 
     SinglePromise.prototype.eachCallBackList = function(callbackList, onEveryCallback){
@@ -16,6 +17,7 @@ define([
     };
 
     SinglePromise.prototype.done = function(){
+        this.status = "done";
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
         });
@@ -23,19 +25,44 @@ define([
 
     //when all tasks its success
     SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
-        this.callbacks.succeededs.push(whenItsDone);
+        if(this.status === "done"){
+            whenItsDone.call(this);
+        } else {
+            this.callbacks.succeededs.push(whenItsDone);
+        }
         if(typeof whenIsFailed === "function"){
-            this.callbacks.faileds.push(whenIsFailed);
+            if(this.status === "fail"){
+                whenIsFailed.call(this);
+            } else {
+                this.callbacks.faileds.push(whenIsFailed);
+            }
         }
         return this;
     };
 
     //when the promise is broken
     SinglePromise.prototype.fail = function(objError){
+        this.status = "fail";
         this.eachCallBackList(this.callbacks.faileds, function(callbackRegistered){
             callbackRegistered.call(this, objError);
         });
     };
+
+    SinglePromise.prototype.pipe = function(collectionOfPromises, whenAllDone, whenFails){
+        var index = 0;
+        var queuePromises = function(list){
+            if(index < list.length){
+                var itemPromise = list[index];
+                itemPromise.then(function(){
+                    index++;
+                    queuePromises(list);
+                }, whenFails);
+            } else {
+                whenAllDone.call(this);
+            }
+        }
+        queuePromises(collectionOfPromises);
+    }
 
     yOSON.Components.SinglePromise = SinglePromise;
     return SinglePromise;
