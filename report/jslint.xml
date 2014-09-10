@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <jslint>
+<file name="src/yoson.js">
+  
+  <issue
+    line="1"
+    char="&lt;anonymous&gt;"
+    evidence="&lt;anonymous&gt; is too complicated"
+    reason="Cyclomatic: 2,
+    Halstead: 9.9000
+    | Effort: 904.63
+    | Volume: 91.377
+    | Vocabulary: 14" />
+  
+</file>
 <file name="src/comps/loader.js">
   
 </file>
@@ -17,9 +30,6 @@
     | Effort: 4418.8
     | Volume: 307.19
     | Vocabulary: 24" />
-  
-</file>
-<file name="src/yoson.js">
   
 </file>
 <file name="src/comps/modular.js">

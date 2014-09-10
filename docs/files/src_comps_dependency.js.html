@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.7-alpha</em>
+            <em>API Docs for: 0.0.8-alpha</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -202,9 +202,9 @@ define([
             scriptElement.onreadystatechange = function(){
                 if(scriptElement.readyState==&quot;loaded&quot; || scriptElement.readyState==&quot;complete&quot;){
                     that.onReadyRequest();
+                    scriptElement.onreadystatechange=null;
                 } else {
                     that.onErrorRequest();
-                    scriptElement.onreadystatechange=null;
                 }
             };
         } else {

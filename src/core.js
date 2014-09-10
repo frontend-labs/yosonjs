@@ -73,10 +73,10 @@ define([
                     objDependencyManager.ready(dependencesToLoad,function(){
                         objModularManager.runModule(moduleName, optionalParameter);
                     }, function(){
-                        console.log('Error in Load Module ' + moduleName);
+                        yOSON.Log('Error in Load Module ' + moduleName);
                     });
                 } else {
-                    console.log('Error: the module ' + moduleName + ' don\'t exists');
+                    yOSON.Log('Error: the module ' + moduleName + ' don\'t exists');
                 }
             },
             setStaticHost: function(hostName){

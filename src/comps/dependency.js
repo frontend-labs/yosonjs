@@ -112,9 +112,9 @@ define([
             scriptElement.onreadystatechange = function(){
                 if(scriptElement.readyState=="loaded" || scriptElement.readyState=="complete"){
                     that.onReadyRequest();
+                    scriptElement.onreadystatechange=null;
                 } else {
                     that.onErrorRequest();
-                    scriptElement.onreadystatechange=null;
                 }
             };
         } else {

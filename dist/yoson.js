@@ -7,6 +7,18 @@
 
     yOSON.Components = {};
 
+    yOSON.Log = function(){
+        try{
+            console.log.apply(console, arguments);
+        }catch(err){
+            try{
+                opera.postError.apply(opera, arguments);
+            }catch(er){
+                alert(Array.prototype.join.call(arguments), " ");
+            }
+        }
+    };
+
      (function(){
 
 
@@ -159,9 +171,9 @@
             scriptElement.onreadystatechange = function(){
                 if(scriptElement.readyState=="loaded" || scriptElement.readyState=="complete"){
                     that.onReadyRequest();
+                    scriptElement.onreadystatechange=null;
                 } else {
                     that.onErrorRequest();
-                    scriptElement.onreadystatechange=null;
                 }
             };
         } else {
@@ -409,7 +421,7 @@
                 try {
                     return functionSelf.apply(this, arguments);
                 } catch( ex ){
-                    console.log(functionName + "(): " + ex.message);
+                    yOSON.Log(functionName + "(): " + ex.message);
                 }
             };
         } else {
@@ -887,10 +899,10 @@
                     objDependencyManager.ready(dependencesToLoad,function(){
                         objModularManager.runModule(moduleName, optionalParameter);
                     }, function(){
-                        console.log('Error in Load Module ' + moduleName);
+                        yOSON.Log('Error in Load Module ' + moduleName);
                     });
                 } else {
-                    console.log('Error: the module ' + moduleName + ' don\'t exists');
+                    yOSON.Log('Error: the module ' + moduleName + ' don\'t exists');
                 }
             },
             setStaticHost: function(hostName){

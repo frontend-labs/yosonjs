@@ -21,7 +21,7 @@ define([
                 try {
                     return functionSelf.apply(this, arguments);
                 } catch( ex ){
-                    console.log(functionName + "(): " + ex.message);
+                    yOSON.Log(functionName + "(): " + ex.message);
                 }
             };
         } else {
