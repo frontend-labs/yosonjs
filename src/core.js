@@ -4,6 +4,7 @@ define([
     "comps/modular-manager",
     "comps/comunicator",
     "comps/loader",
+    "comps/single-promise",
 ], function(yOSON){
 
     var objModularManager = new yOSON.Components.ModularManager(),
@@ -49,8 +50,23 @@ define([
                 dependencesToReturn = dependenceByModule[moduleName];
             }
             return dependencesToReturn;
-        };
+        },
+        toSaveInQueue = function(moduleName, parameters){
+            var dependencesToLoad = getDependencesByModule(moduleName);
+            var objPromiseModule = new yOSON.Components.SinglePromise();
 
+            objDependencyManager.ready(dependencesToLoad,function(){
+                objPromiseModule.done(function(){
+                    if(objModularManager.getModule(moduleName).getStatusModule() !== "run"){
+                        objModularManager.runModule(moduleName, parameters);
+                    }
+                });
+            }, function(){
+                objPromiseModule.fail();
+            });
+
+            return objPromiseModule;
+        };
         return {
             getStatusModule: function(moduleName){
                 var module = objModularManager.getModule(moduleName);
@@ -66,17 +82,12 @@ define([
                 objModularManager.addModule(moduleName, moduleDefinition);
             },
             runModule: function(moduleName, optionalParameter){
-                var dependencesToLoad = getDependencesByModule(moduleName);
+                var objPromise = new yOSON.Components.SinglePromise();
                 var module = objModularManager.getModule(moduleName);
                 if(module){
-                    objModularManager.saveToQueue(moduleName);
-                    objPromise.pipe(objModularManager.getQueueModules()).then(function(){
-                        objDependencyManager.ready(dependencesToLoad,function(){
-                            objModularManager.runModule(moduleName, optionalParameter);
-                        }, function(){
-                            console.log('Error in Load Module ' + moduleName);
-                        });
-                    });
+                    console.log('runModule::', moduleName);
+                    objModularManager.saveInQueue(toSaveInQueue(moduleName, optionalParameter));
+                    objPromise.pipe(objModularManager.getQueueModules());
                 } else {
                     console.log('Error: the module ' + moduleName + ' don\'t exists');
                 }

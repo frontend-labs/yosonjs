@@ -7,12 +7,6 @@
 
 
 
-<file name="src/comps/modular-manager.js">
-  
-</file>
-
-
-
 <file name="src/comps/dependency-manager.js">
   
   <error
@@ -36,6 +30,12 @@
 
 
 
+<file name="src/comps/modular-manager.js">
+  
+</file>
+
+
+
 <file name="src/comps/modular.js">
   
 </file>
@@ -54,13 +54,13 @@
 
 
 
-<file name="src/comps/comunicator.js">
+<file name="src/comps/single-promise.js">
   
 </file>
 
 
 
-<file name="src/comps/single-promise.js">
+<file name="src/comps/comunicator.js">
   
 </file>
 

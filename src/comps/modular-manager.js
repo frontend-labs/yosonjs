@@ -36,47 +36,17 @@ define([
     //running the module
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
-        var objPromise = new SinglePromise();
         if(module){
             module.start(optionalParameters);
-            objPromise.done();
-        } else {
-            objPromise.fail();
         }
-        return objPromise;
     };
 
-    ModularManager.prototype.syncModule = function(moduleName){
-        var that = this;
-        var module = that.getModule(moduleName);
-        that.objMonitor.updateStatus(moduleName, "toStart");
-        that.syncModules.push(moduleName);
+    ModularManager.prototype.saveInQueue = function(objectInQueue){
+        this.syncModules.push(objectInQueue);
     };
 
-    ModularManager.prototype.dataModule = function(moduleName, data){
-        if(typeof data !== "undefined"){
-            this.modules[moduleName].data = data;
-        }
-        return this.modules[moduleName].data;
-    };
-
-    ModularManager.prototype.runQueueModules = function(){
-        var that = this,
-            index = 0,
-            runModules = function(list){
-                if(list.length > index){
-                    var module = list[index];
-                    that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
-                        that.objMonitor.updateStatus(moduleName, "run");
-                        var data = that.dataModule(moduleName);
-                    });
-                    that.whenModuleHaveStatus(module, "run", function(){
-                        index++;
-                        runModules(list);
-                    });
-                }
-            };
-        runModules(that.syncModules);
+    ModularManager.prototype.getQueueModules = function(){
+        return this.syncModules;
     };
 
     ModularManager.prototype.whenModuleHaveStatus = function(moduleName, statusName, whenHaveStatus){

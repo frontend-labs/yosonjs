@@ -16,8 +16,13 @@ define([
         }
     };
 
-    SinglePromise.prototype.done = function(){
+    SinglePromise.prototype.done = function(callbackWhenItsDone){
         this.status = "done";
+
+        if (typeof callbackWhenItsDone === "function"){
+            this.resolvedCallback = callbackWhenItsDone;
+        }
+
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
         });
@@ -25,18 +30,26 @@ define([
 
     //when all tasks its success
     SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
-        if(this.status === "done"){
-            whenItsDone.call(this);
-        } else {
-            this.callbacks.succeededs.push(whenItsDone);
-        }
-        if(typeof whenIsFailed === "function"){
-            if(this.status === "fail"){
+        var callbacks = this.callbacks;
+
+        var byStatus = {
+            "pending": function(){
+                callbacks.succeededs.push(whenItsDone);
+                if(typeof whenIsFailed === "function"){
+                    callbacks.faileds.push(whenIsFailed);
+                }
+
+            },
+            "done": function(){
+                if(typeof whenItsDone === "function"){
+                    whenItsDone.call(this);
+                }
+            },
+            "fail": function(){
                 whenIsFailed.call(this);
-            } else {
-                this.callbacks.faileds.push(whenIsFailed);
             }
-        }
+        };
+        byStatus[this.status]();
         return this;
     };
 
@@ -50,19 +63,29 @@ define([
 
     SinglePromise.prototype.pipe = function(collectionOfPromises, whenAllDone, whenFails){
         var index = 0;
+        var whenAllIsDone = function (){
+            if (typeof whenAllDone === "function"){
+                whenAllDone.call(this);
+            }
+        };
         var queuePromises = function(list){
             if(index < list.length){
                 var itemPromise = list[index];
                 itemPromise.then(function(){
+                    itemPromise.resolved();
                     index++;
                     queuePromises(list);
                 }, whenFails);
             } else {
-                whenAllDone.call(this);
+                whenAllIsDone();
             }
-        }
+        };
         queuePromises(collectionOfPromises);
-    }
+    };
+
+    SinglePromise.prototype.resolved = function(){
+            this.resolvedCallback();
+    };
 
     yOSON.Components.SinglePromise = SinglePromise;
     return SinglePromise;

@@ -24,8 +24,13 @@
         }
     };
 
-    SinglePromise.prototype.done = function(){
+    SinglePromise.prototype.done = function(callbackWhenItsDone){
         this.status = "done";
+
+        if (typeof callbackWhenItsDone === "function"){
+            this.resolvedCallback = callbackWhenItsDone;
+        }
+
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
         });
@@ -33,18 +38,26 @@
 
     //when all tasks its success
     SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
-        if(this.status === "done"){
-            whenItsDone.call(this);
-        } else {
-            this.callbacks.succeededs.push(whenItsDone);
-        }
-        if(typeof whenIsFailed === "function"){
-            if(this.status === "fail"){
+        var callbacks = this.callbacks;
+
+        var byStatus = {
+            "pending": function(){
+                callbacks.succeededs.push(whenItsDone);
+                if(typeof whenIsFailed === "function"){
+                    callbacks.faileds.push(whenIsFailed);
+                }
+
+            },
+            "done": function(){
+                if(typeof whenItsDone === "function"){
+                    whenItsDone.call(this);
+                }
+            },
+            "fail": function(){
                 whenIsFailed.call(this);
-            } else {
-                this.callbacks.faileds.push(whenIsFailed);
             }
-        }
+        };
+        byStatus[this.status]();
         return this;
     };
 
@@ -58,19 +71,29 @@
 
     SinglePromise.prototype.pipe = function(collectionOfPromises, whenAllDone, whenFails){
         var index = 0;
+        var whenAllIsDone = function (){
+            if (typeof whenAllDone === "function"){
+                whenAllDone.call(this);
+            }
+        };
         var queuePromises = function(list){
             if(index < list.length){
                 var itemPromise = list[index];
                 itemPromise.then(function(){
+                    itemPromise.resolved();
                     index++;
                     queuePromises(list);
                 }, whenFails);
             } else {
-                whenAllDone.call(this);
+                whenAllIsDone();
             }
-        }
+        };
         queuePromises(collectionOfPromises);
-    }
+    };
+
+    SinglePromise.prototype.resolved = function(){
+            this.resolvedCallback();
+    };
 
     yOSON.Components.SinglePromise = SinglePromise;
     
@@ -550,47 +573,17 @@
     //running the module
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
-        var objPromise = new SinglePromise();
         if(module){
             module.start(optionalParameters);
-            objPromise.done();
-        } else {
-            objPromise.fail();
         }
-        return objPromise;
     };
 
-    ModularManager.prototype.syncModule = function(moduleName){
-        var that = this;
-        var module = that.getModule(moduleName);
-        that.objMonitor.updateStatus(moduleName, "toStart");
-        that.syncModules.push(moduleName);
+    ModularManager.prototype.saveInQueue = function(objectInQueue){
+        this.syncModules.push(objectInQueue);
     };
 
-    ModularManager.prototype.dataModule = function(moduleName, data){
-        if(typeof data !== "undefined"){
-            this.modules[moduleName].data = data;
-        }
-        return this.modules[moduleName].data;
-    };
-
-    ModularManager.prototype.runQueueModules = function(){
-        var that = this,
-            index = 0,
-            runModules = function(list){
-                if(list.length > index){
-                    var module = list[index];
-                    that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
-                        that.objMonitor.updateStatus(moduleName, "run");
-                        var data = that.dataModule(moduleName);
-                    });
-                    that.whenModuleHaveStatus(module, "run", function(){
-                        index++;
-                        runModules(list);
-                    });
-                }
-            };
-        runModules(that.syncModules);
+    ModularManager.prototype.getQueueModules = function(){
+        return this.syncModules;
     };
 
     ModularManager.prototype.whenModuleHaveStatus = function(moduleName, statusName, whenHaveStatus){
@@ -849,6 +842,95 @@
     
 
 
+    var SinglePromise = function(){
+        this.callbacks = {
+            succeededs:[],
+            faileds:[]
+        };
+        this.status = "pending";
+    };
+
+    SinglePromise.prototype.eachCallBackList = function(callbackList, onEveryCallback){
+        for(var indexCallback = 0; indexCallback < callbackList.length; indexCallback++){
+            onEveryCallback.call(this, callbackList[indexCallback]);
+        }
+    };
+
+    SinglePromise.prototype.done = function(callbackWhenItsDone){
+        this.status = "done";
+
+        if (typeof callbackWhenItsDone === "function"){
+            this.resolvedCallback = callbackWhenItsDone;
+        }
+
+        this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
+            callbackRegistered.call(this);
+        });
+    };
+
+    //when all tasks its success
+    SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
+        var callbacks = this.callbacks;
+
+        var byStatus = {
+            "pending": function(){
+                callbacks.succeededs.push(whenItsDone);
+                if(typeof whenIsFailed === "function"){
+                    callbacks.faileds.push(whenIsFailed);
+                }
+
+            },
+            "done": function(){
+                if(typeof whenItsDone === "function"){
+                    whenItsDone.call(this);
+                }
+            },
+            "fail": function(){
+                whenIsFailed.call(this);
+            }
+        };
+        byStatus[this.status]();
+        return this;
+    };
+
+    //when the promise is broken
+    SinglePromise.prototype.fail = function(objError){
+        this.status = "fail";
+        this.eachCallBackList(this.callbacks.faileds, function(callbackRegistered){
+            callbackRegistered.call(this, objError);
+        });
+    };
+
+    SinglePromise.prototype.pipe = function(collectionOfPromises, whenAllDone, whenFails){
+        var index = 0;
+        var whenAllIsDone = function (){
+            if (typeof whenAllDone === "function"){
+                whenAllDone.call(this);
+            }
+        };
+        var queuePromises = function(list){
+            if(index < list.length){
+                var itemPromise = list[index];
+                itemPromise.then(function(){
+                    itemPromise.resolved();
+                    index++;
+                    queuePromises(list);
+                }, whenFails);
+            } else {
+                whenAllIsDone();
+            }
+        };
+        queuePromises(collectionOfPromises);
+    };
+
+    SinglePromise.prototype.resolved = function(){
+            this.resolvedCallback();
+    };
+
+    yOSON.Components.SinglePromise = SinglePromise;
+    
+
+
     var objModularManager = new yOSON.Components.ModularManager(),
         objDependencyManager = new yOSON.Components.DependencyManager(),
         objComunicator = new yOSON.Components.Comunicator(),
@@ -892,8 +974,23 @@
                 dependencesToReturn = dependenceByModule[moduleName];
             }
             return dependencesToReturn;
-        };
+        },
+        toSaveInQueue = function(moduleName, parameters){
+            var dependencesToLoad = getDependencesByModule(moduleName);
+            var objPromiseModule = new yOSON.Components.SinglePromise();
 
+            objDependencyManager.ready(dependencesToLoad,function(){
+                objPromiseModule.done(function(){
+                    if(objModularManager.getModule(moduleName).getStatusModule() !== "run"){
+                        objModularManager.runModule(moduleName, parameters);
+                    }
+                });
+            }, function(){
+                objPromiseModule.fail();
+            });
+
+            return objPromiseModule;
+        };
         return {
             getStatusModule: function(moduleName){
                 var module = objModularManager.getModule(moduleName);
@@ -909,17 +1006,12 @@
                 objModularManager.addModule(moduleName, moduleDefinition);
             },
             runModule: function(moduleName, optionalParameter){
-                var dependencesToLoad = getDependencesByModule(moduleName);
+                var objPromise = new yOSON.Components.SinglePromise();
                 var module = objModularManager.getModule(moduleName);
                 if(module){
-                    objModularManager.saveToQueue(moduleName);
-                    objPromise.pipe(objModularManager.getQueueModules()).then(function(){
-                        objDependencyManager.ready(dependencesToLoad,function(){
-                            objModularManager.runModule(moduleName, optionalParameter);
-                        }, function(){
-                            console.log('Error in Load Module ' + moduleName);
-                        });
-                    });
+                    console.log('runModule::', moduleName);
+                    objModularManager.saveInQueue(toSaveInQueue(moduleName, optionalParameter));
+                    objPromise.pipe(objModularManager.getQueueModules());
                 } else {
                     console.log('Error: the module ' + moduleName + ' don\'t exists');
                 }

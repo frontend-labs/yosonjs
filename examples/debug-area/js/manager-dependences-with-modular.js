@@ -56,7 +56,7 @@ yOSON.AppCore.addModule('o4', function(){
             console.log('o4');
         }
     }
-}, [dependencesApt[2]]);
+}, [dependences[1]]);
 
 yOSON.AppCore.addModule('o5', function(){
     return {
@@ -113,12 +113,12 @@ yOSON.AppCore.addModule('mall1', function(){
 yOSON.AppCore.whenModule('o1', 'start', function(){
     console.log('only before run');
 });
-yOSON.AppCore.runModule('o2');
+//yOSON.AppCore.runModule('o2');
 yOSON.AppCore.runModule('o1');
-//yOSON.AppCore.runModule('o3');
-//yOSON.AppCore.runModule('o4');
-//yOSON.AppCore.runModule('o5');
-//yOSON.AppCore.runModule('o6');
+yOSON.AppCore.runModule('o3');
+yOSON.AppCore.runModule('o4');
+yOSON.AppCore.runModule('o5');
+yOSON.AppCore.runModule('o6');
 //yOSON.AppCore.runModule('mall1');
 //yOSON.AppCore.runModule('m1');
 //yOSON.AppCore.runModule('m2');

@@ -3,9 +3,6 @@
 <file name="src/comps/loader.js">
   
 </file>
-<file name="src/comps/modular-manager.js">
-  
-</file>
 <file name="src/comps/dependency-manager.js">
   
   <issue
@@ -22,6 +19,9 @@
 <file name="src/yoson.js">
   
 </file>
+<file name="src/comps/modular-manager.js">
+  
+</file>
 <file name="src/comps/modular.js">
   
 </file>
@@ -31,10 +31,10 @@
 <file name="src/core.js">
   
 </file>
-<file name="src/comps/comunicator.js">
+<file name="src/comps/single-promise.js">
   
 </file>
-<file name="src/comps/single-promise.js">
+<file name="src/comps/comunicator.js">
   
 </file>
 <file name="src/comps/modular-monitor.js">

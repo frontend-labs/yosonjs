@@ -21,35 +21,56 @@ methodTest().then(function(){
 }).then(whenDone).then(function(){
     console.log('echo 2');
 });
+
 var subPromiseA = function(){
-    var subPromiseA = new yOSON.Components.SinglePromise();
+    var intPromiseA = new yOSON.Components.SinglePromise();
     //setTimeout(function() {
-        subPromiseA.done();
+    intPromiseA.done(function(){
+        console.log("resuelto subPromiseA");
+    });
     //}, Math.random() * 1000 + 1000);
-    return subPromiseA;
+    return intPromiseA;
 };
 
 var subPromiseB = function(){
-    var subPromiseB = new yOSON.Components.SinglePromise();
+    var intPromiseB = new yOSON.Components.SinglePromise();
     setTimeout(function() {
-        subPromiseB.done();
-    }, Math.random() * 1000 + 1000);
-    return subPromiseB;
+        intPromiseB.done(function(){
+            console.log("resuelto subPromiseB");
+        });
+    }, Math.random() * 1000 + 2000);
+    return intPromiseB;
 };
 
 //promises of promises
-var pipePromiseA = function(){
+var pipePromiseA = function(list){
     var objPromiseA = new yOSON.Components.SinglePromise();
     //subpromises
 
-    var arrayOfPromises = [subPromiseA(), subPromiseB()];
+    var arrayOfPromises = list;
     objPromiseA.pipe(arrayOfPromises, function(){
         objPromiseA.done();
-    }, whenFails);
+    }, function(){
+        console.log('wuat??');
+    });
 
+    console.log('objPromiseA', objPromiseA);
     return objPromiseA;
 };
+
 console.log('pipePromiseA', pipePromiseA);
+//pipePromiseA().then(function(){
+   //console.log('end of pipe');
+//});
+
+//pipePromiseA([subPromiseA()]).then(function(){
+   //console.log('first');
+//});
+
+pipePromiseA([subPromiseB(),subPromiseA()]).then(function(){
+   console.log('second');
+});
+
 //pipePromiseA.then(function(){
     //console.log('all pipePromiseA done');
 //},function(){
