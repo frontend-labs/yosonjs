@@ -102,7 +102,7 @@ define([
             });
           });
 
-          it('should be dont run the callback error when the dependence return an error', function(done){
+          xit('should be dont run the callback error when the dependence return an error', function(done){
             var dependence = "http://helloworld.cc/js/wrongscripthellloworld.js",
                 onNotAvaliable = jasmine.createSpy();
 
