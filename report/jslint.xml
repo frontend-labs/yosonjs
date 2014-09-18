@@ -40,11 +40,21 @@
 </file>
 <file name="src/core.js">
   
-</file>
-<file name="src/comps/comunicator.js">
+  <issue
+    line="22"
+    char="&lt;anonymous&gt;"
+    evidence="&lt;anonymous&gt; is too complicated"
+    reason="Cyclomatic: 3,
+    Halstead: 11.733
+    | Effort: 3474.6
+    | Volume: 296.13
+    | Vocabulary: 26" />
   
 </file>
 <file name="src/comps/single-promise.js">
+  
+</file>
+<file name="src/comps/comunicator.js">
   
 </file>
 <file name="src/comps/modular-monitor.js">

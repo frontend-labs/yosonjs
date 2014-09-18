@@ -61,17 +61,28 @@
 
 <file name="src/core.js">
   
-</file>
-
-
-
-<file name="src/comps/comunicator.js">
+  <error
+    line="22"
+    severity="warning"
+    message="Cyclomatic: 3,
+    Halstead: 11.733
+    | Effort: 3474.6
+    | Volume: 296.13
+    | Vocabulary: 26"
+    source="&lt;anonymous&gt;"
+    />
   
 </file>
 
 
 
 <file name="src/comps/single-promise.js">
+  
+</file>
+
+
+
+<file name="src/comps/comunicator.js">
   
 </file>
 
