@@ -121,5 +121,53 @@ define([
             yOSON.AppCore.runModule('moduleA3');
             yOSON.AppCore.runModule('moduleB3');
         });
+
+        xit('should be execute method with params from moduleB4 to moduleA4 and moduleC4', function(done){
+            var functionToBridge4 = jasmine.createSpy();
+            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
+
+            var dataCount = {
+                index: 0,
+                increment: function(){
+                    this.index+=1;
+                }
+            }
+            yOSON.AppCore.addModule('moduleA4', function(Sb){
+                return {
+                    init: function(){
+                        Sb.trigger('publicMethodInModuleB4', "hello", "world",function(data){
+                            dataCount.increment();
+                        });
+                    }
+                }
+            });
+
+            yOSON.AppCore.addModule('moduleC4', function(Sb){
+                return {
+                    init: function(){
+                        Sb.trigger('publicMethodInModuleB4', "hello2", "world2",function(data){
+                            expect(data.index).toEqual(2);
+                            done();
+                        });
+                    }
+                }
+            });
+
+            yOSON.AppCore.addModule('moduleB4', function(Sb){
+                var privateMethodB4 = function(paramA, paramB, callback){
+                    functionToBridge4(paramA, paramB);
+                    callback.call(this, dataCount);
+                };
+                return {
+                    init: function(){
+                        Sb.events(['publicMethodInModuleB4'], privateMethodB4 , this);
+                    }
+                }
+            }, [ dependence ]);
+
+            yOSON.AppCore.runModule('moduleB4');
+            yOSON.AppCore.runModule('moduleA4');
+            yOSON.AppCore.runModule('moduleC4');
+        });
     });
 });

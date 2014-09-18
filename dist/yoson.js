@@ -851,8 +851,7 @@
         objDependencyManager = new yOSON.Components.DependencyManager(),
         objComunicator = new yOSON.Components.Comunicator(),
         dependenceByModule = {},
-        paramsTaked = [],
-        eventsToTrigger = {};
+        eventsToTrigger= {};
 
     yOSON.AppCore = (function(){
         //setting the main methods in the bridge of an module
@@ -862,8 +861,7 @@
 
         objModularManager.addMethodToBrigde('trigger', function(){
             var eventsWaiting = {};
-
-            paramsTaked = paramsTaked.slice.call(arguments, 0);
+            var paramsTaked = [].slice.call(arguments, 0);
             var eventNameArg = paramsTaked[0];
             var triggerArgs = [];
 
@@ -871,18 +869,21 @@
                 triggerArgs = paramsTaked.slice(1);
             }
 
-            if ( typeof eventsToTrigger[eventNameArg] === "undefined" ){
-                eventsToTrigger[eventNameArg] = function(evtName, args){
-                    return {
-                        init: function(){
-                            objComunicator.publish(evtName, args);
-                        }
-                    };
-                }( eventNameArg, triggerArgs );
-            }
+            eventsToTrigger[eventNameArg] = function(evtName, args){
+                return {
+                    init: function(){
+                        objComunicator.publish(evtName, args);
+                    }
+                };
+            }( eventNameArg, triggerArgs );
 
             objModularManager.allModulesRunning(function(){
+                eventsWaiting[eventNameArg] = triggerArgs;
             }, function(){
+                //if have events waiting
+                for(var eventsForTrigger in eventsWaiting){
+                    objComunicator.publish(eventsForTrigger , eventsWaiting[eventsForTrigger]);
+                }
                 eventsToTrigger[eventNameArg].init();
             });
         });
