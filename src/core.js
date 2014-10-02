@@ -28,23 +28,7 @@ define([
                 triggerArgs = paramsTaked.slice(1);
             }
 
-            eventsToTrigger[eventNameArg] = function(evtName, args){
-                return {
-                    init: function(){
-                        objComunicator.publish(evtName, args);
-                    }
-                };
-            }( eventNameArg, triggerArgs );
-
-            objModularManager.allModulesRunning(function(){
-                eventsWaiting[eventNameArg] = triggerArgs;
-            }, function(){
-                //if have events waiting
-                for(var eventsForTrigger in eventsWaiting){
-                    objComunicator.publish(eventsForTrigger , eventsWaiting[eventsForTrigger]);
-                }
-                eventsToTrigger[eventNameArg].init();
-            });
+            objComunicator.publish(eventNameArg, triggerArgs);
         });
 
         //managing the dependences

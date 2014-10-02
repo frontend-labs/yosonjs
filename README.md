@@ -1,21 +1,19 @@
-yoson
+yOSONJS
 =======
 
 A Sandbox library in JavaScript for manage modular scripts
 
 [![Build Status](https://secure.travis-ci.org/yosonjs/yosonjs.png)](https://travis-ci.org/yosonjs/yosonjs)
 
-how to run
-=========
+A little example
+================
 
-1. Insert in your html file or proyect the build js called yoson.js o the version minified
+1. Insert in your html file or proyect the js called yoson.js o the minified version
 
-2. You can add and run modules like this
-
-2.1 Adding a module to manager by yOSON
+2. Then Create a Module
 
 ```javascript
-yOSON.AppCore.addModule('mi-module', function(){
+yOSON.AppCore.addModule('nombre-modulo', function(){
     return {
         init: function(){
             //some code
@@ -23,10 +21,9 @@ yOSON.AppCore.addModule('mi-module', function(){
     }
 });
 ```
-2.2 Running the module
-
+3. And run the module
 ```javascript
-yOSON.AppCore.runModule('mi-module');
+yOSON.AppCore.runModule('nombre-modulo');
 ```
 
-3. Comming soon how to use the components of yoson
+4. Be fun.

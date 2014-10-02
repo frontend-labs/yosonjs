@@ -64,7 +64,7 @@ define([
             yOSON.AppCore.runModule('moduleB1');
         });
 
-        it('should be execute method from moduleB2 to moduleA2', function(done){
+        xit('should be execute method from moduleB2 to moduleA2', function(done){
             var functionToBridge2 = jasmine.createSpy();
             var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
 
@@ -93,7 +93,7 @@ define([
             yOSON.AppCore.runModule('moduleB2');
         });
 
-        it('should be execute method with params from moduleB3 to moduleA3', function(done){
+        xit('should be execute method with params from moduleB3 to moduleA3', function(done){
             var functionToBridge3 = jasmine.createSpy();
             var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
 
