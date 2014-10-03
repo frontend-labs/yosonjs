@@ -7,6 +7,7 @@ Enhacement in speed of execution of modules
 Chaining in the pub/sub between modules
 Automating in generate a decent CHANGELOG.md
 Write the documentation for generate the API with YUIDoc
+Create the adpater for popular CMS’s like a wordpress, drupal, etc.
 
 #### yOSON website
 
