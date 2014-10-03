@@ -7,11 +7,9 @@ A Sandbox library in JavaScript for manage modular scripts
 
 A little example
 ================
+Insert in your html file or proyect the js called yoson.js o the minified version.
 
-1. Insert in your html file or proyect the js called yoson.js o the minified version
-
-2. Then Create a Module
-
+Then Create a Module
 ```javascript
 yOSON.AppCore.addModule('nombre-modulo', function(){
     return {
@@ -21,9 +19,7 @@ yOSON.AppCore.addModule('nombre-modulo', function(){
     }
 });
 ```
-3. And run the module
+And Run the module
 ```javascript
 yOSON.AppCore.runModule('nombre-modulo');
 ```
-
-4. Be fun.
