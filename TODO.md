@@ -2,6 +2,7 @@ TODO
 ====
 
 Update the test suite under Selenium Hub
+Support for I18n translate
 Implement more funcionality in the component SinglePromise
 Enhacement in speed of execution of modules
 Chaining in the pub/sub between modules
