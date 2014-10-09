@@ -1,13 +1,14 @@
 TODO
 ====
 
+Implement a useful standard of write commits (from angularjs)
+Automating in generate a decent CHANGELOG.md
+Enhacement in speed of execution of modules
+Write the documentation for generate the API with YUIDoc
 Update the test suite under Selenium Hub
 Support for I18n translate
 Implement more funcionality in the component SinglePromise
-Enhacement in speed of execution of modules
 Chaining in the pub/sub between modules
-Automating in generate a decent CHANGELOG.md
-Write the documentation for generate the API with YUIDoc
 Create the adpater for popular CMS’s like a wordpress, drupal, etc.
 
 #### yOSON website
