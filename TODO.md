@@ -1,8 +1,6 @@
 TODO
 ====
 
-Implement a useful standard of write commits (from angularjs)
-Automating in generate a decent CHANGELOG.md
 Enhacement in speed of execution of modules
 Write the documentation for generate the API with YUIDoc
 Update the test suite under Selenium Hub
