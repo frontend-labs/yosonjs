@@ -90,6 +90,12 @@ module.exports = function(grunt){
                     "broadcast": false
                 }
             }
+        },
+        //for changelog
+        changelog: {
+            options: {
+
+            }
         }
    });
 
@@ -109,6 +115,8 @@ module.exports = function(grunt){
    grunt.loadNpmTasks('grunt-contrib-jasmine');
    //Load the plugin that provides the yuidoc
    grunt.loadNpmTasks('grunt-contrib-yuidoc');
+   //Load the plugin that provides the generator of changelog file
+   grunt.loadNpmTasks('grunt-conventional-changelog');
 
    //Load the tasks
    grunt.loadTasks('tasks');
