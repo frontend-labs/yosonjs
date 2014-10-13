@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- *Instalation:
+ * Script to validate the format of commit
+ * Instalation:
  * ~ cd <yoson-repo>
  * ~ ln -s ../../validate-commit-message.js .git/hooks/commit-msg
  */
