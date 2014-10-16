@@ -981,9 +981,9 @@
 
             objDependencyManager.ready(dependencesToLoad,function(){
                 objPromiseModule.done(function(){
-                    if(objModularManager.getModule(moduleName).getStatusModule() !== "run"){
+                    //if(objModularManager.getModule(moduleName).getStatusModule() !== "run"){
                         objModularManager.runModule(moduleName, parameters);
-                    }
+                    //}
                 });
             }, function(){
                 objPromiseModule.fail();
