@@ -5,7 +5,6 @@ define([
     var Sequential = function(){
         this.taskInQueueToList = {};
         this.listTaskInQueue = [];
-        this.running = {};
     };
 
     Sequential.prototype.generateId = function(){
@@ -36,7 +35,7 @@ define([
                 skeletonTask.initAlreadyCalled = true;
                 methodToPassingToQueue.call(this, skeletonTask.nextTask);
             }
-        }
+        };
         this.taskInQueueToList[id] = skeletonTask;
         this.listTaskInQueue.push(this.taskInQueueToList);
         this.dispatchQueue();
@@ -49,19 +48,19 @@ define([
 
     Sequential.prototype.dispatchQueue = function(){
         var that = this,
-        initialIndex = 0;
-        loopList = function(listQueue, index){
-            if(index < listQueue.length){
-                var taskInQueue = that.getTaskById(index);
-                if(!that.taskIsRunning(index)){
-                    taskInQueue.init();
-                } else {
-                    index++;
-                    loopList(listQueue, index);
+            index = 0,
+            loopList = function(listQueue){
+                if(index < listQueue.length){
+                    var taskInQueue = that.getTaskById(index);
+                    if(!that.taskIsRunning(index)){
+                        taskInQueue.init();
+                    } else {
+                        index++;
+                        loopList(listQueue);
+                    }
                 }
-            }
-        };
-        loopList(this.listTaskInQueue, initialIndex);
+            };
+        loopList(this.listTaskInQueue);
     };
 
     yOSON.Components.Sequential = Sequential;

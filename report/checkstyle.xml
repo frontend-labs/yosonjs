@@ -7,6 +7,12 @@
 
 
 
+<file name="src/comps/modular-manager.js">
+  
+</file>
+
+
+
 <file name="src/comps/dependency-manager.js">
   
   <error
@@ -24,13 +30,13 @@
 
 
 
-<file name="src/yoson.js">
+<file name="src/comps/sequential.js">
   
 </file>
 
 
 
-<file name="src/comps/modular-manager.js">
+<file name="src/yoson.js">
   
 </file>
 
@@ -49,6 +55,17 @@
 
 
 <file name="src/core.js">
+  
+  <error
+    line="9"
+    severity="warning"
+    message="Cyclomatic: 1,
+    Halstead: 8.1000
+    | Effort: 2042.6
+    | Volume: 252.17
+    | Vocabulary: 24"
+    source="&lt;anonymous&gt;"
+    />
   
 </file>
 

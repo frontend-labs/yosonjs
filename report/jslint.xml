@@ -3,6 +3,9 @@
 <file name="src/comps/loader.js">
   
 </file>
+<file name="src/comps/modular-manager.js">
+  
+</file>
 <file name="src/comps/dependency-manager.js">
   
   <issue
@@ -16,10 +19,10 @@
     | Vocabulary: 24" />
   
 </file>
-<file name="src/yoson.js">
+<file name="src/comps/sequential.js">
   
 </file>
-<file name="src/comps/modular-manager.js">
+<file name="src/yoson.js">
   
 </file>
 <file name="src/comps/modular.js">
@@ -29,6 +32,16 @@
   
 </file>
 <file name="src/core.js">
+  
+  <issue
+    line="9"
+    char="&lt;anonymous&gt;"
+    evidence="&lt;anonymous&gt; is too complicated"
+    reason="Cyclomatic: 1,
+    Halstead: 8.1000
+    | Effort: 2042.6
+    | Volume: 252.17
+    | Vocabulary: 24" />
   
 </file>
 <file name="src/comps/single-promise.js">

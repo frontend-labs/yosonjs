@@ -41,14 +41,6 @@ define([
         }
     };
 
-    ModularManager.prototype.saveInQueue = function(objectInQueue){
-        this.syncModules.push(objectInQueue);
-    };
-
-    ModularManager.prototype.getQueueModules = function(){
-        return this.syncModules;
-    };
-
     ModularManager.prototype.whenModuleHaveStatus = function(moduleName, statusName, whenHaveStatus){
         var module = this.getModule(moduleName),
             queryStatus = setInterval(function(){
