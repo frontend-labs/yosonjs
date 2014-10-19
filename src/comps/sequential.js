@@ -1,42 +1,69 @@
-var Sequential = function(){
-    this.taskInQueueToList = {};
-    this.listTaskInQueue = [];
-};
+define([
+    "yoson"
+], function(yOSON){
 
-/*
- * example of task object
- *  {
- *     "task": function(){
- *          //when ending the process put for indicate
- *          //this.nextTask();
- *     }
- *  }
- * */
-Sequential.prototype.queue = function(taskSelf){
-    var that = this;
-    this.instanceQueueToList.status = "pending";
-    this.instanceQueueToList.taskSelf = taskSelf();
-    this.instanceQueueToList.nextTask = function(){
-        this.running = true;
-        that.dispatchQueue();
+    var Sequential = function(){
+        this.taskInQueueToList = {};
+        this.listTaskInQueue = [];
+        this.running = {};
     };
-    this.instanceQueueToList.running = false;
-    this.listMethodsInQueue.push(this.instanceQueueToList);
-    this.dispatchQueue();
-};
 
-Sequential.prototype.dispatchQueue = function(){
-    var that = this,
-        index = 0,
-        loopList = function(){
-            var taskInQueue = that.listMethodsInQueue[index];
-            if(taskInQueue.running){
-                taskInQueue.task();
-                index++;
-                if(index < that.listMethodsInQueue.length){
-                    loopList(this.listMethodsInQueue);
+    Sequential.prototype.generateId = function(){
+        return this.listTaskInQueue.length;
+    };
+
+    Sequential.prototype.getTaskById = function(id){
+        return this.taskInQueueToList[id];
+    };
+
+    Sequential.prototype.inQueue = function(methodToPassingToQueue){
+        var that = this;
+        var id = this.generateId();
+        var skeletonTask = {
+            running: false,
+            initAlreadyCalled: false,
+            nextTask: function(methodWhenDoneTask){
+                skeletonTask.running = true;
+                if(typeof methodWhenDoneTask === "function"){
+                    methodWhenDoneTask.call(this);
+                }
+                that.dispatchQueue();
+            },
+            init: function(){
+                if(skeletonTask.initAlreadyCalled){
+                    return;
+                }
+                skeletonTask.initAlreadyCalled = true;
+                methodToPassingToQueue.call(this, skeletonTask.nextTask);
+            }
+        }
+        this.taskInQueueToList[id] = skeletonTask;
+        this.listTaskInQueue.push(this.taskInQueueToList);
+        this.dispatchQueue();
+        return this;
+    };
+
+    Sequential.prototype.taskIsRunning = function(id){
+        return this.taskInQueueToList[id].running;
+    };
+
+    Sequential.prototype.dispatchQueue = function(){
+        var that = this,
+        initialIndex = 0;
+        loopList = function(listQueue, index){
+            if(index < listQueue.length){
+                var taskInQueue = that.getTaskById(index);
+                if(!that.taskIsRunning(index)){
+                    taskInQueue.init();
+                } else {
+                    index++;
+                    loopList(listQueue, index);
                 }
             }
         };
-    loopList(this.listMethodsInQueue);
-};
+        loopList(this.listTaskInQueue, initialIndex);
+    };
+
+    yOSON.Components.Sequential = Sequential;
+    return Sequential;
+});

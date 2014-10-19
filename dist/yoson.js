@@ -931,9 +931,76 @@
     
 
 
+    var Sequential = function(){
+        this.taskInQueueToList = {};
+        this.listTaskInQueue = [];
+        this.running = {};
+    };
+
+    Sequential.prototype.generateId = function(){
+        return this.listTaskInQueue.length;
+    };
+
+    Sequential.prototype.getTaskById = function(id){
+        return this.taskInQueueToList[id];
+    };
+
+    Sequential.prototype.inQueue = function(methodToPassingToQueue){
+        var that = this;
+        var id = this.generateId();
+        var skeletonTask = {
+            running: false,
+            initAlreadyCalled: false,
+            nextTask: function(methodWhenDoneTask){
+                skeletonTask.running = true;
+                if(typeof methodWhenDoneTask === "function"){
+                    methodWhenDoneTask.call(this);
+                }
+                that.dispatchQueue();
+            },
+            init: function(){
+                if(skeletonTask.initAlreadyCalled){
+                    return;
+                }
+                skeletonTask.initAlreadyCalled = true;
+                methodToPassingToQueue.call(this, skeletonTask.nextTask);
+            }
+        }
+        this.taskInQueueToList[id] = skeletonTask;
+        this.listTaskInQueue.push(this.taskInQueueToList);
+        this.dispatchQueue();
+        return this;
+    };
+
+    Sequential.prototype.taskIsRunning = function(id){
+        return this.taskInQueueToList[id].running;
+    };
+
+    Sequential.prototype.dispatchQueue = function(){
+        var that = this,
+        initialIndex = 0;
+        loopList = function(listQueue, index){
+            if(index < listQueue.length){
+                var taskInQueue = that.getTaskById(index);
+                if(!that.taskIsRunning(index)){
+                    taskInQueue.init();
+                } else {
+                    index++;
+                    loopList(listQueue, index);
+                }
+            }
+        };
+        loopList(this.listTaskInQueue, initialIndex);
+    };
+
+    yOSON.Components.Sequential = Sequential;
+    
+
+
     var objModularManager = new yOSON.Components.ModularManager(),
         objDependencyManager = new yOSON.Components.DependencyManager(),
         objComunicator = new yOSON.Components.Comunicator(),
+        objSequential = new yOSON.Components.Sequential(),
         dependenceByModule = {},
         paramsTaked = [],
         triggerArgs = [];
@@ -974,22 +1041,6 @@
                 dependencesToReturn = dependenceByModule[moduleName];
             }
             return dependencesToReturn;
-        },
-        toSaveInQueue = function(moduleName, parameters){
-            var dependencesToLoad = getDependencesByModule(moduleName);
-            var objPromiseModule = new yOSON.Components.SinglePromise();
-
-            objDependencyManager.ready(dependencesToLoad,function(){
-                objPromiseModule.done(function(){
-                    //if(objModularManager.getModule(moduleName).getStatusModule() !== "run"){
-                        objModularManager.runModule(moduleName, parameters);
-                    //}
-                });
-            }, function(){
-                objPromiseModule.fail();
-            });
-
-            return objPromiseModule;
         };
         return {
             getStatusModule: function(moduleName){
@@ -1009,9 +1060,14 @@
                 var objPromise = new yOSON.Components.SinglePromise();
                 var module = objModularManager.getModule(moduleName);
                 if(module){
-                    console.log('runModule::', moduleName);
-                    objModularManager.saveInQueue(toSaveInQueue(moduleName, optionalParameter));
-                    objPromise.pipe(objModularManager.getQueueModules());
+                    var dependencesToLoad = getDependencesByModule(moduleName);
+                    objSequential.inQueue(function(next){
+                        objDependencyManager.ready(dependencesToLoad,function(){
+                            console.log('runModule::', moduleName);
+                            objModularManager.runModule(moduleName, optionalParameter);
+                            next();
+                        });
+                    });
                 } else {
                     console.log('Error: the module ' + moduleName + ' don\'t exists');
                 }

@@ -5,11 +5,13 @@ define([
     "comps/comunicator",
     "comps/loader",
     "comps/single-promise",
+    "comps/sequential"
 ], function(yOSON){
 
     var objModularManager = new yOSON.Components.ModularManager(),
         objDependencyManager = new yOSON.Components.DependencyManager(),
         objComunicator = new yOSON.Components.Comunicator(),
+        objSequential = new yOSON.Components.Sequential(),
         dependenceByModule = {},
         paramsTaked = [],
         triggerArgs = [];
@@ -50,22 +52,6 @@ define([
                 dependencesToReturn = dependenceByModule[moduleName];
             }
             return dependencesToReturn;
-        },
-        toSaveInQueue = function(moduleName, parameters){
-            var dependencesToLoad = getDependencesByModule(moduleName);
-            var objPromiseModule = new yOSON.Components.SinglePromise();
-
-            objDependencyManager.ready(dependencesToLoad,function(){
-                objPromiseModule.done(function(){
-                    if(objModularManager.getModule(moduleName).getStatusModule() !== "run"){
-                        objModularManager.runModule(moduleName, parameters);
-                    }
-                });
-            }, function(){
-                objPromiseModule.fail();
-            });
-
-            return objPromiseModule;
         };
         return {
             getStatusModule: function(moduleName){
@@ -85,9 +71,14 @@ define([
                 var objPromise = new yOSON.Components.SinglePromise();
                 var module = objModularManager.getModule(moduleName);
                 if(module){
-                    console.log('runModule::', moduleName);
-                    objModularManager.saveInQueue(toSaveInQueue(moduleName, optionalParameter));
-                    objPromise.pipe(objModularManager.getQueueModules());
+                    var dependencesToLoad = getDependencesByModule(moduleName);
+                    objSequential.inQueue(function(next){
+                        objDependencyManager.ready(dependencesToLoad,function(){
+                            console.log('runModule::', moduleName);
+                            objModularManager.runModule(moduleName, optionalParameter);
+                            next();
+                        });
+                    });
                 } else {
                     console.log('Error: the module ' + moduleName + ' don\'t exists');
                 }
