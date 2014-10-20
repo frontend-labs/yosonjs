@@ -365,6 +365,7 @@
         var queueQuering = function(list){
             if(index < list.length){
                 var urlToQuery = that.transformUrl(list[index]);
+                console.log("urlToQuery", urlToQuery);
                 that.addScript(urlToQuery).then(function(){
                     index++;
                     queueQuering(urlList);
@@ -578,22 +579,11 @@
         }
     };
 
-    ModularManager.prototype.saveInQueue = function(objectInQueue){
-        this.syncModules.push(objectInQueue);
-    };
-
-    ModularManager.prototype.getQueueModules = function(){
-        return this.syncModules;
-    };
-
     ModularManager.prototype.whenModuleHaveStatus = function(moduleName, statusName, whenHaveStatus){
-        var module = this.getModule(moduleName),
-            queryStatus = setInterval(function(){
-                if(module.getStatusModule() === statusName){
-                    whenHaveStatus.call(this, moduleName, module);
-                    clearInterval(queryStatus);
-                }
-            }, 20);
+        var module = this.getModule(moduleName);
+        if(module.getStatusModule() === statusName){
+            whenHaveStatus.call(this, moduleName, module);
+        }
     };
 
     ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){
@@ -934,7 +924,6 @@
     var Sequential = function(){
         this.taskInQueueToList = {};
         this.listTaskInQueue = [];
-        this.running = {};
     };
 
     Sequential.prototype.generateId = function(){
@@ -965,7 +954,7 @@
                 skeletonTask.initAlreadyCalled = true;
                 methodToPassingToQueue.call(this, skeletonTask.nextTask);
             }
-        }
+        };
         this.taskInQueueToList[id] = skeletonTask;
         this.listTaskInQueue.push(this.taskInQueueToList);
         this.dispatchQueue();
@@ -978,19 +967,19 @@
 
     Sequential.prototype.dispatchQueue = function(){
         var that = this,
-        initialIndex = 0;
-        loopList = function(listQueue, index){
-            if(index < listQueue.length){
-                var taskInQueue = that.getTaskById(index);
-                if(!that.taskIsRunning(index)){
-                    taskInQueue.init();
-                } else {
-                    index++;
-                    loopList(listQueue, index);
+            index = 0,
+            loopList = function(listQueue){
+                if(index < listQueue.length){
+                    var taskInQueue = that.getTaskById(index);
+                    if(!that.taskIsRunning(index)){
+                        taskInQueue.init();
+                    } else {
+                        index++;
+                        loopList(listQueue);
+                    }
                 }
-            }
-        };
-        loopList(this.listTaskInQueue, initialIndex);
+            };
+        loopList(this.listTaskInQueue);
     };
 
     yOSON.Components.Sequential = Sequential;
@@ -1062,6 +1051,7 @@
                 if(module){
                     var dependencesToLoad = getDependencesByModule(moduleName);
                     objSequential.inQueue(function(next){
+						console.log("dependencesToLoad", dependencesToLoad);
                         objDependencyManager.ready(dependencesToLoad,function(){
                             console.log('runModule::', moduleName);
                             objModularManager.runModule(moduleName, optionalParameter);

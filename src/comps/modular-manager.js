@@ -42,13 +42,10 @@ define([
     };
 
     ModularManager.prototype.whenModuleHaveStatus = function(moduleName, statusName, whenHaveStatus){
-        var module = this.getModule(moduleName),
-            queryStatus = setInterval(function(){
-                if(module.getStatusModule() === statusName){
-                    whenHaveStatus.call(this, moduleName, module);
-                    clearInterval(queryStatus);
-                }
-            }, 20);
+        var module = this.getModule(moduleName);
+        if(module.getStatusModule() === statusName){
+            whenHaveStatus.call(this, moduleName, module);
+        }
     };
 
     ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){
