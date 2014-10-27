@@ -16,12 +16,8 @@ define([
         }
     };
 
-    SinglePromise.prototype.done = function(callbackWhenItsDone){
+    SinglePromise.prototype.done = function(){
         this.status = "done";
-
-        if (typeof callbackWhenItsDone === "function"){
-            this.resolvedCallback = callbackWhenItsDone;
-        }
 
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
@@ -72,7 +68,6 @@ define([
             if(index < list.length){
                 var itemPromise = list[index];
                 itemPromise.then(function(){
-                    itemPromise.resolved();
                     index++;
                     queuePromises(list);
                 }, whenFails);
@@ -81,10 +76,6 @@ define([
             }
         };
         queuePromises(collectionOfPromises);
-    };
-
-    SinglePromise.prototype.resolved = function(){
-            this.resolvedCallback();
     };
 
     yOSON.Components.SinglePromise = SinglePromise;

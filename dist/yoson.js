@@ -24,12 +24,8 @@
         }
     };
 
-    SinglePromise.prototype.done = function(callbackWhenItsDone){
+    SinglePromise.prototype.done = function(){
         this.status = "done";
-
-        if (typeof callbackWhenItsDone === "function"){
-            this.resolvedCallback = callbackWhenItsDone;
-        }
 
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
@@ -80,7 +76,6 @@
             if(index < list.length){
                 var itemPromise = list[index];
                 itemPromise.then(function(){
-                    itemPromise.resolved();
                     index++;
                     queuePromises(list);
                 }, whenFails);
@@ -89,10 +84,6 @@
             }
         };
         queuePromises(collectionOfPromises);
-    };
-
-    SinglePromise.prototype.resolved = function(){
-            this.resolvedCallback();
     };
 
     yOSON.Components.SinglePromise = SinglePromise;
@@ -365,7 +356,6 @@
         var queueQuering = function(list){
             if(index < list.length){
                 var urlToQuery = that.transformUrl(list[index]);
-                console.log("urlToQuery", urlToQuery);
                 that.addScript(urlToQuery).then(function(){
                     index++;
                     queueQuering(urlList);
@@ -846,12 +836,8 @@
         }
     };
 
-    SinglePromise.prototype.done = function(callbackWhenItsDone){
+    SinglePromise.prototype.done = function(){
         this.status = "done";
-
-        if (typeof callbackWhenItsDone === "function"){
-            this.resolvedCallback = callbackWhenItsDone;
-        }
 
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
@@ -902,7 +888,6 @@
             if(index < list.length){
                 var itemPromise = list[index];
                 itemPromise.then(function(){
-                    itemPromise.resolved();
                     index++;
                     queuePromises(list);
                 }, whenFails);
@@ -911,10 +896,6 @@
             }
         };
         queuePromises(collectionOfPromises);
-    };
-
-    SinglePromise.prototype.resolved = function(){
-            this.resolvedCallback();
     };
 
     yOSON.Components.SinglePromise = SinglePromise;
@@ -1051,7 +1032,6 @@
                 if(module){
                     var dependencesToLoad = getDependencesByModule(moduleName);
                     objSequential.inQueue(function(next){
-						console.log("dependencesToLoad", dependencesToLoad);
                         objDependencyManager.ready(dependencesToLoad,function(){
                             console.log('runModule::', moduleName);
                             objModularManager.runModule(moduleName, optionalParameter);
