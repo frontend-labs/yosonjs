@@ -33,6 +33,10 @@
     "changelog",
     "files.md",
     "package.json",
+    "CHANGELOG.md",
+    "TODO.md",
+    "install.sh",
+    "validate-commit-message.js",
     ".jshintrc"
   ]
 }
