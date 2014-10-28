@@ -38,6 +38,7 @@
 
     SinglePromise.prototype.done = function(){
         this.status = "done";
+
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
         });
@@ -46,12 +47,14 @@
     //when all tasks its success
     SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
         var callbacks = this.callbacks;
+
         var byStatus = {
             "pending": function(){
                 callbacks.succeededs.push(whenItsDone);
                 if(typeof whenIsFailed === "function"){
                     callbacks.faileds.push(whenIsFailed);
                 }
+
             },
             "done": function(){
                 if(typeof whenItsDone === "function"){
@@ -483,49 +486,12 @@
     yOSON.Components.Modular = Modular;
     
 
-    var ModularMonitor = function(){
-        this.modules = {};
-    };
-
-    ModularMonitor.prototype.updateStatus = function(moduleName, statusName){
-        this.modules[moduleName] = statusName;
-    };
-
-    ModularMonitor.prototype.eachModules = function(eachModule){
-        for(var moduleName in this.modules){
-            var status = this.modules[moduleName];
-            eachModule.call(this, status);
-        }
-    };
-
-    ModularMonitor.prototype.getTotalModulesByStatus = function(statusName){
-        var total = 0;
-        this.eachModules(function(status){
-            if(status === statusName){
-                total++;
-            }
-        });
-        return total;
-    };
-
-    ModularMonitor.prototype.getTotalModulesRunning = function(){
-        return this.getTotalModulesByStatus('run');
-    };
-
-    ModularMonitor.prototype.getTotalModulesToStart = function(){
-        return this.getTotalModulesByStatus('toStart') + this.getTotalModulesRunning();
-    };
-
-    
-
 
     var ModularManager = function(){
         this.modules = {};
         this.runningModules = {};
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = false;
-        this.syncModules = [];
-        this.objMonitor = new ModularMonitor();
     };
 
     //receive one method for the entity comunicator on modules
@@ -550,78 +516,15 @@
     //running the module
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
-        if(this.getModule(moduleName)){
-            module.setStatusModule("start");
-            this.dataModule(moduleName,optionalParameters);
-            this.runQueueModules();
+        if(module){
+            module.start(optionalParameters);
         }
-    };
-
-    ModularManager.prototype.syncModule = function(moduleName){
-        var that = this;
-        var module = that.getModule(moduleName);
-        that.objMonitor.updateStatus(moduleName, "toStart");
-        that.syncModules.push(moduleName);
-    };
-
-    ModularManager.prototype.dataModule = function(moduleName, data){
-        if(typeof data !== "undefined"){
-            this.modules[moduleName].data = data;
-        }
-        return this.modules[moduleName].data;
-    };
-
-    ModularManager.prototype.runQueueModules = function(){
-        var that = this,
-            index = 0,
-            runModules = function(list){
-                if(list.length > index){
-                    var module = list[index];
-                    that.whenModuleHaveStatus(module, "start", function(moduleName, moduleSelf){
-                        that.objMonitor.updateStatus(moduleName, "run");
-                        var data = that.dataModule(moduleName);
-                        moduleSelf.start(data);
-                    });
-                    that.whenModuleHaveStatus(module, "run", function(){
-                        index++;
-                        runModules(list);
-                    });
-                }
-            };
-        runModules(that.syncModules);
     };
 
     ModularManager.prototype.whenModuleHaveStatus = function(moduleName, statusName, whenHaveStatus){
-        var module = this.getModule(moduleName),
-            queryStatus = setInterval(function(){
-                if(module.getStatusModule() === statusName){
-                    whenHaveStatus.call(this, moduleName, module);
-                    clearInterval(queryStatus);
-                }
-            }, 20);
-    };
-
-    ModularManager.prototype.allModulesRunning = function(onNotFinished, onFinished){
-        var that = this,
-            objMonitor = that.objMonitor;
-        if(this.alreadyAllModulesBeRunning){
-            onFinished.call(that);
-        } else {
-            var checkModulesRunning = setInterval(function(){
-                if(objMonitor.getTotalModulesToStart() > 0){
-                    if( objMonitor.getTotalModulesToStart() === objMonitor.getTotalModulesRunning()){
-                        onFinished.call(that);
-                        this.alreadyAllModulesBeRunning = true;
-                        clearInterval(checkModulesRunning);
-                    } else {
-                        onNotFinished.call(that);
-                    }
-                } else {
-                    onFinished.call(that);
-                    this.alreadyAllModulesBeRunning = true;
-                    clearInterval(checkModulesRunning);
-                }
-            }, 200);
+        var module = this.getModule(moduleName);
+        if(module.getStatusModule() === statusName){
+            whenHaveStatus.call(this, moduleName, module);
         }
     };
 
@@ -847,11 +750,78 @@
     
 
 
+    var Sequential = function(){
+        this.taskInQueueToList = {};
+        this.listTaskInQueue = [];
+    };
+
+    Sequential.prototype.generateId = function(){
+        return this.listTaskInQueue.length;
+    };
+
+    Sequential.prototype.getTaskById = function(id){
+        return this.taskInQueueToList[id];
+    };
+
+    Sequential.prototype.inQueue = function(methodToPassingToQueue){
+        var that = this;
+        var id = this.generateId();
+        var skeletonTask = {
+            running: false,
+            initAlreadyCalled: false,
+            nextTask: function(methodWhenDoneTask){
+                skeletonTask.running = true;
+                if(typeof methodWhenDoneTask === "function"){
+                    methodWhenDoneTask.call(this);
+                }
+                that.dispatchQueue();
+            },
+            init: function(){
+                if(skeletonTask.initAlreadyCalled){
+                    return;
+                }
+                skeletonTask.initAlreadyCalled = true;
+                methodToPassingToQueue.call(this, skeletonTask.nextTask);
+            }
+        };
+        this.taskInQueueToList[id] = skeletonTask;
+        this.listTaskInQueue.push(this.taskInQueueToList);
+        this.dispatchQueue();
+        return this;
+    };
+
+    Sequential.prototype.taskIsRunning = function(id){
+        return this.taskInQueueToList[id].running;
+    };
+
+    Sequential.prototype.dispatchQueue = function(){
+        var that = this,
+            index = 0,
+            loopList = function(listQueue){
+                if(index < listQueue.length){
+                    var taskInQueue = that.getTaskById(index);
+                    if(!that.taskIsRunning(index)){
+                        taskInQueue.init();
+                    } else {
+                        index++;
+                        loopList(listQueue);
+                    }
+                }
+            };
+        loopList(this.listTaskInQueue);
+    };
+
+    yOSON.Components.Sequential = Sequential;
+    
+
+
     var objModularManager = new yOSON.Components.ModularManager(),
         objDependencyManager = new yOSON.Components.DependencyManager(),
         objComunicator = new yOSON.Components.Comunicator(),
+        objSequential = new yOSON.Components.Sequential(),
         dependenceByModule = {},
-        eventsToTrigger= {};
+        paramsTaked = [],
+        triggerArgs = [];
 
     yOSON.AppCore = (function(){
         //setting the main methods in the bridge of an module
@@ -860,11 +830,8 @@
         });
 
         objModularManager.addMethodToBrigde('trigger', function(){
-            var eventsWaiting = {};
-            var paramsTaked = [].slice.call(arguments, 0);
+            paramsTaked = paramsTaked.slice.call(arguments, 0);
             var eventNameArg = paramsTaked[0];
-            var triggerArgs = [];
-
             if(paramsTaked.length > 1){
                 triggerArgs = paramsTaked.slice(1);
             }
@@ -885,28 +852,22 @@
         };
 
         return {
-            getStatusModule: function(moduleName){
-                var module = objModularManager.getModule(moduleName);
-                return  module.getStatusModule();
-            },
-            whenModule: function(moduleName, status, methodWhenRun){
-                objModularManager.whenModuleHaveStatus(moduleName, status, function(){
-                    methodWhenRun.call(this);
-                });
-            },
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
                 objModularManager.addModule(moduleName, moduleDefinition);
             },
             runModule: function(moduleName, optionalParameter){
-                var dependencesToLoad = getDependencesByModule(moduleName);
                 var module = objModularManager.getModule(moduleName);
                 if(module){
-                    objModularManager.syncModule(moduleName);
-                    objDependencyManager.ready(dependencesToLoad,function(){
-                        objModularManager.runModule(moduleName, optionalParameter);
-                    }, function(){
-                        yOSON.Log('Error in Load Module ' + moduleName);
+                    var dependencesToLoad = getDependencesByModule(moduleName);
+                    objSequential.inQueue(function(next){
+                        objDependencyManager.ready(dependencesToLoad,function(){
+                            objModularManager.runModule(moduleName, optionalParameter);
+                            next();
+                        }, function(){
+                            yOSON.Log('Error: the module ' + moduleName + ' can\'t be loaded');
+                            next();
+                        });
                     });
                 } else {
                     yOSON.Log('Error: the module ' + moduleName + ' don\'t exists');
@@ -920,13 +881,5 @@
             }
         };
     })();
-
-    //if(yOSON.statHost){
-        //yOSON.AppCore.setStaticHost(yOSON.statHost);
-    //}
-
-    //if(yOSON.statVers){
-        //yOSON.AppCore.setVersionUrl(yOSON.statVers);
-    //}
 
     return yOSON;})();

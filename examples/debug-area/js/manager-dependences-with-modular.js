@@ -44,8 +44,9 @@ yOSON.AppCore.addModule('o2', function(Sb){
 
 yOSON.AppCore.addModule('o3', function(){
     return {
-        init: function(){
+        init: function(opts){
             console.log('o3');
+            console.log('opts',opts);
         }
     }
 }, [dependencesApt[2]]);
@@ -56,7 +57,7 @@ yOSON.AppCore.addModule('o4', function(){
             console.log('o4');
         }
     }
-}, [dependencesApt[2]]);
+}, [dependences[1]]);
 
 yOSON.AppCore.addModule('o5', function(){
     return {
@@ -110,23 +111,24 @@ yOSON.AppCore.addModule('mall1', function(){
 //});
 
 
-yOSON.AppCore.whenModule('o1', 'start', function(){
-    console.log('only before run');
-});
-yOSON.AppCore.runModule('o2');
+//yOSON.AppCore.whenModule('o1', 'start', function(){
+    //console.log('only before run');
+//});
+//yOSON.AppCore.runModule('o2');
 yOSON.AppCore.runModule('o1');
-//yOSON.AppCore.runModule('o3');
-//yOSON.AppCore.runModule('o4');
-//yOSON.AppCore.runModule('o5');
-//yOSON.AppCore.runModule('o6');
+yOSON.AppCore.runModule('o3');
+yOSON.AppCore.runModule('o3', "o3 with opts");
+yOSON.AppCore.runModule('o4');
+yOSON.AppCore.runModule('o5');
+yOSON.AppCore.runModule('o6');
 //yOSON.AppCore.runModule('mall1');
 //yOSON.AppCore.runModule('m1');
 //yOSON.AppCore.runModule('m2');
 //yOSON.AppCore.runModule('m3');
 
-yOSON.AppCore.whenModule('o1', 'run', function(){
-    console.log('only when its run');
-});
+//yOSON.AppCore.whenModule('o1', 'run', function(){
+    //console.log('only when its run');
+//});
 //yOSON.AppCore.runModule('demoA');
 //yOSON.AppCore.runModule('demoB');
 

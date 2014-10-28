@@ -18,6 +18,7 @@ define([
 
     SinglePromise.prototype.done = function(){
         this.status = "done";
+
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
             callbackRegistered.call(this);
         });
@@ -26,12 +27,14 @@ define([
     //when all tasks its success
     SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
         var callbacks = this.callbacks;
+
         var byStatus = {
             "pending": function(){
                 callbacks.succeededs.push(whenItsDone);
                 if(typeof whenIsFailed === "function"){
                     callbacks.faileds.push(whenIsFailed);
                 }
+
             },
             "done": function(){
                 if(typeof whenItsDone === "function"){

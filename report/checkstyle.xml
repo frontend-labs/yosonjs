@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <checkstyle>
 
-<file name="src/yoson.js">
-  
-  <error
-    line="1"
-    severity="warning"
-    message="Cyclomatic: 2,
-    Halstead: 9.9000
-    | Effort: 904.63
-    | Volume: 91.377
-    | Vocabulary: 14"
-    source="&lt;anonymous&gt;"
-    />
-  
-</file>
-
-
-
 <file name="src/comps/loader.js">
   
 </file>
@@ -47,6 +30,12 @@
 
 
 
+<file name="src/yoson.js">
+  
+</file>
+
+
+
 <file name="src/comps/modular.js">
   
 </file>
@@ -61,28 +50,17 @@
 
 <file name="src/core.js">
   
-  <error
-    line="22"
-    severity="warning"
-    message="Cyclomatic: 3,
-    Halstead: 11.733
-    | Effort: 3474.6
-    | Volume: 296.13
-    | Vocabulary: 26"
-    source="&lt;anonymous&gt;"
-    />
+</file>
+
+
+
+<file name="src/comps/comunicator.js">
   
 </file>
 
 
 
 <file name="src/comps/single-promise.js">
-  
-</file>
-
-
-
-<file name="src/comps/comunicator.js">
   
 </file>
 

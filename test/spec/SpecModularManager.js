@@ -1,7 +1,8 @@
 define([
-   '../../src/comps/modular-manager.js'
+   '../../src/comps/modular-manager.js',
+   '../../src/comps/sequential.js'
   ],
-  function(ModularManager){
+  function(ModularManager, Sequential){
 
   describe('specModularManager', function(){
       var objModularManager, moduleName, moduleSelf;
@@ -32,14 +33,12 @@ define([
           expect(objModularManager.getModule(moduleName)).toBeTruthy();
       });
 
-      it("should be run the module", function(done){
+      it("should be run the module", function(){
           objModularManager.addModule(moduleName, moduleSelf);
-          objModularManager.syncModule(moduleName);
           objModularManager.runModule(moduleName);
-          objModularManager.whenModuleHaveStatus(moduleName, 'run', function(name, moduleSelf){
-              expect(moduleSelf.getStatusModule()).toEqual('run');
-              done();
-          });
+
+          var module = objModularManager.getModule(moduleName);
+          expect(module.getStatusModule(moduleName)).toEqual('run');
       });
 
       it("should be setting the module status", function(){
@@ -49,7 +48,7 @@ define([
           expect(module.getStatusModule(moduleName)).toEqual('ready');
       });
 
-      it("should be append a method to bridge object", function(done){
+      it("should be append a method to bridge object", function(){
           var methodToBridge = jasmine.createSpy();
           objModularManager.addMethodToBrigde("dummy", methodToBridge);
 
@@ -62,12 +61,8 @@ define([
           });
 
           spyOn(objModularManager, 'runModule').and.callThrough();
-          objModularManager.syncModule('moduleA');
           objModularManager.runModule('moduleA');
-          setTimeout(function(){
-              expect(methodToBridge).toHaveBeenCalled();
-              done();
-          }, 500);
+          expect(methodToBridge).toHaveBeenCalled();
       });
 
       describe("Handler callbacks by status of module", function(){
@@ -80,13 +75,18 @@ define([
               objModularManager.addModule(moduleName, function(done){
                   return {init: function(){}}
               });
-              objModularManager.syncModule(moduleName);
+
+              var module = objModularManager.getModule(moduleName);
+              module.setStatusModule("start");
+
               objModularManager.whenModuleHaveStatus(moduleName, "start", function(){
                 callbackStatusStart();
                 expect(callbackStatusStart).toHaveBeenCalled();
                 done();
               });
+
               objModularManager.runModule(moduleName);
+
           });
 
           it("must be execute when its run", function(done){
@@ -97,7 +97,6 @@ define([
                   return {init: function(){}}
               });
 
-              objModularManager.syncModule(moduleName);
               objModularManager.runModule(moduleName);
               objModularManager.whenModuleHaveStatus(moduleName, "run", function(){
                 callbackStatusRun();
@@ -108,11 +107,11 @@ define([
       });
 
       describe("Executing a synchronous mode", function(){
-          var runModule, syncModule, runSequence, moduleNames;
+          var runModule, syncModule, runSequence, moduleNames, objSequential;
           beforeEach(function(){
               moduleNames = ["module-1st", "module-2nd", "module-3rd"];
               runSequence = [];
-              syncModule = objModularManager.syncModule;
+              objSequential = new Sequential();
 
               objModularManager.addModule(moduleNames[0], function(){
                   return {
@@ -140,81 +139,20 @@ define([
 
           });
 
-          it("Must be execute in order", function(done){
-              objModularManager.syncModule(moduleNames[0]);
-              objModularManager.runModule(moduleNames[0]);
-
-              objModularManager.syncModule(moduleNames[1]);
-              objModularManager.runModule(moduleNames[1]);
-
-              objModularManager.syncModule(moduleNames[2]);
-              objModularManager.runModule(moduleNames[2]);
-
-              setTimeout(function(){
-                  expect(runSequence).toEqual(['a','b', 'c']);
-                  done();
-              }, 200);
+          it("Must be execute in order", function(){
+              objSequential.inQueue(function(next){
+                  objModularManager.runModule(moduleNames[0]);
+                  next();
+              }).inQueue(function(next){
+                  objModularManager.runModule(moduleNames[1]);
+                  next();
+              }).inQueue(function(next){
+                  objModularManager.runModule(moduleNames[2]);
+                  next();
+              });
+              expect(runSequence).toEqual(['a','b', 'c']);
           });
       });
 
-      describe("Modules Running Observer", function(){
-          beforeEach(function(){
-              objModularManager.addModule("moduleA", function(){
-                  return {init:function(){}}
-              });
-              objModularManager.addModule("moduleB", function(){
-                  return {init:function(){}}
-              });
-              objModularManager.addModule("moduleC", function(){
-                  return {init:function(){}}
-              });
-          });
-
-          it("Must be execute when all modules not running", function(done){
-              var methodToNotRunning = jasmine.createSpy();
-              var methodToRunning = jasmine.createSpy();
-
-              objModularManager.syncModule("moduleA");
-              objModularManager.runModule("moduleA");
-              objModularManager.syncModule("moduleB");
-              objModularManager.syncModule("moduleC");
-              objModularManager.runModule("moduleC");
-
-              objModularManager.allModulesRunning(function(){
-                  methodToNotRunning();
-                  expect(methodToNotRunning).toHaveBeenCalled();
-                  done();
-              }, function(){});
-
-              //setTimeout(function(){
-                  //expect(objModularManager.getTotalToStarted()).toEqual(0);
-                  //expect(objModularManager.getTotalRunning()).toEqual(0);
-                  //objModularManager.allModulesRunning(methodToNotRunning, methodToRunning);
-                  //expect(methodToRunning).not.toHaveBeenCalled();
-                  //done();
-              //}, 500);
-
-          });
-
-          it("Must be execute when all modules its running", function(done){
-              var methodToNotRunning = jasmine.createSpy();
-              var methodToRunning = jasmine.createSpy();
-
-              objModularManager.syncModule("moduleA");
-              objModularManager.runModule("moduleA");
-              objModularManager.syncModule("moduleB");
-              objModularManager.runModule("moduleB");
-              objModularManager.syncModule("moduleC");
-              objModularManager.runModule("moduleC");
-
-              objModularManager.allModulesRunning(methodToNotRunning, methodToRunning);
-
-              setTimeout(function(){
-                  expect(methodToNotRunning).not.toHaveBeenCalled();
-                  expect(methodToRunning).toHaveBeenCalled();
-                  done();
-              }, 200);
-          });
-      })
   });
 });
