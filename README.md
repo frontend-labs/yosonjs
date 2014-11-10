@@ -3,7 +3,7 @@ yOSONJS
 
 A Sandbox library in JavaScript for manage modular scripts
 
-[![Build Status](https://secure.travis-ci.org/yosonjs/yosonjs.png)](https://travis-ci.org/yosonjs/yosonjs)
+[![Build Status](https://secure.travis-ci.org/frontend-labs/yosonjs.png)](https://travis-ci.org/frontend-labs/yosonjs)
 
 A little example
 ================
