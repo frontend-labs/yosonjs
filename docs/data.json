@@ -159,6 +159,25 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 101,
+            "description": "method that validates double slashes in url",
+            "itemtype": "method",
+            "name": "validateDoubleSlashes",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "the url self to validate",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "the url cleaned",
+                "type": "String"
+            },
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/comps/dependency-manager.js",
+            "line": 112,
             "description": "method what use the url and generateid the id for the manager",
             "itemtype": "method",
             "name": "generateId",
@@ -173,7 +192,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 110,
+            "line": 121,
             "description": "method what receive an url to the manager",
             "itemtype": "method",
             "name": "addScript",
@@ -188,7 +207,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 137,
+            "line": 148,
             "description": "method what receive an list of urls to request and callbacks when the requests are ready",
             "itemtype": "method",
             "name": "ready",
@@ -208,7 +227,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 160,
+            "line": 171,
             "description": "method what verify the avaliability of an Dependency",
             "itemtype": "method",
             "name": "avaliable",
@@ -232,7 +251,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 189,
+            "line": 200,
             "description": "return the dependency saved in the manager",
             "itemtype": "method",
             "name": "getDependency",
@@ -251,7 +270,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 200,
+            "line": 211,
             "description": "Query if its appened in the collection of the manager",
             "itemtype": "method",
             "name": "alreadyInCollection",
@@ -270,7 +289,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 210,
+            "line": 221,
             "description": "Query if its loaded the dependency in the manager",
             "itemtype": "method",
             "name": "alreadyLoaded",
