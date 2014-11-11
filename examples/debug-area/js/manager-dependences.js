@@ -1,5 +1,5 @@
 //define the modules
-var dependencyManager = new DependencyManager();
+var dependencyManager = new yOSON.Components.DependencyManager();
 dependencyManager.setStaticHost("http://cdn.aptitus.e3.pe/js/");
 //append the demo urls
 var dependences = [

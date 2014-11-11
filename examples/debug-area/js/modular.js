@@ -1,3 +1,4 @@
+var Modular = yOSON.Components.Modular;
 //===========
 var objModularA = new Modular();
 //create a module
@@ -34,37 +35,3 @@ objDontValidate.create(function(){
 
 objModularA.start();
 objModularB.start();
-
-var objModularManager = new ModularManager();
-
-objModularManager.addModule("moduleA", function(){
-    var init = function(){
-        console.log("hellooooooooooooo I'm in the module manager comp!!");
-    };
-    return {
-        init: init
-    }
-});
-
-objModularManager.runModule("moduleA");
-//objModular.addModule('moduleC', function(Sb){
-    //var init = function(){
-        //console.log("hello I'm moduleC!!");
-    //};
-    //return {
-        //init: init
-    //}
-//});
-
-//objModular.addModule('moduleD', function(Sb){
-    //var init = function(){
-        //console.log("hello I'm moduleD!!");
-    //};
-    //return {
-        //init: init
-    //}
-//});
-//start a module
-//objModular.runModule('moduleA');
-//objModular.runModule('moduleB');
-//objModular.runModules([ 'moduleC', 'moduleD']);

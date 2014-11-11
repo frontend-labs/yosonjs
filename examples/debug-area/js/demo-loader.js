@@ -31,7 +31,7 @@ var schema = {
         }
     }
 };
-var objLoader = new Loader(schema);
+var objLoader = new yOSON.Components.Loader(schema);
 //
 var querys = {
     "nothing":"",

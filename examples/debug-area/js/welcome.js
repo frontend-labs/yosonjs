@@ -1,7 +1,7 @@
 //define the module
 yOSON.AppCore.addModule('helloWorld', function(){
     var welcome = function(){
-        alert('welcome to yOSON!!');
+        alert('Hello Im a Module in yOSON :)');
     };
     return {
         init: welcome

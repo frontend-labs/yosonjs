@@ -1,17 +1,18 @@
 //===========
-var objPubSub = new yOSON.comunicator();
+var objPubSub = new yOSON.Components.Comunicator();
+
 //define the modules
 yOSON.AppCore.addModule('moduleA', function(Sb){
     var init = function(){
-        log("hello I'm moduleA!!");
+        console.log("hello I'm moduleA!!");
         objPubSub.subscribe(['suscribeFnForYosonComunicator'], suscribeFnForYosonComunicator , this);
         Sb.events(['suscribeFn'], suscribeFn, this);
     },
     suscribeFnForYosonComunicator = function(){
-        log("Hello Im a suscribeFn I travel with YosonComunicator :D");
+        console.log("Hello Im a suscribeFn I travel with YosonComunicator :D");
     };
     suscribeFn = function(){
-        log("Hello Im a suscribeFn from moduleA");
+        console.log("Hello Im a suscribeFn from moduleA");
     };
     return {
         init: init
@@ -20,7 +21,7 @@ yOSON.AppCore.addModule('moduleA', function(Sb){
 
 yOSON.AppCore.addModule('moduleB', function(Sb){
     var init = function(){
-        log("hello I'm moduleB!!");
+        console.log("hello I'm moduleB!!");
         publishFn();
     },
     publishFn = function(){

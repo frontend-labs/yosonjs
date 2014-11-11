@@ -1,5 +1,4 @@
 yOSON.AppCore.addModule("moduleA", function(){
-
     return {
         init: function(){
             console.log('eeeee');
