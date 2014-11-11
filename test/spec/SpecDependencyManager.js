@@ -62,6 +62,28 @@ define([
                   expect(id).toEqual(urlDummy);
               });
 
+              describe('validate the url entered', function(){
+                  var urlExpected = null;
+                  beforeEach(function(){
+                      urlExpected = staticHost + "js/dist/libs/fancybox/source/helpers/jquery.fancybox-buttons.js" + versionUrl;
+                  });
+                  it('should be validate the url without double slashes', function () {
+                      var urlGood = staticHost + "js/dist/libs/fancybox/source/helpers/jquery.fancybox-buttons.js" + versionUrl;
+                      var urlDummy = objDependencyManager.validateDoubleSlashes(urlGood);
+                      expect(urlDummy).toEqual(urlExpected);
+                  });
+                  it('should be validate the url with double slashes', function () {
+                      var urlWrong1 = staticHost + "/js/dist/libs/fancybox/source/helpers/jquery.fancybox-buttons.js" + versionUrl;
+                      var urlDummy = objDependencyManager.validateDoubleSlashes(urlWrong1);
+                      expect(urlDummy).toEqual(urlExpected);
+                  });
+                  it('should be validate the url with double slashes', function () {
+                      var urlWrong2 = staticHost + "//js/dist/libs///fancybox/source/helpers/jquery.fancybox-buttons.js" + versionUrl;
+                      var urlDummy = objDependencyManager.validateDoubleSlashes(urlWrong2);
+                      expect(urlDummy).toEqual(urlExpected);
+                  });
+              });
+
           });
 
           it('should be append a dependency ', function(done){

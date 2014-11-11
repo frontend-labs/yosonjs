@@ -183,9 +183,20 @@ define([
         if(regularExpresion.test(url)){
             urlResult = url;
         } else {
-            urlResult = this.config.staticHost + url + this.getVersionUrl();
+            urlResult = this.validateDoubleSlashes( this.config.staticHost + url + this.getVersionUrl() );
         }
         return urlResult;
+    };
+
+    /**
+     * method that validates double slashes in url
+     * @method validateDoubleSlashes
+     * @param {String} url the url self to validate
+     * @return {String} the url cleaned
+     */
+    DependencyManager.prototype.validateDoubleSlashes = function(url){
+        var regularExpression = /([^\/:])\/+([^\/])/g;
+        return url.replace(regularExpression, &quot;$1/$2&quot;);
     };
 
     /**
