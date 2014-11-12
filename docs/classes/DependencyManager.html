@@ -104,7 +104,7 @@
 
 
 <div class="box intro">
-    <p>Class manager of one or many requests</p>
+    <p>Class manager for one or more requests</p>
 
 </div>
 
@@ -166,15 +166,15 @@
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code> //create and object setting the class
+                <pre class="code prettyprint"><code> // create and object setting the class
  var objDependencyManager = new yOSON.DependencyManager();
- //example of setting the static host
+ // example of setting the static host
  objdependencymanager.setStaticHost(&quot;http://static.host/&quot;);
- //example of setting the static host
+ // example of setting the static host
  objdependencymanager.setVersionUrl(&quot;?v=0.1&quot;);
- //request the url
+ // request the url
  objDependency.ready([&#39;url1&#39;], function(){
-     //when ready execute here
+     // execute here when ready
  });</code></pre>
 
             </div>
@@ -229,7 +229,7 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_avaliable">avaliable</a>
+                                <a href="#method_available">available</a>
 
                                 
                                 
@@ -367,7 +367,7 @@
     </div>
 
     <div class="description">
-        <p>method what receive an url to the manager</p>
+        <p>Receives a url from the manager</p>
 
     </div>
 
@@ -460,7 +460,7 @@
     </div>
 
     <div class="description">
-        <p>Query if its appened in the collection of the manager</p>
+        <p>Queries if its appended in the collection of the manager</p>
 
     </div>
 
@@ -567,7 +567,7 @@
     </div>
 
     <div class="description">
-        <p>Query if its loaded the dependency in the manager</p>
+        <p>Queries if the dependency is loaded in the manager</p>
 
     </div>
 
@@ -617,8 +617,8 @@
 </div>
 
                 
-                    <div id="method_avaliable" class="method item">
-    <h3 class="name"><code>avaliable</code></h3>
+                    <div id="method_available" class="method item">
+    <h3 class="name"><code>available</code></h3>
 
     
         <div class="args">
@@ -632,7 +632,7 @@
             
                 <li class="arg">
                     
-                        <code>onAvaliable</code>
+                        <code>onAvailable</code>
                     
                 </li>
             
@@ -680,7 +680,7 @@
     </div>
 
     <div class="description">
-        <p>method what verify the avaliability of an Dependency</p>
+        <p>method what verifies the availability of a Dependency</p>
 
     </div>
 
@@ -699,7 +699,7 @@
                     
 
                     <div class="param-description">
-                        <p>the url to query if its avaliable or not</p>
+                        <p>the url to query if its available or not</p>
 
                     </div>
 
@@ -708,14 +708,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">onAvaliable</code>
+                        <code class="param-name">onAvailable</code>
                         <span class="type">Function</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>Callback to execute when the url its avaliable</p>
+                        <p>Callback to execute when the url is available</p>
 
                     </div>
 
@@ -735,7 +735,7 @@
                     
                         <span class="type">Boolean</span>:
                     
-                    <p>if the dependency its avaliable return true</p>
+                    <p>if the dependency is available return true</p>
 
                 
             </div>
@@ -799,7 +799,7 @@
     </div>
 
     <div class="description">
-        <p>method what use the url and generateid the id for the manager</p>
+        <p>Generates the id for the manager from the url</p>
 
     </div>
 
@@ -892,7 +892,7 @@
     </div>
 
     <div class="description">
-        <p>return the dependency saved in the manager</p>
+        <p>Returns saved dependency in the manager</p>
 
     </div>
 
@@ -989,7 +989,7 @@
     </div>
 
     <div class="description">
-        <p>Get the host saved</p>
+        <p>Gets saved host</p>
 
     </div>
 
@@ -1004,7 +1004,7 @@
                     
                         <span class="type">String</span>:
                     
-                    <p>Get the host saved with the method setStaticHost</p>
+                    <p>Get the saved host with the method setStaticHost</p>
 
                 
             </div>
@@ -1016,7 +1016,7 @@
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code> //if setting &quot;http://cdnjs.com&quot; return that
+                <pre class="code prettyprint"><code> //returns &quot;http://cdnjs.com&quot; if set
  objDependencyManager.getStaticHost();</code></pre>
 
             </div>
@@ -1072,7 +1072,7 @@
     </div>
 
     <div class="description">
-        <p>Get the suffix saved</p>
+        <p>Get saved suffix</p>
 
     </div>
 
@@ -1087,7 +1087,7 @@
                     
                         <span class="type">String</span>:
                     
-                    <p>Get the suffix saved with the method setVersionUrl</p>
+                    <p>Get saved suffix with the setVersionUrl method</p>
 
                 
             </div>
@@ -1167,7 +1167,7 @@
     </div>
 
     <div class="description">
-        <p>method what receive an list of urls to request and callbacks when the requests are ready</p>
+        <p>method that receives a list of urls to be requested and callbacks when the requests are ready</p>
 
     </div>
 
@@ -1272,7 +1272,7 @@
     </div>
 
     <div class="description">
-        <p>Setting the host of the static elements</p>
+        <p>Sets the host of static elements</p>
 
     </div>
 
@@ -1371,7 +1371,7 @@ like a CDN url</p>
     </div>
 
     <div class="description">
-        <p>Setting the suffix for the url, ideally when working with elements versioned</p>
+        <p>Sets the suffix for the url, ideally when working with versioned elements</p>
 
     </div>
 
@@ -1390,7 +1390,7 @@ like a CDN url</p>
                     
 
                     <div class="param-description">
-                        <p>the suffix or number for concatenate in the url</p>
+                        <p>the suffix or number for concatenating in the url</p>
 
                     </div>
 
@@ -1473,7 +1473,7 @@ like a CDN url</p>
     </div>
 
     <div class="description">
-        <p>method what transform the url to request</p>
+        <p>Transforms the url to a request</p>
 
     </div>
 
@@ -1492,7 +1492,7 @@ like a CDN url</p>
                     
 
                     <div class="param-description">
-                        <p>the url self to transform and ready for request</p>
+                        <p>the url itself to be transformed and ready for request</p>
 
                     </div>
 
@@ -1580,7 +1580,7 @@ like a CDN url</p>
     </div>
 
     <div class="description">
-        <p>method that validates double slashes in url</p>
+        <p>Validates double slashes in url</p>
 
     </div>
 

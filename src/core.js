@@ -2,14 +2,14 @@ define([
     "yoson",
     "comps/dependency-manager",
     "comps/modular-manager",
-    "comps/comunicator",
+    "comps/communicator",
     "comps/loader",
     "comps/sequential"
 ], function(yOSON){
 
     var objModularManager = new yOSON.Components.ModularManager(),
         objDependencyManager = new yOSON.Components.DependencyManager(),
-        objComunicator = new yOSON.Components.Comunicator(),
+        objCommunicator = new yOSON.Components.Communicator(),
         objSequential = new yOSON.Components.Sequential(),
         dependenceByModule = {},
         paramsTaked = [],
@@ -18,7 +18,7 @@ define([
     yOSON.AppCore = (function(){
         //Sets the main methods in the bridge of a module
         objModularManager.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
-            objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
+            objCommunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
         });
 
         objModularManager.addMethodToBrigde('trigger', function(){
@@ -28,7 +28,7 @@ define([
                 triggerArgs = paramsTaked.slice(1);
             }
 
-            objComunicator.publish(eventNameArg, triggerArgs);
+            objCommunicator.publish(eventNameArg, triggerArgs);
         });
 
         //Manages dependences

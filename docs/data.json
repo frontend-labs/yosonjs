@@ -37,13 +37,13 @@
             "extension_for": [],
             "file": "src/comps/dependency-manager.js",
             "line": 6,
-            "description": "Class manager of one or many requests",
+            "description": "Class manager for one or more requests",
             "requires": [
                 "Dependency"
             ],
             "is_constructor": 1,
             "example": [
-                "\n     //create and object setting the class\n     var objDependencyManager = new yOSON.DependencyManager();\n     //example of setting the static host\n     objdependencymanager.setStaticHost(\"http://static.host/\");\n     //example of setting the static host\n     objdependencymanager.setVersionUrl(\"?v=0.1\");\n     //request the url\n     objDependency.ready(['url1'], function(){\n         //when ready execute here\n     });"
+                "\n     // create and object setting the class\n     var objDependencyManager = new yOSON.DependencyManager();\n     // example of setting the static host\n     objdependencymanager.setStaticHost(\"http://static.host/\");\n     // example of setting the static host\n     objdependencymanager.setVersionUrl(\"?v=0.1\");\n     // request the url\n     objDependency.ready(['url1'], function(){\n         // execute here when ready\n     });"
             ]
         },
         "Dependency": {
@@ -56,17 +56,17 @@
             "extension_for": [],
             "file": "src/comps/dependency.js",
             "line": 4,
-            "description": "Class dealer of an url and indicates if ready or not",
+            "description": "Class that makes a request by a url and indicates if its ready or not",
             "is_constructor": 1,
             "params": [
                 {
                     "name": "url",
-                    "description": "Setting the url to request",
+                    "description": "Sets the url to request",
                     "type": "String"
                 }
             ],
             "example": [
-                "\n     var url = \"http://misite.com/mylib.js\";\n     //create and object setting the url to call\n     var objDependency = new yOSON.Dependency(url);\n     //request the url\n     objDependency.request({\n         onRequest: function(){\n             //when request\n         },\n         onReady: function(){\n             //when ready\n         },\n         onError: function(){\n             //when occurs an error\n         },\n     });"
+                "\n     var url = \"http://misite.com/mylib.js\";\n     //create and object setting the url to call\n     var objDependency = new yOSON.Dependency(url);\n     //request the url\n     objDependency.request({\n         onRequest: function(){\n             //when request\n         },\n         onReady: function(){\n             //when ready\n         },\n         onError: function(){\n             //when error occurs\n         },\n     });"
             ]
         }
     },
@@ -74,7 +74,7 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 33,
-            "description": "Setting the host of the static elements",
+            "description": "Sets the host of static elements",
             "itemtype": "method",
             "name": "setStaticHost",
             "params": [
@@ -92,28 +92,28 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 45,
-            "description": "Get the host saved",
+            "description": "Gets saved host",
             "itemtype": "method",
             "name": "getStaticHost",
             "return": {
-                "description": "Get the host saved with the method setStaticHost",
+                "description": "Get the saved host with the method setStaticHost",
                 "type": "String"
             },
             "example": [
-                "\n     //if setting \"http://cdnjs.com\" return that\n     objDependencyManager.getStaticHost();"
+                "\n     //returns \"http://cdnjs.com\" if set\n     objDependencyManager.getStaticHost();"
             ],
             "class": "DependencyManager"
         },
         {
             "file": "src/comps/dependency-manager.js",
             "line": 57,
-            "description": "Setting the suffix for the url, ideally when working with elements versioned",
+            "description": "Sets the suffix for the url, ideally when working with versioned elements",
             "itemtype": "method",
             "name": "setVersionUrl",
             "params": [
                 {
                     "name": "versionNumber",
-                    "description": "the suffix or number for concatenate in the url",
+                    "description": "the suffix or number for concatenating in the url",
                     "type": "String"
                 }
             ],
@@ -125,11 +125,11 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 68,
-            "description": "Get the suffix saved",
+            "description": "Get saved suffix",
             "itemtype": "method",
             "name": "getVersionUrl",
             "return": {
-                "description": "Get the suffix saved with the method setVersionUrl",
+                "description": "Get saved suffix with the setVersionUrl method",
                 "type": "String"
             },
             "example": [
@@ -140,13 +140,13 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 84,
-            "description": "method what transform the url to request",
+            "description": "Transforms the url to a request",
             "itemtype": "method",
             "name": "transformUrl",
             "params": [
                 {
                     "name": "url",
-                    "description": "the url self to transform and ready for request",
+                    "description": "the url itself to be transformed and ready for request",
                     "type": "String"
                 }
             ],
@@ -159,7 +159,7 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 101,
-            "description": "method that validates double slashes in url",
+            "description": "Validates double slashes in url",
             "itemtype": "method",
             "name": "validateDoubleSlashes",
             "params": [
@@ -178,7 +178,7 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 112,
-            "description": "method what use the url and generateid the id for the manager",
+            "description": "Generates the id for the manager from the url",
             "itemtype": "method",
             "name": "generateId",
             "params": [
@@ -193,7 +193,7 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 121,
-            "description": "method what receive an url to the manager",
+            "description": "Receives a url from the manager",
             "itemtype": "method",
             "name": "addScript",
             "params": [
@@ -208,7 +208,7 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 148,
-            "description": "method what receive an list of urls to request and callbacks when the requests are ready",
+            "description": "method that receives a list of urls to be requested and callbacks when the requests are ready",
             "itemtype": "method",
             "name": "ready",
             "params": [
@@ -228,23 +228,23 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 171,
-            "description": "method what verify the avaliability of an Dependency",
+            "description": "method what verifies the availability of a Dependency",
             "itemtype": "method",
-            "name": "avaliable",
+            "name": "available",
             "params": [
                 {
                     "name": "url",
-                    "description": "the url to query if its avaliable or not",
+                    "description": "the url to query if its available or not",
                     "type": "String"
                 },
                 {
-                    "name": "onAvaliable",
-                    "description": "Callback to execute when the url its avaliable",
+                    "name": "onAvailable",
+                    "description": "Callback to execute when the url is available",
                     "type": "Function"
                 }
             ],
             "return": {
-                "description": "if the dependency its avaliable return true",
+                "description": "if the dependency is available return true",
                 "type": "Boolean"
             },
             "class": "DependencyManager"
@@ -252,7 +252,7 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 200,
-            "description": "return the dependency saved in the manager",
+            "description": "Returns saved dependency in the manager",
             "itemtype": "method",
             "name": "getDependency",
             "params": [
@@ -271,7 +271,7 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 211,
-            "description": "Query if its appened in the collection of the manager",
+            "description": "Queries if its appended in the collection of the manager",
             "itemtype": "method",
             "name": "alreadyInCollection",
             "params": [
@@ -290,7 +290,7 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 221,
-            "description": "Query if its loaded the dependency in the manager",
+            "description": "Queries if the dependency is loaded in the manager",
             "itemtype": "method",
             "name": "alreadyLoaded",
             "params": [
@@ -309,7 +309,7 @@
         {
             "file": "src/comps/dependency.js",
             "line": 32,
-            "description": "Return the status of the request",
+            "description": "Returns the status of the request",
             "itemtype": "method",
             "name": "getStatus",
             "return": {
@@ -321,7 +321,7 @@
         {
             "file": "src/comps/dependency.js",
             "line": 40,
-            "description": "Call the request of the script",
+            "description": "Calls the request of the script",
             "itemtype": "method",
             "name": "request",
             "params": [
@@ -336,7 +336,7 @@
         {
             "file": "src/comps/dependency.js",
             "line": 72,
-            "description": "Trigger when the request its started",
+            "description": "Triggers when the request has started",
             "itemtype": "method",
             "name": "onRequest",
             "class": "Dependency"
@@ -344,7 +344,7 @@
         {
             "file": "src/comps/dependency.js",
             "line": 80,
-            "description": "Trigger when the request its successfully",
+            "description": "Triggers when the request is successful",
             "itemtype": "method",
             "name": "onReadyRequest",
             "class": "Dependency"
@@ -352,7 +352,7 @@
         {
             "file": "src/comps/dependency.js",
             "line": 88,
-            "description": "Trigger when the request have an error in the load of the script",
+            "description": "Triggers when the request has an error when loading the script",
             "itemtype": "method",
             "name": "onErrorRequest",
             "class": "Dependency"
@@ -360,7 +360,7 @@
         {
             "file": "src/comps/dependency.js",
             "line": 103,
-            "description": "Call the request of the script for IE browser",
+            "description": "Calls the request of the script for IE browser",
             "itemtype": "method",
             "name": "requestIE",
             "params": [
@@ -371,7 +371,7 @@
                 },
                 {
                     "name": "events",
-                    "description": "Settings the callbacks",
+                    "description": "Sets the callbacks",
                     "type": "Object"
                 }
             ],

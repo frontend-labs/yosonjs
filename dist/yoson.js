@@ -44,7 +44,7 @@
         });
     };
 
-    //when all tasks its success
+    //When all tasks are successful
     SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
         var callbacks = this.callbacks;
 
@@ -69,7 +69,7 @@
         return this;
     };
 
-    //when the promise is broken
+    //When the promise is broken
     SinglePromise.prototype.fail = function(objError){
         this.status = "fail";
         this.eachCallBackList(this.callbacks.faileds, function(callbackRegistered){
@@ -81,10 +81,10 @@
     
 
     /**
-     * Class dealer of an url and indicates if ready or not
+     * Class that makes a request by a url and indicates if its ready or not
      * @class Dependency
      * @constructor
-     * @param {String} url Setting the url to request
+     * @param {String} url Sets the url to request
      * @example
      *      var url = "http://misite.com/mylib.js";
      *      //create and object setting the url to call
@@ -98,7 +98,7 @@
      *              //when ready
      *          },
      *          onError: function(){
-     *              //when occurs an error
+     *              //when error occurs
      *          },
      *      });
      */
@@ -109,7 +109,7 @@
         this.events = {};
     };
     /**
-     * Return the status of the request
+     * Returns the status of the request
      * @method getStatus
      * @return {String} status of the request "request" | "ready" | "error"
      */
@@ -117,7 +117,7 @@
         return this.status;
     };
     /**
-     * Call the request of the script
+     * Calls the request of the script
      * @method request
      * @param {Object} events Settings the callbacks
      */
@@ -149,7 +149,7 @@
     };
 
     /**
-     * Trigger when the request its started
+     * Triggers when the request has started
      * @method onRequest
      */
     Dependency.prototype.onRequest = function(){
@@ -157,7 +157,7 @@
     };
 
     /**
-     * Trigger when the request its successfully
+     * Triggers when the request is successful
      * @method onReadyRequest
      */
     Dependency.prototype.onReadyRequest = function(){
@@ -165,7 +165,7 @@
         this.requestCallBackEvent('onReady');
     };
     /**
-     * Trigger when the request have an error in the load of the script
+     * Triggers when the request has an error when loading the script
      * @method onErrorRequest
      */
     Dependency.prototype.onErrorRequest = function(){
@@ -180,10 +180,10 @@
         }
     };
     /**
-     * Call the request of the script for IE browser
+     * Calls the request of the script for IE browser
      * @method requestIE
      * @param {Object} src the newScript created in the method request
-     * @param {Object} events Settings the callbacks
+     * @param {Object} events Sets the callbacks
      */
     Dependency.prototype.requestIE = function(scriptElement, onNoIEBrowser){
         var that = this;
@@ -203,20 +203,20 @@
     
 
     /**
-     * Class manager of one or many requests
+     * Class manager for one or more requests
      * @class DependencyManager
      * @requires Dependency
      * @constructor
      * @example
-     *      //create and object setting the class
+     *      // create and object setting the class
      *      var objDependencyManager = new yOSON.DependencyManager();
-     *      //example of setting the static host
+     *      // example of setting the static host
      *      objdependencymanager.setStaticHost("http://static.host/");
-     *      //example of setting the static host
+     *      // example of setting the static host
      *      objdependencymanager.setVersionUrl("?v=0.1");
-     *      //request the url
+     *      // request the url
      *      objDependency.ready(['url1'], function(){
-     *          //when ready execute here
+     *          // execute here when ready
      *      });
      */
     var DependencyManager = function(){
@@ -230,7 +230,7 @@
     };
 
     /**
-     * Setting the host of the static elements
+     * Sets the host of static elements
      * @method setStaticHost
      * @param {String} hostName the host of the static elements,
      * like a CDN url
@@ -242,11 +242,11 @@
     };
 
     /**
-     * Get the host saved
+     * Gets saved host 
      * @method getStaticHost
-     * @return {String} Get the host saved with the method setStaticHost
+     * @return {String} Get the saved host with the method setStaticHost
      * @example
-     *      //if setting "http://cdnjs.com" return that
+     *      //returns "http://cdnjs.com" if set
      *      objDependencyManager.getStaticHost();
      */
     DependencyManager.prototype.getStaticHost = function(){
@@ -254,9 +254,9 @@
     };
 
     /**
-     * Setting the suffix for the url, ideally when working with elements versioned
+     * Sets the suffix for the url, ideally when working with versioned elements 
      * @method setVersionUrl
-     * @param {String} versionNumber the suffix or number for concatenate in the url
+     * @param {String} versionNumber the suffix or number for concatenating in the url
      * @example
      *      objDependencyManager.setVersionUrl("?v=0.1");
      */
@@ -265,9 +265,9 @@
     };
 
     /**
-     * Get the suffix saved
+     * Get saved suffix 
      * @method getVersionUrl
-     * @return {String} Get the suffix saved with the method setVersionUrl
+     * @return {String} Get saved suffix with the setVersionUrl method
      * @example
      *      //if setting "?v=0.1" return that
      *      objDependencyManager.getVersionUrl();
@@ -281,9 +281,9 @@
     };
 
     /**
-     * method what transform the url to request
+     * Transforms the url to a request
      * @method transformUrl
-     * @param {String} url the url self to transform and ready for request
+     * @param {String} url the url itself to be transformed and ready for request
      * @return {String} the url transformed
      */
     DependencyManager.prototype.transformUrl = function(url){
@@ -298,7 +298,7 @@
     };
 
     /**
-     * method that validates double slashes in url
+     * Validates double slashes in url
      * @method validateDoubleSlashes
      * @param {String} url the url self to validate
      * @return {String} the url cleaned
@@ -309,7 +309,7 @@
     };
 
     /**
-     * method what use the url and generateid the id for the manager
+     * Generates the id for the manager from the url
      * @method generateId
      * @param {String} url the url self to generate your id
      */
@@ -318,7 +318,7 @@
     };
 
     /**
-     * method what receive an url to the manager
+     * Receives a url from the manager
      * @method addScript
      * @param {String} url the url self to request in the manager
      */
@@ -327,10 +327,10 @@
         var promiseEntity = new SinglePromise();
         if(this.alreadyInCollection(id)){
             return this.data[id].promiseEntity;
-            //return 'the dependence already appended';
+            //return 'the dependence is already appended';
         } else {
             this.data[id] = new Dependency(url);
-            //Hago la consulta del script
+            // Hago la consulta del script
             this.data[id].request({
                 onReady: function(){
                     promiseEntity.done();
@@ -345,7 +345,7 @@
     };
 
     /**
-     * method what receive an list of urls to request and callbacks when the requests are ready
+     * method that receives a list of urls to be requested and callbacks when the requests are ready
      * @method ready
      * @param {Array} urlList List of urls to request
      * @param {Function} onReady Callback to execute when the all requests are ready
@@ -368,11 +368,11 @@
     };
 
     /**
-     * method what verify the avaliability of an Dependency
-     * @method avaliable
-     * @param {String} url the url to query if its avaliable or not
-     * @param {Function} onAvaliable Callback to execute when the url its avaliable
-     * @return {Boolean} if the dependency its avaliable return true
+     * method what verifies the availability of a Dependency
+     * @method available
+     * @param {String} url the url to query if its available or not
+     * @param {Function} onAvailable Callback to execute when the url is available
+     * @return {Boolean} if the dependency is available return true
      */
     DependencyManager.prototype.avaliable = function(url, onAvaliable, onError){
         var that = this,
@@ -397,7 +397,7 @@
     };
 
     /**
-     * return the dependency saved in the manager
+     * Returns saved dependency in the manager
      * @method getDependency
      * @param {String} url the url to get in the manager
      * @return {Object} the object Dependency created by the url
@@ -408,7 +408,7 @@
     };
 
     /**
-     * Query if its appened in the collection of the manager
+     * Queries if its appended in the collection of the manager
      * @method alreadyInCollection
      * @param {String} id the id generated by the url
      * @return {Object} the object Dependency created by the url
@@ -418,7 +418,7 @@
     };
 
     /**
-     * Query if its loaded the dependency in the manager
+     * Queries if the dependency is loaded in the manager
      * @method alreadyLoaded
      * @param {String} id the id generated by the url
      * @return {Object} the object Dependency created by the url
@@ -431,19 +431,19 @@
     
 
 
-    //clase with pattern factory with the idea of create modules
+    //Class with pattern factory with the idea of creating modules
     var Modular = function(entityBridge){
         this.entityBridge = entityBridge;
         this.moduleInstance = "";
         this.status = "stop";
     };
 
-    //create a empty context of module
+    //Creates an empty context of module
     Modular.prototype.create = function(moduleDefinition){
         this.moduleDefinition = moduleDefinition;
     };
 
-    //create a definition of module self
+    //Creates a definition of module self
     Modular.prototype.generateModularDefinition = function(functionName, functionSelf){
         if(typeof functionSelf === "function"){
             return function(){
@@ -458,7 +458,7 @@
         }
     };
 
-    //start a simple module
+    //Starts a simple module
     Modular.prototype.start = function(parameters){
         var params = this.dealParamaterOfModule(parameters);
         var moduleInstance = this.moduleDefinition(this.entityBridge);
@@ -505,12 +505,12 @@
         this.alreadyAllModulesBeRunning = false;
     };
 
-    //receive one method for the entity comunicator on modules
+    // Receives a method for the entity communicator on modules
     ModularManager.prototype.addMethodToBrigde = function(methodName, methodSelf){
         this.entityBridge[methodName] = methodSelf;
     };
 
-    //adding a module
+    // Adds a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
         if(!this.getModule(moduleName)){
@@ -519,12 +519,12 @@
         }
     };
 
-    //return the module from the collection of modules
+    // Returns the module from the collection of modules
     ModularManager.prototype.getModule = function(moduleName){
         return this.modules[moduleName];
     };
 
-    //running the module
+    // Runs the module
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
         if(module){
@@ -543,12 +543,12 @@
     
 
 
-    //Clase que se orienta al manejo de comunicacion entre modulos
-    var Comunicator = function(){
+    // This class handles the communication between modules
+    var Communicator = function(){
         this.events = {};
     };
 
-    Comunicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
+    Communicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
         var that = this;
         this.finderEvents(eventNames, function(){
         }, function(eventName){
@@ -556,7 +556,7 @@
         });
     };
 
-    Comunicator.prototype.publish = function(eventName, argumentsOfEvent){
+    Communicator.prototype.publish = function(eventName, argumentsOfEvent){
         var that = this;
         this.finderEvents([eventName], function(eventNameFound, eventFound){
             var instanceFound = eventFound.instanceOrigin,
@@ -566,7 +566,7 @@
         }, function(){});
     };
 
-    Comunicator.prototype.validateArguments = function(argumentsToValidate){
+    Communicator.prototype.validateArguments = function(argumentsToValidate){
         var validArguments = [];
         if(typeof argumentsToValidate !== "undefined"){
             validArguments = argumentsToValidate;
@@ -574,14 +574,14 @@
         return validArguments;
     };
 
-    Comunicator.prototype.stopSubscribe = function(EventsToStop){
+    Communicator.prototype.stopSubscribe = function(EventsToStop){
         var that = this;
         this.finderEvents(EventsToStop, function(eventNameFound, eventFound){
             that.removeEvent(eventNameFound);
         }, function(){});
     };
 
-    Comunicator.prototype.addEvent = function(eventName, functionOfEvent, instanceOrigin){
+    Communicator.prototype.addEvent = function(eventName, functionOfEvent, instanceOrigin){
         var bodyNewEvent = {};
         bodyNewEvent.instanceOrigin = instanceOrigin;
         bodyNewEvent.functionSelf = functionOfEvent;
@@ -589,11 +589,11 @@
         return this;
     };
 
-    Comunicator.prototype.removeEvent = function(eventName){
+    Communicator.prototype.removeEvent = function(eventName){
         delete this.events[eventName];
     };
 
-    Comunicator.prototype.eventAlreadyRegistered = function(eventName){
+    Communicator.prototype.eventAlreadyRegistered = function(eventName){
         var response = false;
         if(this.getEvent(eventName)){
             response = true;
@@ -601,18 +601,18 @@
         return response;
     };
 
-    Comunicator.prototype.getEvent = function(eventName){
+    Communicator.prototype.getEvent = function(eventName){
         return this.events[eventName];
     };
 
-    Comunicator.prototype.finderEvents = function(eventNames, whichEventFound, whichEventNotFound){
+    Communicator.prototype.finderEvents = function(eventNames, whichEventFound, whichEventNotFound){
         var that = this;
         for(var index = 0; index < eventNames.length;index++){
             that.eachFindEvent(eventNames[index], whichEventFound, whichEventNotFound);
         }
     };
 
-    Comunicator.prototype.eachFindEvent = function(eventName, whichEventFound, whichEventNotFound){
+    Communicator.prototype.eachFindEvent = function(eventName, whichEventFound, whichEventNotFound){
         var that = this;
         if(that.eventAlreadyRegistered(eventName)){
             var eventFound = that.getEvent(eventName);
@@ -622,7 +622,7 @@
         }
     };
 
-    yOSON.Components.Comunicator = Comunicator;
+    yOSON.Components.Communicator = Communicator;
     
 
     var LoaderSchema = function(schema){
@@ -680,7 +680,7 @@
     };
 
     
-//Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
+// Class that handles the execution of modules depending on 3 parameters (Module, Controller, Action)
 
 
     var Loader = function(schema){
@@ -828,16 +828,16 @@
 
     var objModularManager = new yOSON.Components.ModularManager(),
         objDependencyManager = new yOSON.Components.DependencyManager(),
-        objComunicator = new yOSON.Components.Comunicator(),
+        objCommunicator = new yOSON.Components.Communicator(),
         objSequential = new yOSON.Components.Sequential(),
         dependenceByModule = {},
         paramsTaked = [],
         triggerArgs = [];
 
     yOSON.AppCore = (function(){
-        //setting the main methods in the bridge of an module
+        //Sets the main methods in the bridge of a module
         objModularManager.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
-            objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
+            objCommunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
         });
 
         objModularManager.addMethodToBrigde('trigger', function(){
@@ -847,10 +847,10 @@
                 triggerArgs = paramsTaked.slice(1);
             }
 
-            objComunicator.publish(eventNameArg, triggerArgs);
+            objCommunicator.publish(eventNameArg, triggerArgs);
         });
 
-        //managing the dependences
+        //Manages dependences
         var setDependencesByModule = function(moduleName, dependencesOfModule){
             dependenceByModule[moduleName] = dependencesOfModule;
         },
