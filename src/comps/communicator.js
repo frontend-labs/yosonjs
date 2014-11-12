@@ -3,11 +3,11 @@ define([
 ], function(yOSON){
 
     // This class handles the communication between modules
-    var Comunicator = function(){
+    var Communicator = function(){
         this.events = {};
     };
 
-    Comunicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
+    Communicator.prototype.subscribe = function(eventNames, functionSelfEvent, instanceOrigin){
         var that = this;
         this.finderEvents(eventNames, function(){
         }, function(eventName){
@@ -15,7 +15,7 @@ define([
         });
     };
 
-    Comunicator.prototype.publish = function(eventName, argumentsOfEvent){
+    Communicator.prototype.publish = function(eventName, argumentsOfEvent){
         var that = this;
         this.finderEvents([eventName], function(eventNameFound, eventFound){
             var instanceFound = eventFound.instanceOrigin,
@@ -25,7 +25,7 @@ define([
         }, function(){});
     };
 
-    Comunicator.prototype.validateArguments = function(argumentsToValidate){
+    Communicator.prototype.validateArguments = function(argumentsToValidate){
         var validArguments = [];
         if(typeof argumentsToValidate !== "undefined"){
             validArguments = argumentsToValidate;
@@ -33,14 +33,14 @@ define([
         return validArguments;
     };
 
-    Comunicator.prototype.stopSubscribe = function(EventsToStop){
+    Communicator.prototype.stopSubscribe = function(EventsToStop){
         var that = this;
         this.finderEvents(EventsToStop, function(eventNameFound, eventFound){
             that.removeEvent(eventNameFound);
         }, function(){});
     };
 
-    Comunicator.prototype.addEvent = function(eventName, functionOfEvent, instanceOrigin){
+    Communicator.prototype.addEvent = function(eventName, functionOfEvent, instanceOrigin){
         var bodyNewEvent = {};
         bodyNewEvent.instanceOrigin = instanceOrigin;
         bodyNewEvent.functionSelf = functionOfEvent;
@@ -48,11 +48,11 @@ define([
         return this;
     };
 
-    Comunicator.prototype.removeEvent = function(eventName){
+    Communicator.prototype.removeEvent = function(eventName){
         delete this.events[eventName];
     };
 
-    Comunicator.prototype.eventAlreadyRegistered = function(eventName){
+    Communicator.prototype.eventAlreadyRegistered = function(eventName){
         var response = false;
         if(this.getEvent(eventName)){
             response = true;
@@ -60,18 +60,18 @@ define([
         return response;
     };
 
-    Comunicator.prototype.getEvent = function(eventName){
+    Communicator.prototype.getEvent = function(eventName){
         return this.events[eventName];
     };
 
-    Comunicator.prototype.finderEvents = function(eventNames, whichEventFound, whichEventNotFound){
+    Communicator.prototype.finderEvents = function(eventNames, whichEventFound, whichEventNotFound){
         var that = this;
         for(var index = 0; index < eventNames.length;index++){
             that.eachFindEvent(eventNames[index], whichEventFound, whichEventNotFound);
         }
     };
 
-    Comunicator.prototype.eachFindEvent = function(eventName, whichEventFound, whichEventNotFound){
+    Communicator.prototype.eachFindEvent = function(eventName, whichEventFound, whichEventNotFound){
         var that = this;
         if(that.eventAlreadyRegistered(eventName)){
             var eventFound = that.getEvent(eventName);
@@ -81,6 +81,6 @@ define([
         }
     };
 
-    yOSON.Components.Comunicator = Comunicator;
-    return Comunicator;
+    yOSON.Components.Communicator = Communicator;
+    return Communicator;
 });
