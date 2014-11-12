@@ -169,35 +169,6 @@ define([
     };
 
     /**
-     * method what verifies the availability of a Dependency
-     * @method available
-     * @param {String} url the url to query if its available or not
-     * @param {Function} onAvailable Callback to execute when the url is available
-     * @return {Boolean} if the dependency is available return true
-     */
-    DependencyManager.prototype.available = function(url, onAvailable, onError){
-        var that = this,
-        id = that.generateId(url),
-        dependency = that.getDependency(url);
-        if(!this.alreadyLoaded(id)){
-            var checkStatusDependency = setInterval(function(){
-                if(dependency.getStatus() == "ready"){
-                    that.loaded[id] = true;
-                    clearInterval(checkStatusDependency);
-                    onAvailable.apply(that);
-                }
-                if(dependency.getStatus() == "error"){
-                    onAvailable = null;
-                    clearInterval(checkStatusDependency);
-                    onError.call(this);
-                }
-            }, 500);
-        } else {
-            return true;
-        }
-    };
-
-    /**
      * Returns saved dependency in the manager
      * @method getDependency
      * @param {String} url the url to get in the manager
