@@ -112,18 +112,6 @@ define([
 
           });
 
-          it('should be run the callback when the dependence its avaliable', function(done){
-            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js",
-                onAvaliable = jasmine.createSpy();
-
-            objDependencyManager.addScript(dependence);
-            objDependencyManager.avaliable(dependence, function(){
-                onAvaliable();
-                expect(onAvaliable).toHaveBeenCalled();
-                done();
-            });
-          });
-
           xit('should be dont run the callback error when the dependence return an error', function(done){
             var dependence = "http://helloworld.cc/js/wrongscripthellloworld.js",
                 onNotAvaliable = jasmine.createSpy();
@@ -153,16 +141,6 @@ define([
             expect(resultDependence instanceof Dependency).toBeTruthy();
           });
 
-          it('should be return the dependence its already loaded in the dependence manager', function(done){
-            var dependence = "http://cdnjs.cloudflare.com/ajax/libs/Colors.js/1.2.4/colors.min.js";
-            objDependencyManager.addScript(dependence);
-            objDependencyManager.avaliable(dependence, function(){});
-            setTimeout(function(){
-                var idOfDependence = objDependencyManager.generateId(dependence);
-                expect(objDependencyManager.alreadyLoaded(idOfDependence)).toBeTruthy();
-                done();
-            }, 500);
-          });
 
       });
 });

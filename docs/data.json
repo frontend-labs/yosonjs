@@ -228,30 +228,6 @@
         {
             "file": "src/comps/dependency-manager.js",
             "line": 171,
-            "description": "method what verifies the availability of a Dependency",
-            "itemtype": "method",
-            "name": "available",
-            "params": [
-                {
-                    "name": "url",
-                    "description": "the url to query if its available or not",
-                    "type": "String"
-                },
-                {
-                    "name": "onAvailable",
-                    "description": "Callback to execute when the url is available",
-                    "type": "Function"
-                }
-            ],
-            "return": {
-                "description": "if the dependency is available return true",
-                "type": "Boolean"
-            },
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 200,
             "description": "Returns saved dependency in the manager",
             "itemtype": "method",
             "name": "getDependency",
@@ -270,7 +246,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 211,
+            "line": 182,
             "description": "Queries if its appended in the collection of the manager",
             "itemtype": "method",
             "name": "alreadyInCollection",
@@ -289,7 +265,7 @@
         },
         {
             "file": "src/comps/dependency-manager.js",
-            "line": 221,
+            "line": 192,
             "description": "Queries if the dependency is loaded in the manager",
             "itemtype": "method",
             "name": "alreadyLoaded",
