@@ -43,7 +43,7 @@ define([
     };
 
     /**
-     * Gets saved host 
+     * Gets saved host
      * @method getStaticHost
      * @return {String} Get the saved host with the method setStaticHost
      * @example
@@ -55,7 +55,7 @@ define([
     };
 
     /**
-     * Sets the suffix for the url, ideally when working with versioned elements 
+     * Sets the suffix for the url, ideally when working with versioned elements
      * @method setVersionUrl
      * @param {String} versionNumber the suffix or number for concatenating in the url
      * @example
@@ -66,7 +66,7 @@ define([
     };
 
     /**
-     * Get saved suffix 
+     * Get saved suffix
      * @method getVersionUrl
      * @return {String} Get saved suffix with the setVersionUrl method
      * @example
@@ -175,7 +175,7 @@ define([
      * @param {Function} onAvailable Callback to execute when the url is available
      * @return {Boolean} if the dependency is available return true
      */
-    DependencyManager.prototype.avaliable = function(url, onAvaliable, onError){
+    DependencyManager.prototype.available = function(url, onAvailable, onError){
         var that = this,
         id = that.generateId(url),
         dependency = that.getDependency(url);
@@ -184,10 +184,10 @@ define([
                 if(dependency.getStatus() == "ready"){
                     that.loaded[id] = true;
                     clearInterval(checkStatusDependency);
-                    onAvaliable.apply(that);
+                    onAvailable.apply(that);
                 }
                 if(dependency.getStatus() == "error"){
-                    onAvaliable = null;
+                    onAvailable = null;
                     clearInterval(checkStatusDependency);
                     onError.call(this);
                 }
