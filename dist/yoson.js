@@ -242,7 +242,7 @@
     };
 
     /**
-     * Gets saved host 
+     * Gets saved host
      * @method getStaticHost
      * @return {String} Get the saved host with the method setStaticHost
      * @example
@@ -254,7 +254,7 @@
     };
 
     /**
-     * Sets the suffix for the url, ideally when working with versioned elements 
+     * Sets the suffix for the url, ideally when working with versioned elements
      * @method setVersionUrl
      * @param {String} versionNumber the suffix or number for concatenating in the url
      * @example
@@ -265,7 +265,7 @@
     };
 
     /**
-     * Get saved suffix 
+     * Get saved suffix
      * @method getVersionUrl
      * @return {String} Get saved suffix with the setVersionUrl method
      * @example
@@ -365,35 +365,6 @@
             }
         };
         queueQuering(urlList);
-    };
-
-    /**
-     * method what verifies the availability of a Dependency
-     * @method available
-     * @param {String} url the url to query if its available or not
-     * @param {Function} onAvailable Callback to execute when the url is available
-     * @return {Boolean} if the dependency is available return true
-     */
-    DependencyManager.prototype.avaliable = function(url, onAvaliable, onError){
-        var that = this,
-        id = that.generateId(url),
-        dependency = that.getDependency(url);
-        if(!this.alreadyLoaded(id)){
-            var checkStatusDependency = setInterval(function(){
-                if(dependency.getStatus() == "ready"){
-                    that.loaded[id] = true;
-                    clearInterval(checkStatusDependency);
-                    onAvaliable.apply(that);
-                }
-                if(dependency.getStatus() == "error"){
-                    onAvaliable = null;
-                    clearInterval(checkStatusDependency);
-                    onError.call(this);
-                }
-            }, 500);
-        } else {
-            return true;
-        }
     };
 
     /**
