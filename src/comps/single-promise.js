@@ -24,7 +24,7 @@ define([
         });
     };
 
-    //when all tasks its success
+    //When all tasks are successful
     SinglePromise.prototype.then = function(whenItsDone, whenIsFailed){
         var callbacks = this.callbacks;
 
@@ -49,7 +49,7 @@ define([
         return this;
     };
 
-    //when the promise is broken
+    //When the promise is broken
     SinglePromise.prototype.fail = function(objError){
         this.status = "fail";
         this.eachCallBackList(this.callbacks.faileds, function(callbackRegistered){

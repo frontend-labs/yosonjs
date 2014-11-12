@@ -1,4 +1,4 @@
-//Clase que maneja la ejecución de modulos depediendo de 3 parametros (Modulo, Controlador, Accion)
+// Class that handles the execution of modules depending on 3 parameters (Module, Controller, Action)
 define(
     ["yoson",
     "../../src/comps/loader-schema.js"],

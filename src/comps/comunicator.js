@@ -2,7 +2,7 @@ define([
     "yoson"
 ], function(yOSON){
 
-    //Clase que se orienta al manejo de comunicacion entre modulos
+    // This class handles the communication between modules
     var Comunicator = function(){
         this.events = {};
     };

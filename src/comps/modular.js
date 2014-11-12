@@ -2,19 +2,19 @@ define([
     "yoson"
 ], function(yOSON){
 
-    //clase with pattern factory with the idea of create modules
+    //Class with pattern factory with the idea of creating modules
     var Modular = function(entityBridge){
         this.entityBridge = entityBridge;
         this.moduleInstance = "";
         this.status = "stop";
     };
 
-    //create a empty context of module
+    //Creates an empty context of module
     Modular.prototype.create = function(moduleDefinition){
         this.moduleDefinition = moduleDefinition;
     };
 
-    //create a definition of module self
+    //Creates a definition of module self
     Modular.prototype.generateModularDefinition = function(functionName, functionSelf){
         if(typeof functionSelf === "function"){
             return function(){
@@ -29,7 +29,7 @@ define([
         }
     };
 
-    //start a simple module
+    //Starts a simple module
     Modular.prototype.start = function(parameters){
         var params = this.dealParamaterOfModule(parameters);
         var moduleInstance = this.moduleDefinition(this.entityBridge);

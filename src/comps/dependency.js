@@ -2,10 +2,10 @@ define([
     'yoson'
 ], function(yOSON){
     /**
-     * Class dealer of an url and indicates if ready or not
+     * Class that makes a request by a url and indicates if its ready or not
      * @class Dependency
      * @constructor
-     * @param {String} url Setting the url to request
+     * @param {String} url Sets the url to request
      * @example
      *      var url = "http://misite.com/mylib.js";
      *      //create and object setting the url to call
@@ -19,7 +19,7 @@ define([
      *              //when ready
      *          },
      *          onError: function(){
-     *              //when occurs an error
+     *              //when error occurs
      *          },
      *      });
      */
@@ -30,7 +30,7 @@ define([
         this.events = {};
     };
     /**
-     * Return the status of the request
+     * Returns the status of the request
      * @method getStatus
      * @return {String} status of the request "request" | "ready" | "error"
      */
@@ -38,7 +38,7 @@ define([
         return this.status;
     };
     /**
-     * Call the request of the script
+     * Calls the request of the script
      * @method request
      * @param {Object} events Settings the callbacks
      */
@@ -70,7 +70,7 @@ define([
     };
 
     /**
-     * Trigger when the request its started
+     * Triggers when the request has started
      * @method onRequest
      */
     Dependency.prototype.onRequest = function(){
@@ -78,7 +78,7 @@ define([
     };
 
     /**
-     * Trigger when the request its successfully
+     * Triggers when the request is successful
      * @method onReadyRequest
      */
     Dependency.prototype.onReadyRequest = function(){
@@ -86,7 +86,7 @@ define([
         this.requestCallBackEvent('onReady');
     };
     /**
-     * Trigger when the request have an error in the load of the script
+     * Triggers when the request has an error when loading the script
      * @method onErrorRequest
      */
     Dependency.prototype.onErrorRequest = function(){
@@ -101,10 +101,10 @@ define([
         }
     };
     /**
-     * Call the request of the script for IE browser
+     * Calls the request of the script for IE browser
      * @method requestIE
      * @param {Object} src the newScript created in the method request
-     * @param {Object} events Settings the callbacks
+     * @param {Object} events Sets the callbacks
      */
     Dependency.prototype.requestIE = function(scriptElement, onNoIEBrowser){
         var that = this;

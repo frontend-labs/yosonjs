@@ -16,7 +16,7 @@ define([
         triggerArgs = [];
 
     yOSON.AppCore = (function(){
-        //setting the main methods in the bridge of an module
+        //Sets the main methods in the bridge of a module
         objModularManager.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
             objComunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
         });
@@ -31,7 +31,7 @@ define([
             objComunicator.publish(eventNameArg, triggerArgs);
         });
 
-        //managing the dependences
+        //Manages dependences
         var setDependencesByModule = function(moduleName, dependencesOfModule){
             dependenceByModule[moduleName] = dependencesOfModule;
         },

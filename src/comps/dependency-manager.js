@@ -4,20 +4,20 @@ define([
     "../../src/comps/dependency.js"
 ], function(yOSON, SinglePromise, Dependency){
     /**
-     * Class manager of one or many requests
+     * Class manager for one or more requests
      * @class DependencyManager
      * @requires Dependency
      * @constructor
      * @example
-     *      //create and object setting the class
+     *      // create and object setting the class
      *      var objDependencyManager = new yOSON.DependencyManager();
-     *      //example of setting the static host
+     *      // example of setting the static host
      *      objdependencymanager.setStaticHost("http://static.host/");
-     *      //example of setting the static host
+     *      // example of setting the static host
      *      objdependencymanager.setVersionUrl("?v=0.1");
-     *      //request the url
+     *      // request the url
      *      objDependency.ready(['url1'], function(){
-     *          //when ready execute here
+     *          // execute here when ready
      *      });
      */
     var DependencyManager = function(){
@@ -31,7 +31,7 @@ define([
     };
 
     /**
-     * Setting the host of the static elements
+     * Sets the host of static elements
      * @method setStaticHost
      * @param {String} hostName the host of the static elements,
      * like a CDN url
@@ -43,11 +43,11 @@ define([
     };
 
     /**
-     * Get the host saved
+     * Gets saved host 
      * @method getStaticHost
-     * @return {String} Get the host saved with the method setStaticHost
+     * @return {String} Get the saved host with the method setStaticHost
      * @example
-     *      //if setting "http://cdnjs.com" return that
+     *      //returns "http://cdnjs.com" if set
      *      objDependencyManager.getStaticHost();
      */
     DependencyManager.prototype.getStaticHost = function(){
@@ -55,9 +55,9 @@ define([
     };
 
     /**
-     * Setting the suffix for the url, ideally when working with elements versioned
+     * Sets the suffix for the url, ideally when working with versioned elements 
      * @method setVersionUrl
-     * @param {String} versionNumber the suffix or number for concatenate in the url
+     * @param {String} versionNumber the suffix or number for concatenating in the url
      * @example
      *      objDependencyManager.setVersionUrl("?v=0.1");
      */
@@ -66,9 +66,9 @@ define([
     };
 
     /**
-     * Get the suffix saved
+     * Get saved suffix 
      * @method getVersionUrl
-     * @return {String} Get the suffix saved with the method setVersionUrl
+     * @return {String} Get saved suffix with the setVersionUrl method
      * @example
      *      //if setting "?v=0.1" return that
      *      objDependencyManager.getVersionUrl();
@@ -82,9 +82,9 @@ define([
     };
 
     /**
-     * method what transform the url to request
+     * Transforms the url to a request
      * @method transformUrl
-     * @param {String} url the url self to transform and ready for request
+     * @param {String} url the url itself to be transformed and ready for request
      * @return {String} the url transformed
      */
     DependencyManager.prototype.transformUrl = function(url){
@@ -99,7 +99,7 @@ define([
     };
 
     /**
-     * method that validates double slashes in url
+     * Validates double slashes in url
      * @method validateDoubleSlashes
      * @param {String} url the url self to validate
      * @return {String} the url cleaned
@@ -110,7 +110,7 @@ define([
     };
 
     /**
-     * method what use the url and generateid the id for the manager
+     * Generates the id for the manager from the url
      * @method generateId
      * @param {String} url the url self to generate your id
      */
@@ -119,7 +119,7 @@ define([
     };
 
     /**
-     * method what receive an url to the manager
+     * Receives a url from the manager
      * @method addScript
      * @param {String} url the url self to request in the manager
      */
@@ -128,10 +128,10 @@ define([
         var promiseEntity = new SinglePromise();
         if(this.alreadyInCollection(id)){
             return this.data[id].promiseEntity;
-            //return 'the dependence already appended';
+            //return 'the dependence is already appended';
         } else {
             this.data[id] = new Dependency(url);
-            //Hago la consulta del script
+            // Hago la consulta del script
             this.data[id].request({
                 onReady: function(){
                     promiseEntity.done();
@@ -146,7 +146,7 @@ define([
     };
 
     /**
-     * method what receive an list of urls to request and callbacks when the requests are ready
+     * method that receives a list of urls to be requested and callbacks when the requests are ready
      * @method ready
      * @param {Array} urlList List of urls to request
      * @param {Function} onReady Callback to execute when the all requests are ready
@@ -169,11 +169,11 @@ define([
     };
 
     /**
-     * method what verify the avaliability of an Dependency
-     * @method avaliable
-     * @param {String} url the url to query if its avaliable or not
-     * @param {Function} onAvaliable Callback to execute when the url its avaliable
-     * @return {Boolean} if the dependency its avaliable return true
+     * method what verifies the availability of a Dependency
+     * @method available
+     * @param {String} url the url to query if its available or not
+     * @param {Function} onAvailable Callback to execute when the url is available
+     * @return {Boolean} if the dependency is available return true
      */
     DependencyManager.prototype.avaliable = function(url, onAvaliable, onError){
         var that = this,
@@ -198,7 +198,7 @@ define([
     };
 
     /**
-     * return the dependency saved in the manager
+     * Returns saved dependency in the manager
      * @method getDependency
      * @param {String} url the url to get in the manager
      * @return {Object} the object Dependency created by the url
@@ -209,7 +209,7 @@ define([
     };
 
     /**
-     * Query if its appened in the collection of the manager
+     * Queries if its appended in the collection of the manager
      * @method alreadyInCollection
      * @param {String} id the id generated by the url
      * @return {Object} the object Dependency created by the url
@@ -219,7 +219,7 @@ define([
     };
 
     /**
-     * Query if its loaded the dependency in the manager
+     * Queries if the dependency is loaded in the manager
      * @method alreadyLoaded
      * @param {String} id the id generated by the url
      * @return {Object} the object Dependency created by the url

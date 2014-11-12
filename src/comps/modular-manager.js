@@ -10,12 +10,12 @@ define([
         this.alreadyAllModulesBeRunning = false;
     };
 
-    //receive one method for the entity comunicator on modules
+    // Receives a method for the entity communicator on modules
     ModularManager.prototype.addMethodToBrigde = function(methodName, methodSelf){
         this.entityBridge[methodName] = methodSelf;
     };
 
-    //adding a module
+    // Adds a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
         if(!this.getModule(moduleName)){
@@ -24,12 +24,12 @@ define([
         }
     };
 
-    //return the module from the collection of modules
+    // Returns the module from the collection of modules
     ModularManager.prototype.getModule = function(moduleName){
         return this.modules[moduleName];
     };
 
-    //running the module
+    // Runs the module
     ModularManager.prototype.runModule = function(moduleName, optionalParameters){
         var module = this.getModule(moduleName);
         if(module){
