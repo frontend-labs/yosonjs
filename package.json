@@ -25,12 +25,13 @@
     "requirejs": "2.1.10",
     "grunt-conventional-changelog": "~1.1.0",
     "grunt-template-jasmine-istanbul": "~0.3.0",
-    "grunt-coveralls": "~1.0.0"
+    "grunt-coveralls": "~1.0.0",
+    "istanbul": "~0.3.2"
   },
   "scripts": {
     "build": "npm install && grunt",
     "start": "grunt",
     "test": "grunt",
-    "coveralls": "grunt coverage"
+    "coveralls": "istanbul cover -- grunt coverage"
   }
 }
