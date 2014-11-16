@@ -3,3 +3,6 @@ reports
 
 bin/coverage
 coverage
+
+report
+reports/lcov
