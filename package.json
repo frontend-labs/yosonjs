@@ -24,7 +24,8 @@
     "grunt-template-jasmine-requirejs": "0.2",
     "requirejs": "2.1.10",
     "grunt-conventional-changelog": "~1.1.0",
-    "grunt-template-jasmine-istanbul": "~0.3.0"
+    "grunt-template-jasmine-istanbul": "~0.3.0",
+    "grunt-coveralls": "~1.0.0"
   },
   "scripts": {
     "build": "npm install && grunt",

@@ -150,6 +150,13 @@ module.exports = function(grunt){
             options: {
 
             }
+        },
+        //for coveralls service
+        coveralls:{
+            options:{
+                src: 'coverage-results/lcov.info',
+                force: false
+            }
         }
    });
 
@@ -171,6 +178,8 @@ module.exports = function(grunt){
    grunt.loadNpmTasks('grunt-contrib-yuidoc');
    //Load the plugin that provides the generator of changelog file
    grunt.loadNpmTasks('grunt-conventional-changelog');
+   //Load the plugin for generate the report to coveralls service
+   grunt.loadNpmTasks('grunt-coveralls');
 
    //Load the tasks
    grunt.loadTasks('tasks');
@@ -180,7 +189,7 @@ module.exports = function(grunt){
    //enroll tasks
    grunt.registerTask('hint', ['jshint', 'complexity']);
    grunt.registerTask('spec', ['connect', 'jasmine:requirejs']);
-   grunt.registerTask('coverage', ['connect:coverage', 'jasmine:coverage']);
+   grunt.registerTask('coverage', ['connect:coverage', 'jasmine:coverage', 'coveralls']);
    grunt.registerTask('dist', ['exec:cleanDist', 'generateDist']);
    grunt.registerTask('build', ['exec:cleanBuild', 'uglify']);
    grunt.registerTask('doc', ['yuidoc']);
