@@ -105,10 +105,16 @@ module.exports = function(grunt){
                                 type: "html",
                                 options: {
                                     dir: "<%= meta.bin.coverage%>/html"
-                                },
+                                }
                             },
                             {
                                 type: "text-summary"
+                            },
+                            {
+                                type: "lcov",
+                                options: {
+                                    dir: "coverage/"
+                                }
                             }
                         ],
                         replace: false,
