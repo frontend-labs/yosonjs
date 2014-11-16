@@ -113,7 +113,7 @@ module.exports = function(grunt){
                             {
                                 type: "lcov",
                                 options: {
-                                    dir: "coverage/"
+                                    dir: "reports/lcov"
                                 }
                             }
                         ],
@@ -160,8 +160,11 @@ module.exports = function(grunt){
         //for coveralls service
         coveralls:{
             options:{
-                src: 'coverage-results/lcov.info',
+                //src: 'coverage-results/lcov.info',
                 force: false
+            },
+            main_target:{
+                src: 'reports/lcov/lcov.info'
             }
         }
    });
