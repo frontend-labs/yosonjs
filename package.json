@@ -29,7 +29,7 @@
   "scripts": {
     "build": "npm install && grunt",
     "start": "grunt",
-    "test": "grunt"
+    "test": "grunt",
     "coveralls": "grunt coverage"
   }
 }
