@@ -32,6 +32,6 @@
     "build": "npm install && grunt",
     "start": "grunt",
     "test": "grunt",
-    "coveralls": "istanbul cover -- grunt coverage"
+    "ci": "istanbul cover -- grunt coverage"
   }
 }
