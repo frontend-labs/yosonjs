@@ -23,11 +23,13 @@
     "grunt-contrib-yuidoc": "~0.5.x",
     "grunt-template-jasmine-requirejs": "0.2",
     "requirejs": "2.1.10",
-    "grunt-conventional-changelog": "~1.1.0"
+    "grunt-conventional-changelog": "~1.1.0",
+    "grunt-template-jasmine-istanbul": "~0.3.0"
   },
   "scripts": {
     "build": "npm install && grunt",
     "start": "grunt",
     "test": "grunt"
+    "coveralls": "grunt coverage"
   }
 }

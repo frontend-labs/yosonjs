@@ -6,10 +6,39 @@ module.exports = function(grunt){
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        meta:{
+            bin:{
+                coverage: 'bin/coverage'
+            },
+            port:{
+                coverage: 8082
+            }
+        },
         connect: {
             test: {
                 port: 8000,
                 base: '.'
+            },
+            coverage:{
+                options:{
+                    port: '<%= meta.port.coverage %>',
+                    middleware: function(connect, options){
+                        var src = [];
+                        var adjustMethod = function(file){
+                            src.push('/'+file);
+                        };
+                        grunt.file.expand(grunt.config.get("jasmine.coverage.src")).forEach(adjustMethod);
+                        var staticConnection = connect.static(options.base);
+                        return [
+                            function(request, response, next){
+                                if(src.indexOf(request.url) > -1){
+                                    request.url = "/.grunt/grunt-contrib-jasmine"+request.url;
+                                }
+                                return staticConnection.apply(this, arguments);
+                            }
+                        ];
+                    }
+                }
             }
         },
         //compress
@@ -61,6 +90,31 @@ module.exports = function(grunt){
                     host: 'http://127.0.0.1:<%= connect.test.port %>/',
                     template: require('grunt-template-jasmine-requirejs'),
                     templateOptions: defaultOptsTmpl
+                }
+            },
+            coverage:{
+                src: 'src/**/*.js',
+                options: {
+                    specs: 'test/spec/Spec*.js',
+                    host: 'http://127.0.0.1:<%= meta.port.coverage %>/',
+                    template: require('grunt-template-jasmine-istanbul'),
+                    templateOptions: {
+                        coverage: '<%= meta.bin.coverage%>/coverage.json',
+                        report: [
+                            {
+                                type: "html",
+                                options: {
+                                    dir: "<%= meta.bin.coverage%>/html"
+                                },
+                            },
+                            {
+                                type: "text-summary"
+                            }
+                        ],
+                        replace: false,
+                        template: require("grunt-template-jasmine-requirejs"),
+                        templateOptions:defaultOptsTmpl
+                    }
                 }
             }
         },
@@ -126,6 +180,7 @@ module.exports = function(grunt){
    //enroll tasks
    grunt.registerTask('hint', ['jshint', 'complexity']);
    grunt.registerTask('spec', ['connect', 'jasmine:requirejs']);
+   grunt.registerTask('coverage', ['connect:coverage', 'jasmine:coverage']);
    grunt.registerTask('dist', ['exec:cleanDist', 'generateDist']);
    grunt.registerTask('build', ['exec:cleanBuild', 'uglify']);
    grunt.registerTask('doc', ['yuidoc']);
