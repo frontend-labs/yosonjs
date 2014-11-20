@@ -1,1 +1,8 @@
 node_modules
+reports
+
+bin/coverage
+coverage
+
+report
+reports/lcov
