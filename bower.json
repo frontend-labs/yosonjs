@@ -5,7 +5,7 @@
   "authors": [
     "andru255@gmail.com"
   ],
-  "description": "lightweight library for manage modular scripts",
+  "description": "Lightweight library for manage modular scripts",
   "main": "build/yoson-min.js",
   "keywords": [
     "yosonjs",
