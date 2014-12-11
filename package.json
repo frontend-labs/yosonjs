@@ -23,7 +23,8 @@
     "grunt-contrib-yuidoc": "~0.5.x",
     "grunt-template-jasmine-requirejs": "0.2",
     "requirejs": "2.1.10",
-    "grunt-conventional-changelog": "~1.1.0"
+    "grunt-conventional-changelog": "~1.1.0",
+    "grunt-bump": "0.0.16"
   },
   "scripts": {
     "build": "npm install && grunt",

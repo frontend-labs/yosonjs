@@ -1,11 +1,11 @@
 {
   "name": "yosonjs",
   "version": "0.0.15-alpha",
-  "homepage": "https://github.com/yosonjs/yosonjs",
+  "homepage": "https://github.com/frontend-labs/yosonjs",
   "authors": [
     "andru255@gmail.com"
   ],
-  "description": "A lightweight sandbox library in JavaScript for manage modular scripts",
+  "description": "lightweight library for manage modular scripts",
   "main": "build/yoson-min.js",
   "keywords": [
     "yosonjs",

@@ -96,6 +96,12 @@ module.exports = function(grunt){
             options: {
 
             }
+        },
+        //for bump
+        bump:{
+            options: {
+
+            }
         }
    });
 
@@ -117,6 +123,8 @@ module.exports = function(grunt){
    grunt.loadNpmTasks('grunt-contrib-yuidoc');
    //Load the plugin that provides the generator of changelog file
    grunt.loadNpmTasks('grunt-conventional-changelog');
+   //Load the plugin that provides the bump actions
+   grunt.loadNpmTasks('grunt-bump');
 
    //Load the tasks
    grunt.loadTasks('tasks');
