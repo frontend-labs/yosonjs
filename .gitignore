@@ -6,3 +6,6 @@ coverage
 
 report
 reports/lcov
+
+*.orig
+

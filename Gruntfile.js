@@ -157,7 +157,7 @@ module.exports = function(grunt){
 
             }
         },
-        //for coveralls service
+		//for coveralls service
         coveralls:{
             options:{
                 //src: 'coverage-results/lcov.info',
@@ -165,6 +165,12 @@ module.exports = function(grunt){
             },
             main_target:{
                 src: 'reports/lcov/lcov.info'
+            }
+        },
+        //for bump
+        bump:{
+            options: {
+
             }
         }
    });
@@ -187,6 +193,8 @@ module.exports = function(grunt){
    grunt.loadNpmTasks('grunt-contrib-yuidoc');
    //Load the plugin that provides the generator of changelog file
    grunt.loadNpmTasks('grunt-conventional-changelog');
+   //Load the plugin that provides the bump actions
+   grunt.loadNpmTasks('grunt-bump');
    //Load the plugin for generate the report to coveralls service
    grunt.loadNpmTasks('grunt-coveralls');
 
