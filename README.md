@@ -1,4 +1,5 @@
-[![Stories in Ready](https://badge.waffle.io/frontend-labs/yosonjs.png?label=ready&title=Ready)](https://waffle.io/frontend-labs/yosonjs)
+[![Stories in Progress](https://badge.waffle.io/frontend-labs/yosonjs.png?label=in progress&title=In Progress)](https://waffle.io/frontend-labs/yosonjs)
+
 yOSONJS
 =======
 
