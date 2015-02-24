@@ -335,7 +335,7 @@
         },
         {
             "file": "src/comps/dependency.js",
-            "line": 103,
+            "line": 109,
             "description": "Calls the request of the script for IE browser",
             "itemtype": "method",
             "name": "requestIE",

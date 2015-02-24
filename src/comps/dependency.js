@@ -53,7 +53,7 @@ define([
         var newScript = that.createNewScript(that.url);
         that.requestIE(newScript, function(){
             newScript.onload = function(){
-                that.onReadyRequest();
+                that.onReadyRequest(this);
             };
             newScript.onerror = function(){
                 that.onErrorRequest();
@@ -81,9 +81,9 @@ define([
      * Triggers when the request is successful
      * @method onReadyRequest
      */
-    Dependency.prototype.onReadyRequest = function(){
+    Dependency.prototype.onReadyRequest = function(instanceLoaded){
         this.status = "ready";
-        this.requestCallBackEvent('onReady');
+        this.requestCallBackEvent('onReady', instanceLoaded);
     };
     /**
      * Triggers when the request has an error when loading the script
@@ -94,10 +94,16 @@ define([
         this.requestCallBackEvent('onError');
     };
 
-    Dependency.prototype.requestCallBackEvent = function(eventName){
+    Dependency.prototype.requestCallBackEvent = function(){
+        var arrayOfArguments = [].slice.call(arguments, 0);
+        var eventName = arrayOfArguments[0];
         var eventSelf = this.events[eventName];
+        var paramsToPass = [];
+        if(arrayOfArguments.length > 1){
+            paramsToPass = arrayOfArguments.slice(1);
+        }
         if(typeof eventSelf === "function"){
-            eventSelf.call(this);
+            eventSelf.apply(this, paramsToPass);
         }
     };
     /**
