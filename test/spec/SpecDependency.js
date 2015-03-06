@@ -69,6 +69,16 @@ define([
                   });
               });
 
+              it('should be execute when the state is on ready', function(done){
+                  dependencyObjTest = new Dependency(successDependenceUrl);
+                  dependencyObjTest.request({
+                      onReady: function(instanceLoaded){
+                          expect(instanceLoaded).not.toBeUndefined();
+                          done();
+                      }
+                  });
+              });
+
               it('should be execute when the state is on Error', function(done){
                   dependencyObjTest = new Dependency(failDependenceUrl);
                   dependencyObjTest.request({
