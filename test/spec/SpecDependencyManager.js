@@ -1,7 +1,7 @@
 define([
    '../../src/comps/single-promise.js',
    '../../src/comps/dependency.js',
-   '../../src/comps/dependency-manager.js'
+   '../../src/managers/dependency.js'
   ],
   function(SinglePromise, Dependency, DependencyManager){
       describe("DependencyManager Component", function(){

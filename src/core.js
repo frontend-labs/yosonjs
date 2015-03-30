@@ -1,7 +1,7 @@
 define([
     "yoson",
-    "comps/dependency-manager",
-    "comps/modular-manager",
+    "managers/dependency",
+    "managers/modular",
     "comps/communicator",
     "comps/loader",
     "comps/sequential"

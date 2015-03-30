@@ -6,15 +6,6 @@
         "url": ""
     },
     "files": {
-        "src/comps/dependency-manager.js": {
-            "name": "src/comps/dependency-manager.js",
-            "modules": {},
-            "classes": {
-                "DependencyManager": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
         "src/comps/dependency.js": {
             "name": "src/comps/dependency.js",
             "modules": {},
@@ -23,29 +14,19 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "src/managers/dependency.js": {
+            "name": "src/managers/dependency.js",
+            "modules": {},
+            "classes": {
+                "DependencyManager": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {},
     "classes": {
-        "DependencyManager": {
-            "name": "DependencyManager",
-            "shortname": "DependencyManager",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "src/comps/dependency-manager.js",
-            "line": 6,
-            "description": "Class manager for one or more requests",
-            "requires": [
-                "Dependency"
-            ],
-            "is_constructor": 1,
-            "example": [
-                "\n     // create and object setting the class\n     var objDependencyManager = new yOSON.DependencyManager();\n     // example of setting the static host\n     objdependencymanager.setStaticHost(\"http://static.host/\");\n     // example of setting the static host\n     objdependencymanager.setVersionUrl(\"?v=0.1\");\n     // request the url\n     objDependency.ready(['url1'], function(){\n         // execute here when ready\n     });"
-            ]
-        },
         "Dependency": {
             "name": "Dependency",
             "shortname": "Dependency",
@@ -68,220 +49,28 @@
             "example": [
                 "\n     var url = \"http://misite.com/mylib.js\";\n     //create and object setting the url to call\n     var objDependency = new yOSON.Dependency(url);\n     //request the url\n     objDependency.request({\n         onRequest: function(){\n             //when request\n         },\n         onReady: function(){\n             //when ready\n         },\n         onError: function(){\n             //when error occurs\n         },\n     });"
             ]
+        },
+        "DependencyManager": {
+            "name": "DependencyManager",
+            "shortname": "DependencyManager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/managers/dependency.js",
+            "line": 6,
+            "description": "Class manager for one or more requests",
+            "requires": [
+                "Dependency"
+            ],
+            "is_constructor": 1,
+            "example": [
+                "\n     // create and object setting the class\n     var objDependencyManager = new yOSON.DependencyManager();\n     // example of setting the static host\n     objdependencymanager.setStaticHost(\"http://static.host/\");\n     // example of setting the static host\n     objdependencymanager.setVersionUrl(\"?v=0.1\");\n     // request the url\n     objDependency.ready(['url1'], function(){\n         // execute here when ready\n     });"
+            ]
         }
     },
     "classitems": [
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 33,
-            "description": "Sets the host of static elements",
-            "itemtype": "method",
-            "name": "setStaticHost",
-            "params": [
-                {
-                    "name": "hostName",
-                    "description": "the host of the static elements,\nlike a CDN url",
-                    "type": "String"
-                }
-            ],
-            "example": [
-                "\n     objDependencyManager.setStaticHost(\"http://cdnjs.com\");"
-            ],
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 45,
-            "description": "Gets saved host",
-            "itemtype": "method",
-            "name": "getStaticHost",
-            "return": {
-                "description": "Get the saved host with the method setStaticHost",
-                "type": "String"
-            },
-            "example": [
-                "\n     //returns \"http://cdnjs.com\" if set\n     objDependencyManager.getStaticHost();"
-            ],
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 57,
-            "description": "Sets the suffix for the url, ideally when working with versioned elements",
-            "itemtype": "method",
-            "name": "setVersionUrl",
-            "params": [
-                {
-                    "name": "versionNumber",
-                    "description": "the suffix or number for concatenating in the url",
-                    "type": "String"
-                }
-            ],
-            "example": [
-                "\n     objDependencyManager.setVersionUrl(\"?v=0.1\");"
-            ],
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 68,
-            "description": "Get saved suffix",
-            "itemtype": "method",
-            "name": "getVersionUrl",
-            "return": {
-                "description": "Get saved suffix with the setVersionUrl method",
-                "type": "String"
-            },
-            "example": [
-                "\n     //if setting \"?v=0.1\" return that\n     objDependencyManager.getVersionUrl();"
-            ],
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 84,
-            "description": "Transforms the url to a request",
-            "itemtype": "method",
-            "name": "transformUrl",
-            "params": [
-                {
-                    "name": "url",
-                    "description": "the url itself to be transformed and ready for request",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "the url transformed",
-                "type": "String"
-            },
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 101,
-            "description": "Validates double slashes in url",
-            "itemtype": "method",
-            "name": "validateDoubleSlashes",
-            "params": [
-                {
-                    "name": "url",
-                    "description": "the url self to validate",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "the url cleaned",
-                "type": "String"
-            },
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 112,
-            "description": "Generates the id for the manager from the url",
-            "itemtype": "method",
-            "name": "generateId",
-            "params": [
-                {
-                    "name": "url",
-                    "description": "the url self to generate your id",
-                    "type": "String"
-                }
-            ],
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 121,
-            "description": "Receives a url from the manager",
-            "itemtype": "method",
-            "name": "addScript",
-            "params": [
-                {
-                    "name": "url",
-                    "description": "the url self to request in the manager",
-                    "type": "String"
-                }
-            ],
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 148,
-            "description": "method that receives a list of urls to be requested and callbacks when the requests are ready",
-            "itemtype": "method",
-            "name": "ready",
-            "params": [
-                {
-                    "name": "urlList",
-                    "description": "List of urls to request",
-                    "type": "Array"
-                },
-                {
-                    "name": "onReady",
-                    "description": "Callback to execute when the all requests are ready",
-                    "type": "Function"
-                }
-            ],
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 171,
-            "description": "Returns saved dependency in the manager",
-            "itemtype": "method",
-            "name": "getDependency",
-            "params": [
-                {
-                    "name": "url",
-                    "description": "the url to get in the manager",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "the object Dependency created by the url",
-                "type": "Object"
-            },
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 182,
-            "description": "Queries if its appended in the collection of the manager",
-            "itemtype": "method",
-            "name": "alreadyInCollection",
-            "params": [
-                {
-                    "name": "id",
-                    "description": "the id generated by the url",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "the object Dependency created by the url",
-                "type": "Object"
-            },
-            "class": "DependencyManager"
-        },
-        {
-            "file": "src/comps/dependency-manager.js",
-            "line": 192,
-            "description": "Queries if the dependency is loaded in the manager",
-            "itemtype": "method",
-            "name": "alreadyLoaded",
-            "params": [
-                {
-                    "name": "id",
-                    "description": "the id generated by the url",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "the object Dependency created by the url",
-                "type": "Object"
-            },
-            "class": "DependencyManager"
-        },
         {
             "file": "src/comps/dependency.js",
             "line": 32,
@@ -352,6 +141,217 @@
                 }
             ],
             "class": "Dependency"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 33,
+            "description": "Sets the host of static elements",
+            "itemtype": "method",
+            "name": "setStaticHost",
+            "params": [
+                {
+                    "name": "hostName",
+                    "description": "the host of the static elements,\nlike a CDN url",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n     objDependencyManager.setStaticHost(\"http://cdnjs.com\");"
+            ],
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 45,
+            "description": "Gets saved host",
+            "itemtype": "method",
+            "name": "getStaticHost",
+            "return": {
+                "description": "Get the saved host with the method setStaticHost",
+                "type": "String"
+            },
+            "example": [
+                "\n     //returns \"http://cdnjs.com\" if set\n     objDependencyManager.getStaticHost();"
+            ],
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 57,
+            "description": "Sets the suffix for the url, ideally when working with versioned elements",
+            "itemtype": "method",
+            "name": "setVersionUrl",
+            "params": [
+                {
+                    "name": "versionNumber",
+                    "description": "the suffix or number for concatenating in the url",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n     objDependencyManager.setVersionUrl(\"?v=0.1\");"
+            ],
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 68,
+            "description": "Get saved suffix",
+            "itemtype": "method",
+            "name": "getVersionUrl",
+            "return": {
+                "description": "Get saved suffix with the setVersionUrl method",
+                "type": "String"
+            },
+            "example": [
+                "\n     //if setting \"?v=0.1\" return that\n     objDependencyManager.getVersionUrl();"
+            ],
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 84,
+            "description": "Transforms the url to a request",
+            "itemtype": "method",
+            "name": "transformUrl",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "the url itself to be transformed and ready for request",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "the url transformed",
+                "type": "String"
+            },
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 101,
+            "description": "Validates double slashes in url",
+            "itemtype": "method",
+            "name": "validateDoubleSlashes",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "the url self to validate",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "the url cleaned",
+                "type": "String"
+            },
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 112,
+            "description": "Generates the id for the manager from the url",
+            "itemtype": "method",
+            "name": "generateId",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "the url self to generate your id",
+                    "type": "String"
+                }
+            ],
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 121,
+            "description": "Receives a url from the manager",
+            "itemtype": "method",
+            "name": "addScript",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "the url self to request in the manager",
+                    "type": "String"
+                }
+            ],
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 148,
+            "description": "method that receives a list of urls to be requested and callbacks when the requests are ready",
+            "itemtype": "method",
+            "name": "ready",
+            "params": [
+                {
+                    "name": "urlList",
+                    "description": "List of urls to request",
+                    "type": "Array"
+                },
+                {
+                    "name": "onReady",
+                    "description": "Callback to execute when the all requests are ready",
+                    "type": "Function"
+                }
+            ],
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 171,
+            "description": "Returns saved dependency in the manager",
+            "itemtype": "method",
+            "name": "getDependency",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "the url to get in the manager",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "the object Dependency created by the url",
+                "type": "Object"
+            },
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 182,
+            "description": "Queries if its appended in the collection of the manager",
+            "itemtype": "method",
+            "name": "alreadyInCollection",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "the id generated by the url",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "the object Dependency created by the url",
+                "type": "Object"
+            },
+            "class": "DependencyManager"
+        },
+        {
+            "file": "src/managers/dependency.js",
+            "line": 192,
+            "description": "Queries if the dependency is loaded in the manager",
+            "itemtype": "method",
+            "name": "alreadyLoaded",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "the id generated by the url",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "the object Dependency created by the url",
+                "type": "Object"
+            },
+            "class": "DependencyManager"
         }
     ],
     "warnings": []

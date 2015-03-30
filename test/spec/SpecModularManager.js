@@ -1,5 +1,5 @@
 define([
-   '../../src/comps/modular-manager.js',
+   '../../src/managers/modular.js',
    '../../src/comps/sequential.js'
   ],
   function(ModularManager, Sequential){
