@@ -409,25 +409,48 @@
 
 
     //Class with pattern factory with the idea of creating modules
-    var Modular = function(entityBridge){
+    var Modular = function(entityBridge, events){
         this.entityBridge = entityBridge;
         this.moduleInstance = "";
         this.status = "stop";
+        this.events = {
+            "onError": function(ex, functionName){
+                yOSON.Log(functionName + "(): " + ex.message);
+            }
+        };
+        if(typeof events !== "undefined"){
+            this.events = events;
+        }
+    };
+
+    Modular.prototype.moduleCallbackEvent = function(){
+        var arrayOfArguments = [].slice.call(arguments, 0);
+        var eventName = arrayOfArguments[0];
+        var eventSelf = this.events[eventName];
+        var paramsToPass = [];
+        if(arrayOfArguments.length > 1){
+            paramsToPass = arrayOfArguments.slice(1);
+        }
+        if(typeof eventSelf === "function"){
+            eventSelf.apply(this, paramsToPass);
+        }
     };
 
     //Creates an empty context of module
     Modular.prototype.create = function(moduleDefinition){
         this.moduleDefinition = moduleDefinition;
+        this.moduleCallbackEvent("onCreated");
     };
 
     //Creates a definition of module self
     Modular.prototype.generateModularDefinition = function(functionName, functionSelf){
+        var that = this;
         if(typeof functionSelf === "function"){
             return function(){
                 try {
                     return functionSelf.apply(this, arguments);
                 } catch( ex ){
-                    yOSON.Log(functionName + "(): " + ex.message);
+                    that.moduleCallbackEvent("onError", ex, functionName);
                 }
             };
         } else {
@@ -444,6 +467,7 @@
             moduleInstance[propertyName] = this.generateModularDefinition(propertyName, method);
         }
         this.moduleInstance = moduleInstance;
+        this.moduleCallbackEvent("onRun", moduleInstance);
         this.runInitMethodOfModule(params);
     };
 
