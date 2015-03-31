@@ -504,6 +504,7 @@
         this.runningModules = {};
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = false;
+        this.moduleEvents = {};
     };
 
     // Receives a method for the entity communicator on modules
@@ -511,11 +512,17 @@
         this.entityBridge[methodName] = methodSelf;
     };
 
+    //
+    ModularManager.prototype.listenEvent = function(moduleName, eventName, eventSelf){
+        this.moduleEvents[moduleName] = {};
+        this.moduleEvents[moduleName][eventName] = eventSelf;
+    };
+
     // Adds a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
         if(!this.getModule(moduleName)){
-            modules[moduleName] = new Modular(this.entityBridge);
+            modules[moduleName] = new Modular(this.entityBridge, this.moduleEvents[moduleName]);
             modules[moduleName].create(moduleDefinition);
         }
     };
@@ -836,6 +843,7 @@
         triggerArgs = [];
 
     yOSON.AppCore = (function(){
+
         //Sets the main methods in the bridge of a module
         objModularManager.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
             objCommunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
@@ -847,7 +855,6 @@
             if(paramsTaked.length > 1){
                 triggerArgs = paramsTaked.slice(1);
             }
-
             objCommunicator.publish(eventNameArg, triggerArgs);
         });
 
@@ -866,6 +873,9 @@
         return {
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
+                objModularManager.listenEvent(moduleName, "onError", function(ex, functionName){
+                    yOSON.Log("The module '" + moduleName + "' has an error: " + functionName + "(): " + ex.message);
+                });
                 objModularManager.addModule(moduleName, moduleDefinition);
             },
             runModule: function(moduleName, optionalParameter){

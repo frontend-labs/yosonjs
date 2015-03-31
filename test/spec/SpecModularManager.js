@@ -154,5 +154,60 @@ define([
           });
       });
 
+      describe("Listen Events", function(){
+        var moduleListener = {};
+        beforeEach(function(){
+            moduleListener.name = "moduleListener";
+            moduleListener.self = function(){
+                return {
+                    init: function(){}
+                }
+            };
+        });
+
+        it("should be listen the onCreate callback", function(done){
+            var spyOnCreated = jasmine.createSpy();
+            var moduleName = moduleListener.name + "onCreate";
+            objModularManager.listenEvent(moduleName, "onCreated", function(){
+                spyOnCreated();
+                expect(spyOnCreated).toHaveBeenCalled();
+                done();
+            });
+            objModularManager.addModule(moduleName, moduleListener.self);
+        });
+
+        it("should be listen the onRun callback", function(done){
+            var spyOnRun = jasmine.createSpy();
+            var moduleName = moduleListener.name + "onRun";
+            objModularManager.listenEvent(moduleName, "onRun", function(){
+                spyOnRun();
+                expect(spyOnRun).toHaveBeenCalled();
+                done();
+            });
+            objModularManager.addModule(moduleName, moduleListener.self);
+            objModularManager.runModule(moduleName);
+        });
+
+        it("should be listen the onError callback", function(done){
+            var spyOnError = jasmine.createSpy();
+            var moduleName = moduleListener.name + "onError";
+            objModularManager.listenEvent(moduleName, "onError", function(){
+                spyOnError();
+                expect(spyOnError).toHaveBeenCalled();
+                done();
+            });
+            objModularManager.addModule(moduleName, function(){
+                return {
+                    init: function(){
+                        frikiFunction();
+                    }
+                }
+            });
+            objModularManager.runModule(moduleName);
+        });
+
+
+      });
+
   });
 });
