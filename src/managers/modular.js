@@ -8,6 +8,7 @@ define([
         this.runningModules = {};
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = false;
+        this.moduleEvents = {};
     };
 
     // Receives a method for the entity communicator on modules
@@ -15,11 +16,17 @@ define([
         this.entityBridge[methodName] = methodSelf;
     };
 
+    //
+    ModularManager.prototype.listenEvent = function(moduleName, eventName, eventSelf){
+        this.moduleEvents[moduleName] = {};
+        this.moduleEvents[moduleName][eventName] = eventSelf;
+    };
+
     // Adds a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
         if(!this.getModule(moduleName)){
-            modules[moduleName] = new Modular(this.entityBridge);
+            modules[moduleName] = new Modular(this.entityBridge, this.moduleEvents[moduleName]);
             modules[moduleName].create(moduleDefinition);
         }
     };

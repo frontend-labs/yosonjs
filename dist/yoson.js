@@ -409,25 +409,48 @@
 
 
     //Class with pattern factory with the idea of creating modules
-    var Modular = function(entityBridge){
+    var Modular = function(entityBridge, events){
         this.entityBridge = entityBridge;
         this.moduleInstance = "";
         this.status = "stop";
+        this.events = {
+            "onError": function(ex, functionName){
+                yOSON.Log(functionName + "(): " + ex.message);
+            }
+        };
+        if(typeof events !== "undefined"){
+            this.events = events;
+        }
+    };
+
+    Modular.prototype.moduleCallbackEvent = function(){
+        var arrayOfArguments = [].slice.call(arguments, 0);
+        var eventName = arrayOfArguments[0];
+        var eventSelf = this.events[eventName];
+        var paramsToPass = [];
+        if(arrayOfArguments.length > 1){
+            paramsToPass = arrayOfArguments.slice(1);
+        }
+        if(typeof eventSelf === "function"){
+            eventSelf.apply(this, paramsToPass);
+        }
     };
 
     //Creates an empty context of module
     Modular.prototype.create = function(moduleDefinition){
         this.moduleDefinition = moduleDefinition;
+        this.moduleCallbackEvent("onCreated");
     };
 
     //Creates a definition of module self
     Modular.prototype.generateModularDefinition = function(functionName, functionSelf){
+        var that = this;
         if(typeof functionSelf === "function"){
             return function(){
                 try {
                     return functionSelf.apply(this, arguments);
                 } catch( ex ){
-                    yOSON.Log(functionName + "(): " + ex.message);
+                    that.moduleCallbackEvent("onError", ex, functionName);
                 }
             };
         } else {
@@ -444,6 +467,7 @@
             moduleInstance[propertyName] = this.generateModularDefinition(propertyName, method);
         }
         this.moduleInstance = moduleInstance;
+        this.moduleCallbackEvent("onRun", moduleInstance);
         this.runInitMethodOfModule(params);
     };
 
@@ -480,6 +504,7 @@
         this.runningModules = {};
         this.entityBridge = {};
         this.alreadyAllModulesBeRunning = false;
+        this.moduleEvents = {};
     };
 
     // Receives a method for the entity communicator on modules
@@ -487,11 +512,17 @@
         this.entityBridge[methodName] = methodSelf;
     };
 
+    //
+    ModularManager.prototype.listenEvent = function(moduleName, eventName, eventSelf){
+        this.moduleEvents[moduleName] = {};
+        this.moduleEvents[moduleName][eventName] = eventSelf;
+    };
+
     // Adds a module
     ModularManager.prototype.addModule = function(moduleName, moduleDefinition){
         var modules = this.modules;
         if(!this.getModule(moduleName)){
-            modules[moduleName] = new Modular(this.entityBridge);
+            modules[moduleName] = new Modular(this.entityBridge, this.moduleEvents[moduleName]);
             modules[moduleName].create(moduleDefinition);
         }
     };
@@ -812,6 +843,7 @@
         triggerArgs = [];
 
     yOSON.AppCore = (function(){
+
         //Sets the main methods in the bridge of a module
         objModularManager.addMethodToBrigde('events', function(eventNames, functionSelfEvent, instanceOrigin){
             objCommunicator.subscribe(eventNames, functionSelfEvent, instanceOrigin);
@@ -823,7 +855,6 @@
             if(paramsTaked.length > 1){
                 triggerArgs = paramsTaked.slice(1);
             }
-
             objCommunicator.publish(eventNameArg, triggerArgs);
         });
 
@@ -842,6 +873,9 @@
         return {
             addModule: function(moduleName, moduleDefinition, dependences){
                 setDependencesByModule(moduleName, dependences);
+                objModularManager.listenEvent(moduleName, "onError", function(ex, functionName){
+                    yOSON.Log("The module '" + moduleName + "' has an error: " + functionName + "(): " + ex.message);
+                });
                 objModularManager.addModule(moduleName, moduleDefinition);
             },
             runModule: function(moduleName, optionalParameter){

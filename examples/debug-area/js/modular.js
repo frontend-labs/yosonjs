@@ -33,5 +33,20 @@ objDontValidate.create(function(){
     }
 });
 
+var moduleWithPosibleError = new Modular({}, {
+    onError: function(ex, functionName){
+        console.log("custom error :D", functionName, ":()", ex);
+    }
+});
+
+moduleWithPosibleError.create(function(){
+    return {
+        init: function(){
+            log(tmp);
+        }
+    }
+});
+
 objModularA.start();
 objModularB.start();
+moduleWithPosibleError.start();
