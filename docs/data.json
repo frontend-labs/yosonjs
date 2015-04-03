@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "yosonjs",
-        "description": "Lightweight library for manage modular scripts",
+        "description": "A lightweight sandbox library in JavaScript for manage modular scripts",
         "version": "0.0.16-alpha",
         "url": ""
     },
