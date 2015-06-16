@@ -5,6 +5,10 @@
 1. Install the npm packages ( `npm install` )
 1. Run grunt in terminal(`grunt`)
 
+# If `grunt` its not found:
+Execute in terminal this command:
+* ~ sudo npm install -g grunt-cli
+
 ### Directory Structure
 the library has the following structure:
 * `src/` has the sources of yOSON
