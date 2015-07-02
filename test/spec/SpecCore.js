@@ -39,6 +39,24 @@ define([
             yOSON.AppCore.runModule('moduleA');
         });
 
+        it('should get functions from a module', function(){
+            var myFunctions = {};
+            myFunctions.calculateAddition = function(a, b){
+                return a + b;
+            };
+            myFunctions.calculateDifference = function(a, b){
+                return a - b;
+            };
+            yOSON.AppCore.addModule('moduleD', function(){
+                return {
+                    init: function(){},
+                    functions : myFunctions
+                }
+            });
+            var result = yOSON.AppCore.getModuleFunctions('moduleD');
+            expect(result).toBe(myFunctions);
+        });
+
         it('should be execute method from moduleA1 to moduleB1', function(done){
             var functionToBridge = jasmine.createSpy();
             yOSON.AppCore.addModule('moduleA1', function(Sb){

@@ -17,6 +17,9 @@ define(function(){
             }
         }
     };
-
+    if(typeof(module)==="undefined"){
+        module = {};
+    }
+    module.exports = yOSON;
     return yOSON;
 });
