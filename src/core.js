@@ -68,6 +68,15 @@ define([
                     yOSON.Log('Error: the module ' + moduleName + ' don\'t exists');
                 }
             },
+            getModuleFunctions: function(moduleName){
+                var currentModule = objModularManager.getModule(moduleName);
+                definition = currentModule.moduleDefinition()
+                if(definition.init === undefined){
+                    yOSON.Log('Error: the module ' + moduleName + ' don\'t have any functions to test');
+                    return {}
+                }
+                return definition.functions;
+            },
             setStaticHost: function(hostName){
                 objDependencyManager.setStaticHost(hostName);
             },
