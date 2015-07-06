@@ -71,7 +71,6 @@ define([
             getModuleFunctions: function(moduleName){
                 var currentModule = objModularManager.getModule(moduleName);
                 definition = currentModule.moduleDefinition()
-                console.log(definition.init)
                 if(definition.init === undefined){
                     yOSON.Log('Error: the module ' + moduleName + ' don\'t have any functions to test');
                     return {}
