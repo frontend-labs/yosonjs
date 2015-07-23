@@ -17,10 +17,10 @@ define(function(){
             }
         }
     };
-    if(typeof(module)==="undefined"){
-        module = {};
-        module.exports = {};
+    
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = yOSON;
     }
-    module.exports = yOSON;
+
     return yOSON;
 });
