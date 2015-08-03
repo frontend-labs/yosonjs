@@ -39,7 +39,7 @@ define([
             yOSON.AppCore.runModule('moduleA');
         });
 
-        it('should get functions from a module', function(){
+        it('should get functions to test from a module', function(){
             var myFunctions = {};
             myFunctions.calculateAddition = function(a, b){
                 return a + b;
@@ -50,7 +50,7 @@ define([
             yOSON.AppCore.addModule('moduleD', function(){
                 return {
                     init: function(){},
-                    functions : myFunctions
+                    tests : myFunctions
                 }
             });
             var result = yOSON.AppCore.getModuleFunctions('moduleD');

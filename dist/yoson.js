@@ -906,7 +906,7 @@
                     yOSON.Log('Error: the module ' + moduleName + ' don\'t have any functions to test');
                     return {}
                 }
-                return definition.functions;
+                return definition.tests;
             },
             setStaticHost: function(hostName){
                 objDependencyManager.setStaticHost(hostName);
