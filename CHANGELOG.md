@@ -1,3 +1,19 @@
+<a name="0.0.17-alpha"></a>
+### 0.0.17-alpha (2015-08-05)
+
+
+#### Bug Fixes
+
+* **core:** Se añade hack para dependencias de node ([d37daa83](https://github.com/frontend-labs/yosonjs/commit/d37daa83f4ca1ba83436ce312a17bcfc8d39334c))
+* **workflow:** Adding note for contributing ([2738cb65](https://github.com/frontend-labs/yosonjs/commit/2738cb65d34f73f2a909b3cb41a0b6f91540f66e))
+* **yoson:** Se elimina los conflictos con otros plugins ([01d2df54](https://github.com/frontend-labs/yosonjs/commit/01d2df545fd172b5386abec49978c4a5efdbda65))
+
+
+#### Features
+
+* **core:** method for getting the functions from  module definition ([328a8667](https://github.com/frontend-labs/yosonjs/commit/328a8667328f470e72e7859f0c3e74bc17842b70))
+
+
 <a name="0.0.16-alpha"></a>
 ### 0.0.16-alpha (2015-04-03)
 
