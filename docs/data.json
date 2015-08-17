@@ -230,13 +230,13 @@
         {
             "file": "src/managers/dependency.js",
             "line": 101,
-            "description": "Validates double slashes in url",
+            "description": "Sanitize double slashes in url",
             "itemtype": "method",
-            "name": "validateDoubleSlashes",
+            "name": "SanitizeDoubleslashes",
             "params": [
                 {
                     "name": "url",
-                    "description": "the url self to validate",
+                    "description": "the url self to sanitize",
                     "type": "String"
                 }
             ],
