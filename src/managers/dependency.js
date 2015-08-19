@@ -89,22 +89,22 @@ define([
      */
     DependencyManager.prototype.transformUrl = function(url){
         var urlResult = "",
-        regularExpresion = /((http?|https):\/\/)(www)?([\w-]+\.\w+)+(\/[\w-]+)+\.\w+/g;
+            regularExpresion = /^(http:\/\/|https:\/\/|\/\/)?(www)?([\w-]+\.\w+)+(\/[\w-]+)+\.\w+/g;
         if(regularExpresion.test(url)){
             urlResult = url;
         } else {
-            urlResult = this.validateDoubleSlashes( this.config.staticHost + url + this.getVersionUrl() );
+            urlResult = this.sanitizeDoubleSlashes( this.config.staticHost + url + this.getVersionUrl() );
         }
         return urlResult;
     };
 
     /**
-     * Validates double slashes in url
-     * @method validateDoubleSlashes
-     * @param {String} url the url self to validate
+     * Sanitize double slashes in url
+     * @method SanitizeDoubleslashes
+     * @param {String} url the url self to sanitize
      * @return {String} the url cleaned
      */
-    DependencyManager.prototype.validateDoubleSlashes = function(url){
+    DependencyManager.prototype.sanitizeDoubleSlashes = function(url){
         var regularExpression = /([^\/:])\/+([^\/])/g;
         return url.replace(regularExpression, "$1/$2");
     };

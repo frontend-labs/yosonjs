@@ -37,6 +37,7 @@ define([
 
               beforeEach(function(){
                   urlOfOtherSite = "http://st.host.pe/js/jq.demo.js";
+                  urlOfOtherSiteWithRelativeProtocol = "//st.host.pe/js/jq.demo.js";
                   urlSelfSite = "libs/js/jq.demo.js";
 
                   objDependencyManager.setVersionUrl(versionUrl);
@@ -46,6 +47,11 @@ define([
               it('should be transform the url when come with http protocol', function(){
                   var urlTransformed = objDependencyManager.transformUrl(urlOfOtherSite);
                   expect(urlOfOtherSite).toEqual(urlTransformed);
+              });
+
+              it('should be transform the url when come with relative protocol (//)', function(){
+                  var urlTransformed = objDependencyManager.transformUrl(urlOfOtherSiteWithRelativeProtocol);
+                  expect(urlOfOtherSiteWithRelativeProtocol).toEqual(urlTransformed);
               });
 
               it('should be transform the url when come with self server', function(){
@@ -62,24 +68,24 @@ define([
                   expect(id).toEqual(urlDummy);
               });
 
-              describe('validate the url entered', function(){
+              describe('sanitize the url entered', function(){
                   var urlExpected = null;
                   beforeEach(function(){
                       urlExpected = staticHost + "js/dist/libs/fancybox/source/helpers/jquery.fancybox-buttons.js" + versionUrl;
                   });
                   it('should be validate the url without double slashes', function () {
                       var urlGood = staticHost + "js/dist/libs/fancybox/source/helpers/jquery.fancybox-buttons.js" + versionUrl;
-                      var urlDummy = objDependencyManager.validateDoubleSlashes(urlGood);
+                      var urlDummy = objDependencyManager.sanitizeDoubleSlashes(urlGood);
                       expect(urlDummy).toEqual(urlExpected);
                   });
                   it('should be validate the url with double slashes', function () {
                       var urlWrong1 = staticHost + "/js/dist/libs/fancybox/source/helpers/jquery.fancybox-buttons.js" + versionUrl;
-                      var urlDummy = objDependencyManager.validateDoubleSlashes(urlWrong1);
+                      var urlDummy = objDependencyManager.sanitizeDoubleSlashes(urlWrong1);
                       expect(urlDummy).toEqual(urlExpected);
                   });
                   it('should be validate the url with double slashes', function () {
                       var urlWrong2 = staticHost + "//js/dist/libs///fancybox/source/helpers/jquery.fancybox-buttons.js" + versionUrl;
-                      var urlDummy = objDependencyManager.validateDoubleSlashes(urlWrong2);
+                      var urlDummy = objDependencyManager.sanitizeDoubleSlashes(urlWrong2);
                       expect(urlDummy).toEqual(urlExpected);
                   });
               });
