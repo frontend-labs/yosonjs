@@ -41,10 +41,11 @@
     };
 
     SinglePromise.prototype.done = function(){
+        var that = this;
         this.status = "done";
-
+        this.dataToPass = arguments;
         this.eachCallBackList(this.callbacks.succeededs, function(callbackRegistered){
-            callbackRegistered.call(this);
+            callbackRegistered.apply(this, that.dataToPass);
         });
     };
 
