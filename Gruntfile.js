@@ -152,9 +152,27 @@ module.exports = function(grunt){
             }
         },
         //for changelog
-        changelog: {
+        conventionalChangelog: {
             options: {
-
+                changelogOpts: {
+                    // conventional-changelog options go here
+                    preset: 'angular'
+                },
+                context: {
+                    // context goes here
+                },
+                gitRawCommitsOpts: {
+                    // git-raw-commits options go here
+                },
+                parserOpts: {
+                    // conventional-commits-parser options go here
+                },
+                writerOpts: {
+                    // conventional-changelog-writer options go here
+                }
+            },
+            release: {
+                src: 'CHANGELOG.md'
             }
         },
 		//for coveralls service
@@ -209,6 +227,7 @@ module.exports = function(grunt){
    grunt.registerTask('coverage', ['connect:coverage', 'jasmine:coverage', 'coveralls']);
    grunt.registerTask('dist', ['exec:cleanDist', 'generateDist']);
    grunt.registerTask('build', ['exec:cleanBuild', 'uglify']);
+   grunt.registerTask('changelog', ['conventionalChangelog']);
    grunt.registerTask('doc', ['yuidoc']);
    grunt.registerTask('default', ['spec', 'dist', 'build', 'doc']);
    //grunt.registerTask('default', ['spec']);

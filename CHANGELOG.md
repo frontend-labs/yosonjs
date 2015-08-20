@@ -1,4 +1,14 @@
 <a name="0.0.17-alpha"></a>
+## [0.0.17-alpha](https://github.com/frontend-labs/yosonjs/compare/v0.0.17-alpha...v0.0.17-alpha) (2015-08-20)
+
+
+
+
+<a name="0.0.17-alpha"></a>
+### 0.0.17-alpha (2015-08-20)
+
+
+<a name="0.0.17-alpha"></a>
 ### 0.0.17-alpha (2015-08-05)
 
 
