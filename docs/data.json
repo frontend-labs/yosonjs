@@ -2,7 +2,7 @@
     "project": {
         "name": "yosonjs",
         "description": "Lightweight library for manage modular scripts",
-        "version": "0.0.16-alpha",
+        "version": "0.0.17-alpha",
         "url": ""
     },
     "files": {
