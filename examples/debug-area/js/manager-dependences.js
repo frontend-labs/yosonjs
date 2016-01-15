@@ -1,6 +1,6 @@
 //define the modules
 var dependencyManager = new yOSON.Components.DependencyManager();
-dependencyManager.setStaticHost("http://cdn.aptitus.e3.pe/js/");
+dependencyManager.setStaticHost("http://cdn.aptixtus.e3.pxe/js/");
 //append the demo urls
 var dependences = [
     'http://code.jquery.com/jquery-1.11.0.min.js',
