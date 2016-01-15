@@ -229,6 +229,6 @@ module.exports = function(grunt){
    grunt.registerTask('build', ['exec:cleanBuild', 'uglify']);
    grunt.registerTask('changelog', ['conventionalChangelog']);
    grunt.registerTask('doc', ['yuidoc']);
-   grunt.registerTask('default', ['spec', 'dist', 'build', 'doc']);
+   grunt.registerTask('default', ['dist', 'build', 'doc']);
    //grunt.registerTask('default', ['spec']);
 };
