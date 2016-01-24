@@ -9,7 +9,7 @@ var dataTemplate = {
 	'all': {
 		'tpl_options' : '<option value="{{=value}}" label="{{=data}}">{{=data}}</option>'
 	},
-	'buscador_aptitus': {
+	'buscador_proyecto': {
 		'search_list' : '<li><a href="{{=url}}" title="Ver búsqueda">{{=nombre}}</a><a href="javascript:;" data-id="{{=id}}" class="last" title="Eliminar búsqueda">X</a></li>'
 	},
 	'modal' : {
